@@ -51,6 +51,11 @@ public class LoginFilter implements Filter {
 			}
 		}
 		
+		
+		rep.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.  
+		rep.setHeader("Pragma", "no-cache"); // HTTP 1.0.  
+		rep.setDateHeader("Expires", 0); // Proxies.  
+	        
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

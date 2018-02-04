@@ -28,11 +28,8 @@ public class LogoutServlet extends HttpServlet {
 		
 		
 		HttpSession session = request.getSession();
-		String userId = (String)session.getAttribute("userId");
-		
-		if(userId != null){
-			session.removeAttribute("userId");
-		}
+		session.removeAttribute("userId");
+		session.invalidate();
 		
 		response.sendRedirect("login.jsp");
 	}
