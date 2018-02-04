@@ -90,7 +90,7 @@
      <img class="ui large image" src="assets/images/logo.png">
 
       </div>
-    <form class="ui large form" action="list.jsp">
+    <form class="ui large form" action="login.do">
       <div class="ui stacked segment">
         <div class="field">
           <div class="ui left icon input">

@@ -31,7 +31,7 @@ public class LogoutServlet extends HttpServlet {
 		String userId = (String)session.getAttribute("userId");
 		
 		if(userId != null){
-			session.removeValue("userId");
+			session.removeAttribute("userId");
 		}
 		
 		response.sendRedirect("login.jsp");

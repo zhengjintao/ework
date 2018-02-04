@@ -25,8 +25,8 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String user = request.getParameter("user");
-		String pwd = request.getParameter("pwd");
+		String user = request.getParameter("userid");
+		String pwd = request.getParameter("password");
 		
 		if(user == null || user.length() == 0 || pwd == null || pwd.length() == 0){
 			response.sendRedirect("login.jsp");

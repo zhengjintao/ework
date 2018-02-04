@@ -44,7 +44,7 @@
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>LoginServlet</servlet-name>
-    	<url-pattern>/login</url-pattern>
+    	<url-pattern>/login.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>AddLeaveDayServlet</servlet-name>
