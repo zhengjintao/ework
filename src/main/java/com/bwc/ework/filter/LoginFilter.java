@@ -36,17 +36,20 @@ public class LoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse rep = (HttpServletResponse)response;
-		
-		if(!req.getRequestURI().contains("login")){
-			HttpSession session = req.getSession();
-			String userId = (String)session.getAttribute("userId");
-			
-			if(userId == null || userId.length() == 0){
-				rep.sendRedirect("login.jsp");
-				return;
+		String uri = req.getRequestURI();
+		if(uri.contains(".jsp")
+			|| uri.contains(".html")
+			||uri.contains(".do")){
+			if(!uri.contains("login")){
+				HttpSession session = req.getSession();
+				String userId = (String)session.getAttribute("userId");
+				
+				if(userId == null || userId.length() == 0){
+					rep.sendRedirect("login.jsp");
+					return;
+				}
 			}
 		}
-		
 		
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
