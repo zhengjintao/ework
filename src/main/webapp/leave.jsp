@@ -16,7 +16,7 @@
 
 <style type="text/css">
 body {
-    margin-top: 10px;
+	margin-top: 10px;
 	background-color: #FFFFFF;
 }
 
@@ -43,11 +43,12 @@ footer {
 								<label>Date</label> <input type="date" name="wdate"
 									value="2018-02-01">
 							</div>
+						</div>
+						<div class="two fields">
 							<div class="field">
 								<label>Comment</label> <input type="text" name="wcomment">
 							</div>
 						</div>
-
 						<Button class="ui active teal button" type="submit">
 							<i class="add to calendar icon"></i> Add
 						</Button>
