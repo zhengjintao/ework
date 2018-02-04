@@ -13,9 +13,11 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.js"></script>
 <script src="dist/components/transition.js"></script>
+<script src="dist/semantic.min.js"></script>
 
 <style type="text/css">
 body {
+	margin-top: 10px;
 	background-color: #FFFFFF;
 }
 
@@ -39,12 +41,39 @@ footer {
 					<div class="item">
 						<img class="ui avatar image" src="assets/images/christian.jpg">
 						<div class="content">
-							<div class="description">00001</div>
+							<!-- <div class="description">00001</div> -->
 							<div class="header">teikintou</div>
+							<div class="description">zhengjintao</div>
 						</div>
 					</div>
 				</div>
-				<a href="./logout">Logout</a>
+				<button class="ui basic button" onclick="logout()">
+					<i class="icon remove user"></i> Logout
+				</button>
+
+				<div class="ui small test modal transition hidden">
+					<div class="header">Logout</div>
+					<div class="content">
+						<p>Are you sure to Logout?</p>
+					</div>
+					<div class="actions">
+						<div class="ui negative button">Cancel</div>
+						<div class="ui positive right labeled icon button">
+							Yes <i class="checkmark icon"></i>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+					function logout() {
+						$('.ui.modal').modal({
+							closable : false,
+							onApprove : function() {
+								window.location.href = "logout";
+							}
+
+						}).modal('show');
+					}
+				</script>
 			</div>
 
 			<form action="./addwork" method="post">
@@ -68,14 +97,14 @@ footer {
 				<div class="ui grey inverted segment">
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui red button">
-							<i class="wait icon"></i> Worktime Of This Month
+							<i class="checked calendar icon"></i> Worktime Of This Month
 						</div>
 						<a class="ui basic red left pointing label"> 148h </a>
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui blue button">
-							<i class="fork icon"></i> Workday Of This Month
+							<i class="delete calendar icon"></i> Leavedays Of This Month
 						</div>
 						<a class="ui basic left pointing blue label"> 2day </a>
 					</div>
@@ -84,6 +113,9 @@ footer {
 			</form>
 		</div>
 	</div>
+
+	<div style="height: 100px"></div>
+
 	<footer>
 		<div class="ui yellow four item menu">
 			<a class="item" href="index.jsp"> <i class="home icon"></i> Home

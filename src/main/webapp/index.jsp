@@ -16,6 +16,7 @@
 
 <style type="text/css">
 body {
+    margin-top: 10px;
 	background-color: #FFFFFF;
 }
 
@@ -28,7 +29,7 @@ body>.grid {
 }
 
 .segment>.lblcontent {
-	height: 55%;
+	height: 53%;
 }
 
 footer {

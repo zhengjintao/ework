@@ -16,7 +16,8 @@
 
   <style type="text/css">
     body {
-      background-color: #FFFFFF;
+    margin-top: 10px;
+	background-color: #FFFFFF;
     }
     body > .grid {
       height: 100%;
@@ -60,7 +61,7 @@
   </div>
 </div>
 </form>
-<div class="ui blue message">
+<div class="ui grey inverted segment">
 <input type="date" name="wdate" value="2018-02-01">
 <table class="ui celled table">
   <tbody>

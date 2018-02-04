@@ -16,6 +16,7 @@
 
 <style type="text/css">
 body {
+    margin-top: 10px;
 	background-color: #FFFFFF;
 }
 
@@ -55,7 +56,7 @@ footer {
 				</div>
 			</form>
 
-			<div class="ui olive message">
+			<div class="ui grey inverted segment">
 				<input type="date" name="wdate" value="2018-02-01">
 
 				<table class="ui celled table">
