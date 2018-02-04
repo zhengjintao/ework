@@ -84,7 +84,8 @@
 </div>
 
 </div>
-<footer>
+	<div style="height: 120px"></div>
+	<footer>
 <div class="ui yellow four item menu">
   <a class="item" href="index.jsp">
   <i class="home icon"></i>
