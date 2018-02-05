@@ -9,6 +9,7 @@
 
 <!-- Site Properties -->
 <title>BWC考勤系统</title>
+<link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -64,9 +65,8 @@ body>.grid {
 
 
 		<div class="column">
-			<div class="ui middle center aligned ">
+			<div class="ui large center aligned ">
 				<img class="ui large image" src="assets/images/logo.png">
-
 			</div>
 			<form class="ui large form" action="login.do">
 				<div class="ui stacked segment">

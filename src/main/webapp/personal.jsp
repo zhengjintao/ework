@@ -8,6 +8,7 @@
 
 <!-- Site Properties -->
 <title>BWC考勤系统</title>
+<link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -69,7 +70,7 @@ footer {
 						$('.ui.modal').modal({
 							closable : false,
 							onApprove : function() {
-								window.location.href = "logout";
+								window.location.href = "logout.do";
 							}
 
 						}).modal('show');
