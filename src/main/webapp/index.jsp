@@ -7,7 +7,7 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <!-- Site Properties -->
-<title>BWC ework</title>
+<title>BWC考勤系统</title>
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -45,9 +45,9 @@ footer {
 		<div class="column">
 
 			<div class="ui raised segment">
-				<a class="ui red ribbon label">Notice</a>
+				<a class="ui red ribbon label">通知</a>
 				<p class="lblheader">every one look here!</p>
-				<a class="ui blue ribbon label">Envent</a>
+				<a class="ui blue ribbon label">近期事件</a>
 				<div class="lblcontent">Today is the Day of Accounting Test.</div>
 			</div>
 
@@ -58,14 +58,13 @@ footer {
 
 	<footer>
 		<div class="ui yellow four item menu">
-			<a class="active item" href="index.jsp"> <i class="home icon"></i>
-				Home
+			<a class="active item" href="index.jsp"> <i class="home icon"></i> 首页
 			</a> <a class="item" href="list.jsp"> <i class="calendar icon"></i>
-				Work
+				出勤
 			</a> <a class="item" href="leave.jsp"> <i class="browser icon"></i>
-				Leave
-			</a> <a class="item" href="person.jsp"> <i class="user icon"></i>
-				Personal
+				请假
+			</a> <a class="item" href="personal.jsp"> <i class="user icon"></i>
+				个人
 			</a>
 		</div>
 	</footer>

@@ -7,7 +7,7 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <!-- Site Properties -->
-<title>BWC ework</title>
+<title>BWC考勤系统</title>
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -48,18 +48,18 @@ footer {
 					</div>
 				</div>
 				<button class="ui basic button" onclick="logout()">
-					<i class="icon remove user"></i> Logout
+					<i class="icon remove user"></i>注销
 				</button>
 
 				<div class="ui small test modal transition hidden">
-					<div class="header">Logout</div>
+					<div class="header">注销</div>
 					<div class="content">
-						<p>Are you sure to Logout?</p>
+						<p>骚年，确认退出登陆吗?</p>
 					</div>
 					<div class="actions">
-						<div class="ui negative button">Cancel</div>
+						<div class="ui negative button">取消</div>
 						<div class="ui positive right labeled icon button">
-							Yes <i class="checkmark icon"></i>
+							确认 <i class="checkmark icon"></i>
 						</div>
 					</div>
 				</div>
@@ -81,30 +81,30 @@ footer {
 					<div class="ui inverted form">
 						<div class="two fields">
 							<div class="field">
-								<label>Begin</label> <input type="time" name="wbegin"
+								<label>默认出勤时间</label> <input type="time" name="wbegin"
 									value="09:00"><br>
 							</div>
 							<div class="field">
-								<label>End</label> <input type="time" name="wend" value="17:00"><br>
+								<label>默认退勤时间</label> <input type="time" name="wend" value="17:00"><br>
 							</div>
 						</div>
 
 						<Button class="ui active teal button" type="submit">
-							<i class="add to calendar icon"></i> Set Default Worktime.
+							<i class="add to calendar icon"></i> 设定
 						</Button>
 					</div>
 				</div>
 				<div class="ui grey inverted segment">
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui red button">
-							<i class="checked calendar icon"></i> Worktime Of This Month
+							<i class="checked calendar icon"></i> 本月出勤时间
 						</div>
 						<a class="ui basic red left pointing label"> 148h </a>
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui blue button">
-							<i class="delete calendar icon"></i> Leavedays Of This Month
+							<i class="delete calendar icon"></i> 本月请假天数
 						</div>
 						<a class="ui basic left pointing blue label"> 2day </a>
 					</div>
@@ -118,13 +118,13 @@ footer {
 
 	<footer>
 		<div class="ui yellow four item menu">
-			<a class="item" href="index.jsp"> <i class="home icon"></i> Home
+			<a class="item" href="index.jsp"> <i class="home icon"></i> 首页
 			</a> <a class="item" href="list.jsp"> <i class="calendar icon"></i>
-				Work
+				出勤
 			</a> <a class="item" href="leave.jsp"> <i class="browser icon"></i>
-				Leave
-			</a> <a class="active item" href="person.jsp"> <i class="user icon"></i>
-				Personal
+				请假
+			</a> <a class="active item" href="personal.jsp"> <i class="user icon"></i>
+				个人
 			</a>
 		</div>
 	</footer>

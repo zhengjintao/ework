@@ -8,28 +8,8 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <!-- Site Properties -->
-<title>BWC ework</title>
-<link rel="stylesheet" type="text/css" href="dist/components/reset.css">
-<link rel="stylesheet" type="text/css" href="dist/components/site.css">
-
-<link rel="stylesheet" type="text/css"
-	href="dist/components/container.css">
-<link rel="stylesheet" type="text/css" href="dist/components/grid.css">
-<link rel="stylesheet" type="text/css" href="dist/components/header.css">
-<link rel="stylesheet" type="text/css" href="dist/components/image.css">
-<link rel="stylesheet" type="text/css" href="dist/components/menu.css">
-
-<link rel="stylesheet" type="text/css"
-	href="dist/components/divider.css">
-<link rel="stylesheet" type="text/css"
-	href="dist/components/segment.css">
-<link rel="stylesheet" type="text/css" href="dist/components/form.css">
-<link rel="stylesheet" type="text/css" href="dist/components/input.css">
-<link rel="stylesheet" type="text/css" href="dist/components/button.css">
-<link rel="stylesheet" type="text/css" href="dist/components/list.css">
-<link rel="stylesheet" type="text/css"
-	href="dist/components/message.css">
-<link rel="stylesheet" type="text/css" href="dist/components/icon.css">
+<title>BWC考勤系统</title>
+<link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.js"></script>
@@ -60,17 +40,17 @@ body>.grid {
 					identifier : 'userid',
 					rules : [ {
 						type : 'empty',
-						prompt : 'Please enter your userid'
+						prompt : '请输入用户名'
 					} ]
 				},
 				password : {
 					identifier : 'password',
 					rules : [ {
 						type : 'empty',
-						prompt : 'Please enter your password'
+						prompt : '请输入密码'
 					}, {
 						type : 'length[5]',
-						prompt : 'Your password must be at least 5 characters'
+						prompt : '密码必须是5位以上'
 					} ]
 				}
 			}
@@ -93,16 +73,16 @@ body>.grid {
 					<div class="field">
 						<div class="ui left icon input">
 							<i class="user icon"></i> <input type="text" name="userid"
-								placeholder="User">
+								placeholder="用户名">
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui left icon input">
 							<i class="lock icon"></i> <input type="password" name="password"
-								placeholder="Password">
+								placeholder="密码">
 						</div>
 					</div>
-					<div class="ui fluid large teal submit button">Login</div>
+					<div class="ui fluid large teal submit button">登陆</div>
 				</div>
 
 				<div class="ui error message"></div>

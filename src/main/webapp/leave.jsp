@@ -7,7 +7,7 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <!-- Site Properties -->
-<title>BWC ework</title>
+<title>BWC考勤系统</title>
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -40,17 +40,17 @@ footer {
 					<div class="ui inverted form">
 						<div class="inline field">
 							<div class="field">
-								<label>Date</label> <input type="date" name="wdate"
+								<label>日期</label> <input type="date" name="wdate"
 									value="2018-02-01">
 							</div>
 						</div>
 						<div class="two fields">
 							<div class="field">
-								<label>Comment</label> <input type="text" name="wcomment">
+								<label>理由</label> <input type="text" name="wcomment">
 							</div>
 						</div>
 						<Button class="ui active teal button" type="submit">
-							<i class="add to calendar icon"></i> Add
+							<i class="add to calendar icon"></i> 确定
 						</Button>
 					</div>
 
@@ -87,13 +87,13 @@ footer {
 	<div style="height: 120px"></div>
 	<footer>
 		<div class="ui yellow four item menu">
-			<a class="item" href="index.jsp"> <i class="home icon"></i> Home
+			<a class="item" href="index.jsp"> <i class="home icon"></i> 首页
 			</a> <a class="item" href="list.jsp"> <i class="calendar icon"></i>
-				Work
+				出勤
 			</a> <a class="active item" href="leave.jsp"> <i class="browser icon"></i>
-				Leave
-			</a> <a class="item" href="person.jsp"> <i class="user icon"></i>
-				Personal
+				请假
+			</a> <a class="item" href="personal.jsp"> <i class="user icon"></i>
+				个人
 			</a>
 		</div>
 	</footer>
