@@ -1,4 +1,4 @@
-package com.bwc.ework.servlets;
+ï»¿package com.bwc.ework.servlets;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -41,7 +41,7 @@ public class ListServlet extends HttpServlet {
 		User userinfo = (User)session.getAttribute("userinfo");
 	    
 		// 
-		if("true".equals(request.getParameter("subKbn"))){
+		if("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg"))){
 			String sql = "select * from cdata_worktime where userid=? and date=?";
 			Object[] params = new Object[2];
 			params[0] = userinfo.getUserId();
@@ -57,7 +57,7 @@ public class ListServlet extends HttpServlet {
 			String begin = request.getParameter("wbegin");
 			String end = request.getParameter("wend");
 					
-			// Êı¾İ´æÔÚ¸üĞÂ²Ù×÷
+			// æ•°æ®å­˜åœ¨æ›´æ–°æ“ä½œ
 			if(list.size()>0){
 				String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?"
 						+ " where userid=? and date=?";
@@ -84,35 +84,36 @@ public class ListServlet extends HttpServlet {
 				JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 			}
 			
-			// ÈÕÆÚÉè¶¨
+			// æ—¥æœŸè®¾å®š
 			request.setAttribute("sysDate", date);
-			// Ä¬ÈÏ¿ªÊ¼Ê±¼ä
+			// é»˜è®¤å¼€å§‹æ—¶é—´
 			request.setAttribute("defaultBeginTime",begin);
-			// Ä¬ÈÏ½áÊøÊ±¼ä
+			// é»˜è®¤ç»“æŸæ—¶é—´
 			request.setAttribute("defaultEndTime", end);
 		}else{
-			// ÏµÍ³µ±Ç°Ê±¼äÈ¡µÃ
+			// ç³»ç»Ÿå½“å‰æ—¶é—´å–å¾—
 			SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
 			
-			// ÈÕÆÚÉè¶¨
-			request.setAttribute("sysDate", formattime.format(new Date()));
+			// æ—¥æœŸè®¾å®š
+			request.setAttribute("sysDate", "1".equals(request.getParameter("selectChg")) ? request.getParameter("wdate") : formattime.format(new Date()));
+			String dateTime = "1".equals(request.getParameter("selectChg")) ? request.getParameter("wdate") : formattime.format(new Date());
 			
 			String sql = "select * from cdata_worktime where userid=? and date=?";
 			Object[] params = new Object[2];
 			params[0] = userinfo.getUserId();
-			params[1] = formattime.format(new Date());
+			params[1] = dateTime;
 			List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 			
 			if(list1.size()>0){
 				Map<String, Object> set = (Map<String, Object>)list1.get(0);
-				// Ä¬ÈÏ¿ªÊ¼Ê±¼ä
+				// é»˜è®¤å¼€å§‹æ—¶é—´
 				request.setAttribute("defaultBeginTime",set.get("begintime").toString());
-				// Ä¬ÈÏ½áÊøÊ±¼ä
+				// é»˜è®¤ç»“æŸæ—¶é—´
 				request.setAttribute("defaultEndTime", set.get("endtime").toString());
 			}else{
-				// Ä¬ÈÏ¿ªÊ¼Ê±¼ä
+				// é»˜è®¤å¼€å§‹æ—¶é—´
 				request.setAttribute("defaultBeginTime",userinfo.getBeginTime().toString());
-				// Ä¬ÈÏ½áÊøÊ±¼ä
+				// é»˜è®¤ç»“æŸæ—¶é—´
 				request.setAttribute("defaultEndTime", userinfo.getEndTime().toString());
 			}
 		}
