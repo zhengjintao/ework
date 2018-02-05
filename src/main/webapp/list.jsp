@@ -42,7 +42,7 @@ footer {
 						<div class="inline field">
 							<div class="field">
 								<label>日期</label> <input type="date" name="wdate"
-									value=<%=(String) request.getAttribute("sysDate")%>>>
+									value=<%=(String) request.getAttribute("sysDate")%>>
 							</div>
 						</div>
 						<div class="two fields">

@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("userinfo", userdata);
 		
-		response.sendRedirect("list.jsp");
+		response.sendRedirect("list.do");
 	}
 
 	/**
