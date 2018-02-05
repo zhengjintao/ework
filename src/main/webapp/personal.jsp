@@ -44,8 +44,8 @@ footer {
 						<img class="ui avatar image" src="assets/images/christian.jpg">
 						<div class="content">
 							<!-- <div class="description">00001</div> -->
-							<div class="header">teikintou</div>
-							<div class="description">zhengjintao</div>
+							<div class="header"><%=(String)request.getAttribute("userid") %></div>
+							<div class="description"><%=(String)request.getAttribute("username") %></div>
 						</div>
 					</div>
 				</div>
@@ -78,7 +78,7 @@ footer {
 				</script>
 			</div>
 
-			<form action="./addwork" method="post">
+			<form action="./personal.do" method="post">
 				<div class="ui teal inverted segment">
 				    <a class="ui orange right ribbon label">默认时间</a>
 					<div class="ui inverted form">
@@ -86,14 +86,15 @@ footer {
 						<div class="one fields">
 							<div class="field">
 								<label>出勤</label> <input type="time" name="wbegin"
-									value="09:00"><br>
+									value=<%=(String)request.getAttribute("begintime") %>><br>
 							</div>
 							<div class="field">
-								<label>退勤</label> <input type="time" name="wend" value="17:00"><br>
+								<label>退勤</label> <input type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
 							</div>
 						</div>
 						</div>
-
+						
+						<input type="hidden" name="subKbn" value="setting">
 						<Button class="ui active teal button" type="submit">
 							<i class="add to calendar icon"></i> 设定
 						</Button>

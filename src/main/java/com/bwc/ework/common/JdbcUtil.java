@@ -15,8 +15,6 @@ import java.util.Map;
 /**
  * 数据库连接类 说明:封装了 无参，有参，存储过程的调用
  * 
- * @author iflytek
- * 
  */
 public class JdbcUtil {
 
@@ -38,7 +36,7 @@ public class JdbcUtil {
 	/**
 	 * 密码
 	 */
-	private static final String USERPASSWORD = "root";
+	private static final String USERPASSWORD = "1989416";
 
 	/**
 	 * 创建数据库连接对象
@@ -59,6 +57,8 @@ public class JdbcUtil {
 	 * 创建结果集对象
 	 */
 	private ResultSet resultSet = null;
+	
+	private static JdbcUtil instance = null;
 
 	static {
 		try {
@@ -68,6 +68,18 @@ public class JdbcUtil {
 			System.out.println("加载驱动错误");
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	private JdbcUtil(){
+		
+	}
+	
+	public static JdbcUtil getInstance(){
+		if(instance == null){
+			instance = new JdbcUtil();
+		}
+		
+		return instance;
 	}
 
 	/**

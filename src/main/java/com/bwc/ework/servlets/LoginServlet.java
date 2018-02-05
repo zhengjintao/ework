@@ -39,13 +39,12 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		
-		JdbcUtil jdbc = new JdbcUtil();
 		String sql = "select * from mstr_user where userid=? and password=? and delflg=?";
 		Object[] params = new Object[3];
 		params[0] = user;
 		params[1] = pwd;
 		params[2] = "0";
-		List<Object> userinfo = jdbc.excuteQuery(sql, params);
+		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 		
 		if(userinfo == null || userinfo.size() != 1){
 			response.sendRedirect("login.jsp");
