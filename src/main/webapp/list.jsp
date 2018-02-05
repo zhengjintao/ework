@@ -45,15 +45,21 @@ footer {
 							</div>
 						</div>
 						<div class="two fields">
+						<div class="one fields">
 							<div class="field">
 								<label>出勤时间</label> <input type="time" name="wbegin"
 									value="09:00"><br>
 							</div>
+							
+							<div class="field">
+								<div style="width:20px;vertical-align:middle;"></div>
+							</div>
+							
 							<div class="field">
 								<label>退勤时间</label> <input type="time" name="wend" value="17:00"><br>
 							</div>
 						</div>
-
+						</div>
 						<Button class="ui active teal button" type="submit">
 							<i class="add to calendar icon"></i> 签到
 						</Button>
@@ -61,6 +67,7 @@ footer {
 				</div>
 			</form>
 			<div class="ui grey inverted segment">
+			    <a class="ui orange right ribbon label">当周出勤</a>
 				<input type="date" name="wdate" value="2018-02-01">
 				<table class="ui celled table">
 					<tbody>
