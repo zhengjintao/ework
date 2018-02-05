@@ -15,22 +15,10 @@
   	<url-pattern>/*</url-pattern>
   </filter-mapping>
   <servlet>
-  	<servlet-name>AddWorkDayServlet</servlet-name>
-  	<display-name>AddWorkDayServlet</display-name>
-  	<description></description>
-  	<servlet-class>com.bwc.ework.servlets.AddWorkDayServlet</servlet-class>
-  </servlet>
-  <servlet>
   	<servlet-name>LoginServlet</servlet-name>
   	<display-name>LoginServlet</display-name>
   	<description></description>
   	<servlet-class>com.bwc.ework.servlets.LoginServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>AddLeaveDayServlet</servlet-name>
-  	<display-name>AddLeaveDayServlet</display-name>
-  	<description></description>
-  	<servlet-class>com.bwc.ework.servlets.AddLeaveDayServlet</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>LogoutServlet</servlet-name>
@@ -38,20 +26,42 @@
   	<description></description>
   	<servlet-class>com.bwc.ework.servlets.LogoutServlet</servlet-class>
   </servlet>
-    <servlet-mapping>
-    	<servlet-name>AddWorkDayServlet</servlet-name>
-    	<url-pattern>/addwork</url-pattern>
-    </servlet-mapping>
+  <servlet>
+  	<servlet-name>ListServlet</servlet-name>
+  	<display-name>ListServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.bwc.ework.servlets.ListServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>leaveServlte</servlet-name>
+  	<display-name>leaveServlte</display-name>
+  	<description></description>
+  	<servlet-class>com.bwc.ework.servlets.leaveServlte</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>personalServlet</servlet-name>
+  	<display-name>personalServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.bwc.ework.servlets.personalServlet</servlet-class>
+  </servlet>
     <servlet-mapping>
     	<servlet-name>LoginServlet</servlet-name>
     	<url-pattern>/login.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-    	<servlet-name>AddLeaveDayServlet</servlet-name>
-    	<url-pattern>/addleave</url-pattern>
+    	<servlet-name>LogoutServlet</servlet-name>
+    	<url-pattern>/logout.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-    	<servlet-name>LogoutServlet</servlet-name>
-    	<url-pattern>/logout</url-pattern>
+    	<servlet-name>ListServlet</servlet-name>
+    	<url-pattern>/list.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>leaveServlte</servlet-name>
+    	<url-pattern>/leave.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>personalServlet</servlet-name>
+    	<url-pattern>/personal.do</url-pattern>
     </servlet-mapping>
 </web-app>
