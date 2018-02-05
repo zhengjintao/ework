@@ -58,6 +58,7 @@ footer {
 			</form>
 
 			<div class="ui grey inverted segment">
+			    <a class="ui orange right ribbon label">当月请假</a>
 				<input type="date" name="wdate" value="2018-02-01">
 
 				<table class="ui celled table">

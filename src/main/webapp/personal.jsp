@@ -37,6 +37,7 @@ footer {
 	<div class="ui one column grid container">
 		<div class="column">
 			<div class="ui yellow inverted segment">
+			    <a class="ui olive top attached label center aligned">个人信息</a>
 				<div class="ui list">
 					<div class="item">
 						<img class="ui avatar image" src="assets/images/christian.jpg">
@@ -78,15 +79,18 @@ footer {
 
 			<form action="./addwork" method="post">
 				<div class="ui teal inverted segment">
+				    <a class="ui orange right ribbon label">默认时间</a>
 					<div class="ui inverted form">
 						<div class="two fields">
+						<div class="one fields">
 							<div class="field">
-								<label>默认出勤时间</label> <input type="time" name="wbegin"
+								<label>出勤</label> <input type="time" name="wbegin"
 									value="09:00"><br>
 							</div>
 							<div class="field">
-								<label>默认退勤时间</label> <input type="time" name="wend" value="17:00"><br>
+								<label>退勤</label> <input type="time" name="wend" value="17:00"><br>
 							</div>
+						</div>
 						</div>
 
 						<Button class="ui active teal button" type="submit">
@@ -95,6 +99,8 @@ footer {
 					</div>
 				</div>
 				<div class="ui grey inverted segment">
+				<a class="ui orange right ribbon label">统计信息</a>
+				<div style="height=10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui red button">
 							<i class="checked calendar icon"></i> 本月出勤时间
