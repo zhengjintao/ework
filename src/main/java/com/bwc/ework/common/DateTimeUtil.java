@@ -3,7 +3,8 @@ package com.bwc.ework.common;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import com.bwc.ework.form.Date;
 
 public class DateTimeUtil {
 	public static String formatTime(Time time) {
@@ -26,16 +27,15 @@ public class DateTimeUtil {
 	}
 
 	public static Date stringToDate(String str) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			return sdf.parse(str);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			return null;
-		}
+		Date date= new Date();
+		date.setYear(str.substring(0, 4));
+		date.setMonth(str.substring(5, 7));
+		date.setDay(str.substring(8, 10));
+		return date;
 	}
 
 	public static Time stringToTime(String str) {
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		try {
 			return new Time(sdf.parse(str).getTime());
