@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.bwc.ework.form.User;
+
 /**
  * Servlet Filter implementation class LoginFilter
  */
@@ -42,19 +44,18 @@ public class LoginFilter implements Filter {
 			||uri.contains(".do")){
 			if(!uri.contains("login")){
 				HttpSession session = req.getSession();
-				String userId = (String)session.getAttribute("userId");
+				Object userId = session.getAttribute("userinfo");
 				
-				if(userId == null || userId.length() == 0){
+				if(userId == null){
 					rep.sendRedirect("login.jsp");
 					return;
 				}
 			}
+			
+			rep.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.  
+			rep.setHeader("Pragma", "no-cache"); // HTTP 1.0.  
+			rep.setDateHeader("Expires", 0); // Proxies. 
 		}
-		
-		
-		rep.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.  
-		rep.setHeader("Pragma", "no-cache"); // HTTP 1.0.  
-		rep.setDateHeader("Expires", 0); // Proxies.  
 	        
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
