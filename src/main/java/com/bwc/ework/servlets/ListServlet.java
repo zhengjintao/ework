@@ -1,6 +1,7 @@
 package com.bwc.ework.servlets;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,29 +39,23 @@ public class ListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
-		
-		// 系统当前时间取得
-		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
-		
-		// 日期设定
-		request.setAttribute("sysDate", formattime.format(new Date()));
-		
-		String sql = "select * from cdata_worktime where userid=? and date=?";
-		Object[] params = new Object[2];
-		params[0] = userinfo.getUserId();
-		params[1] = request.getParameter(formattime.format(new Date()));
-		List<Object> list = JdbcUtil.getInstance().excuteQuery(sql, params);
-		
+	    
 		// 
 		if("true".equals(request.getParameter("subKbn"))){
+			String sql = "select * from cdata_worktime where userid=? and date=?";
+			Object[] params = new Object[2];
+			params[0] = userinfo.getUserId();
+			params[1] = request.getParameter("wdate");
+			List<Object> list = JdbcUtil.getInstance().excuteQuery(sql, params);
+			
 			com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(request.getParameter("wdate").toString());
 			String userid = userinfo.getUserId();
 			String year = date1.getYear();
 			String month = date1.getMonth();
 			String day = date1.getDay();
-			String date = (String) request.getParameter("wdate");
-			String begin = (String) request.getParameter("wbegin");
-			String end = (String) request.getParameter("wend");
+			String date = request.getParameter("wdate");
+			String begin = request.getParameter("wbegin");
+			String end = request.getParameter("wend");
 					
 			// 数据存在更新操作
 			if(list.size()>0){
@@ -88,21 +83,38 @@ public class ListServlet extends HttpServlet {
 				insertparams[6] = end;
 				JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 			}
-		}
-		
-	
-		if(list.size()>0){
-			Map<String, Object> set = (Map<String, Object>)list.get(0);
+			
+			// 日期设定
+			request.setAttribute("sysDate", date);
 			// 默认开始时间
-			request.setAttribute("defaultBeginTime",(String)set.get("begintime"));
+			request.setAttribute("defaultBeginTime",begin);
 			// 默认结束时间
-			request.setAttribute("defaultEndTime", (String)set.get("endtime"));
-		}
-		else{
-			// 默认开始时间
-			request.setAttribute("defaultBeginTime",userinfo.getBeginTime().toString());
-			// 默认结束时间
-			request.setAttribute("defaultEndTime", userinfo.getEndTime().toString());
+			request.setAttribute("defaultEndTime", end);
+		}else{
+			// 系统当前时间取得
+			SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
+			
+			// 日期设定
+			request.setAttribute("sysDate", formattime.format(new Date()));
+			
+			String sql = "select * from cdata_worktime where userid=? and date=?";
+			Object[] params = new Object[2];
+			params[0] = userinfo.getUserId();
+			params[1] = formattime.format(new Date());
+			List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
+			
+			if(list1.size()>0){
+				Map<String, Object> set = (Map<String, Object>)list1.get(0);
+				// 默认开始时间
+				request.setAttribute("defaultBeginTime",set.get("begintime").toString());
+				// 默认结束时间
+				request.setAttribute("defaultEndTime", set.get("endtime").toString());
+			}else{
+				// 默认开始时间
+				request.setAttribute("defaultBeginTime",userinfo.getBeginTime().toString());
+				// 默认结束时间
+				request.setAttribute("defaultEndTime", userinfo.getEndTime().toString());
+			}
 		}
 		
 		RequestDispatcher re = request.getRequestDispatcher("list.jsp");
