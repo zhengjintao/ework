@@ -36,12 +36,18 @@ public class DateTimeUtil {
 
 	public static Time stringToTime(String str) {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		try {
 			return new Time(sdf.parse(str).getTime());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			return null;
+			
+			sdf = new SimpleDateFormat("HH:mm");
+			try {
+				return new Time(sdf.parse(str).getTime());
+			} catch (ParseException ex) {
+				// TODO Auto-generated catch block
+				return null;
+			}
 		}
 	}
 }

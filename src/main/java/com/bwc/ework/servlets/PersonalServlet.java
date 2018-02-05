@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.bwc.ework.common.DateTimeUtil;
+import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.form.User;
 
 /**
@@ -33,8 +35,16 @@ public class PersonalServlet extends HttpServlet {
 			String begintime = request.getParameter("wbegin");
 			String endtime = request.getParameter("wend");
 			
+			String sql = "update mstr_user set begintime=? , endtime=? where userid=?";
+			Object[] params = new Object[3];
+			params[0] = begintime;
+			params[1] = endtime;
+			params[2] = userinfo.getUserId();
+			JdbcUtil.getInstance().executeUpdate(sql, params);
 			
-			
+			userinfo.setBeginTime(DateTimeUtil.stringToTime(begintime));
+			userinfo.setEndTime(DateTimeUtil.stringToTime(endtime));
+			session.setAttribute("userinfo", userinfo);
 		}
 		
 		request.setAttribute("userid", userinfo.getUserId());
