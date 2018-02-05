@@ -1,4 +1,4 @@
-package com.bwc.ework.common;
+ï»¿package com.bwc.ework.common;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Êı¾İ¿âÁ¬½ÓÀà ËµÃ÷:·â×°ÁË ÎŞ²Î£¬ÓĞ²Î£¬´æ´¢¹ı³ÌµÄµ÷ÓÃ
+ * æ•°æ®åº“è¿æ¥ç±» è¯´æ˜:å°è£…äº† æ— å‚ï¼Œæœ‰å‚ï¼Œå­˜å‚¨è¿‡ç¨‹çš„è°ƒç”¨
  * 
  * @author iflytek
  * 
@@ -21,63 +21,63 @@ import java.util.Map;
 public class JdbcUtil {
 
 	/**
-	 * Êı¾İ¿âÇı¶¯ÀàÃû³Æ
+	 * æ•°æ®åº“é©±åŠ¨ç±»åç§°
 	 */
 	private static final String DRIVER = "com.mysql.jdbc.Driver";
 
 	/**
-	 * Á¬½Ó×Ö·û´®
+	 * è¿æ¥å­—ç¬¦ä¸²
 	 */
 	private static final String URLSTR = "jdbc:mysql://localhost:3306/ework?characterEncoding=UTF-8";
 
 	/**
-	 * ÓÃ»§Ãû
+	 * ç”¨æˆ·å
 	 */
 	private static final String USERNAME = "root";
 
 	/**
-	 * ÃÜÂë
+	 * å¯†ç 
 	 */
 	private static final String USERPASSWORD = "root";
 
 	/**
-	 * ´´½¨Êı¾İ¿âÁ¬½Ó¶ÔÏó
+	 * åˆ›å»ºæ•°æ®åº“è¿æ¥å¯¹è±¡
 	 */
 	private Connection connnection = null;
 
 	/**
-	 * ´´½¨PreparedStatement¶ÔÏó
+	 * åˆ›å»ºPreparedStatementå¯¹è±¡
 	 */
 	private PreparedStatement preparedStatement = null;
 
 	/**
-	 * ´´½¨CallableStatement¶ÔÏó
+	 * åˆ›å»ºCallableStatementå¯¹è±¡
 	 */
 	private CallableStatement callableStatement = null;
 
 	/**
-	 * ´´½¨½á¹û¼¯¶ÔÏó
+	 * åˆ›å»ºç»“æœé›†å¯¹è±¡
 	 */
 	private ResultSet resultSet = null;
 
 	static {
 		try {
-			// ¼ÓÔØÊı¾İ¿âÇı¶¯³ÌĞò
+			// åŠ è½½æ•°æ®åº“é©±åŠ¨ç¨‹åº
 			Class.forName(DRIVER);
 		} catch (ClassNotFoundException e) {
-			System.out.println("¼ÓÔØÇı¶¯´íÎó");
+			System.out.println("åŠ è½½é©±åŠ¨é”™è¯¯");
 			System.out.println(e.getMessage());
 		}
 	}
 
 	/**
-	 * ½¨Á¢Êı¾İ¿âÁ¬½Ó
+	 * å»ºç«‹æ•°æ®åº“è¿æ¥
 	 * 
-	 * @return Êı¾İ¿âÁ¬½Ó
+	 * @return æ•°æ®åº“è¿æ¥
 	 */
 	public Connection getConnection() {
 		try {
-			// »ñÈ¡Á¬½Ó
+			// è·å–è¿æ¥
 			connnection = DriverManager.getConnection(URLSTR, USERNAME, USERPASSWORD);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -86,68 +86,68 @@ public class JdbcUtil {
 	}
 
 	/**
-	 * insert update delete SQLÓï¾äµÄÖ´ĞĞµÄÍ³Ò»·½·¨
+	 * insert update delete SQLè¯­å¥çš„æ‰§è¡Œçš„ç»Ÿä¸€æ–¹æ³•
 	 * 
 	 * @param sql
-	 *            SQLÓï¾ä
+	 *            SQLè¯­å¥
 	 * @param params
-	 *            ²ÎÊıÊı×é£¬ÈôÃ»ÓĞ²ÎÊıÔòÎªnull
-	 * @return ÊÜÓ°ÏìµÄĞĞÊı
+	 *            å‚æ•°æ•°ç»„ï¼Œè‹¥æ²¡æœ‰å‚æ•°åˆ™ä¸ºnull
+	 * @return å—å½±å“çš„è¡Œæ•°
 	 */
 	public int executeUpdate(String sql, Object[] params) {
-		// ÊÜÓ°ÏìµÄĞĞÊı
+		// å—å½±å“çš„è¡Œæ•°
 		int affectedLine = 0;
 
 		try {
-			// »ñµÃÁ¬½Ó
+			// è·å¾—è¿æ¥
 			connnection = this.getConnection();
-			// µ÷ÓÃSQL
+			// è°ƒç”¨SQL
 			preparedStatement = connnection.prepareStatement(sql);
 
-			// ²ÎÊı¸³Öµ
+			// å‚æ•°èµ‹å€¼
 			if (params != null) {
 				for (int i = 0; i < params.length; i++) {
 					preparedStatement.setObject(i + 1, params[i]);
 				}
 			}
 
-			// Ö´ĞĞ
+			// æ‰§è¡Œ
 			affectedLine = preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			closeAll();
 		}
 		return affectedLine;
 	}
 
 	/**
-	 * SQL ²éÑ¯½«²éÑ¯½á¹ûÖ±½Ó·ÅÈëResultSetÖĞ
+	 * SQL æŸ¥è¯¢å°†æŸ¥è¯¢ç»“æœç›´æ¥æ”¾å…¥ResultSetä¸­
 	 * 
 	 * @param sql
-	 *            SQLÓï¾ä
+	 *            SQLè¯­å¥
 	 * @param params
-	 *            ²ÎÊıÊı×é£¬ÈôÃ»ÓĞ²ÎÊıÔòÎªnull
-	 * @return ½á¹û¼¯
+	 *            å‚æ•°æ•°ç»„ï¼Œè‹¥æ²¡æœ‰å‚æ•°åˆ™ä¸ºnull
+	 * @return ç»“æœé›†
 	 */
 	private ResultSet executeQueryRS(String sql, Object[] params) {
 		try {
-			// »ñµÃÁ¬½Ó
+			// è·å¾—è¿æ¥
 			connnection = this.getConnection();
 
-			// µ÷ÓÃSQL
+			// è°ƒç”¨SQL
 			preparedStatement = connnection.prepareStatement(sql);
 
-			// ²ÎÊı¸³Öµ
+			// å‚æ•°èµ‹å€¼
 			if (params != null) {
 				for (int i = 0; i < params.length; i++) {
 					preparedStatement.setObject(i + 1, params[i]);
 				}
 			}
 
-			// Ö´ĞĞ
+			// æ‰§è¡Œ
 			resultSet = preparedStatement.executeQuery();
 
 		} catch (SQLException e) {
@@ -158,31 +158,31 @@ public class JdbcUtil {
 	}
 
 	/**
-	 * SQL ²éÑ¯½«²éÑ¯½á¹û£ºÒ»ĞĞÒ»ÁĞ
+	 * SQL æŸ¥è¯¢å°†æŸ¥è¯¢ç»“æœï¼šä¸€è¡Œä¸€åˆ—
 	 * 
 	 * @param sql
-	 *            SQLÓï¾ä
+	 *            SQLè¯­å¥
 	 * @param params
-	 *            ²ÎÊıÊı×é£¬ÈôÃ»ÓĞ²ÎÊıÔòÎªnull
-	 * @return ½á¹û¼¯
+	 *            å‚æ•°æ•°ç»„ï¼Œè‹¥æ²¡æœ‰å‚æ•°åˆ™ä¸ºnull
+	 * @return ç»“æœé›†
 	 */
 	public Object executeQuerySingle(String sql, Object[] params) {
 		Object object = null;
 		try {
-			// »ñµÃÁ¬½Ó
+			// è·å¾—è¿æ¥
 			connnection = this.getConnection();
 
-			// µ÷ÓÃSQL
+			// è°ƒç”¨SQL
 			preparedStatement = connnection.prepareStatement(sql);
 
-			// ²ÎÊı¸³Öµ
+			// å‚æ•°èµ‹å€¼
 			if (params != null) {
 				for (int i = 0; i < params.length; i++) {
 					preparedStatement.setObject(i + 1, params[i]);
 				}
 			}
 
-			// Ö´ĞĞ
+			// æ‰§è¡Œ
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -199,35 +199,35 @@ public class JdbcUtil {
 	}
 
 	/**
-	 * »ñÈ¡½á¹û¼¯£¬²¢½«½á¹û·ÅÔÚListÖĞ
+	 * è·å–ç»“æœé›†ï¼Œå¹¶å°†ç»“æœæ”¾åœ¨Listä¸­
 	 * 
 	 * @param sql
-	 *            SQLÓï¾ä
-	 * @return List ½á¹û¼¯
+	 *            SQLè¯­å¥
+	 * @return List ç»“æœé›†
 	 */
 	public List<Object> excuteQuery(String sql, Object[] params) {
-		// Ö´ĞĞSQL»ñµÃ½á¹û¼¯
+		// æ‰§è¡ŒSQLè·å¾—ç»“æœé›†
 		ResultSet rs = executeQueryRS(sql, params);
 
-		// ´´½¨ResultSetMetaData¶ÔÏó
+		// åˆ›å»ºResultSetMetaDataå¯¹è±¡
 		ResultSetMetaData rsmd = null;
 
-		// ½á¹û¼¯ÁĞÊı
+		// ç»“æœé›†åˆ—æ•°
 		int columnCount = 0;
 		try {
 			rsmd = rs.getMetaData();
 
-			// »ñµÃ½á¹û¼¯ÁĞÊı
+			// è·å¾—ç»“æœé›†åˆ—æ•°
 			columnCount = rsmd.getColumnCount();
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
 		}
 
-		// ´´½¨List
+		// åˆ›å»ºList
 		List<Object> list = new ArrayList<Object>();
 
 		try {
-			// ½«ResultSetµÄ½á¹û±£´æµ½ListÖĞ
+			// å°†ResultSetçš„ç»“æœä¿å­˜åˆ°Listä¸­
 			while (rs.next()) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				for (int i = 1; i <= columnCount; i++) {
@@ -238,7 +238,7 @@ public class JdbcUtil {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			// ¹Ø±ÕËùÓĞ×ÊÔ´
+			// å…³é—­æ‰€æœ‰èµ„æº
 			closeAll();
 		}
 
@@ -246,45 +246,45 @@ public class JdbcUtil {
 	}
 
 	/**
-	 * ´æ´¢¹ı³Ì´øÓĞÒ»¸öÊä³ö²ÎÊıµÄ·½·¨
+	 * å­˜å‚¨è¿‡ç¨‹å¸¦æœ‰ä¸€ä¸ªè¾“å‡ºå‚æ•°çš„æ–¹æ³•
 	 * 
 	 * @param sql
-	 *            ´æ´¢¹ı³ÌÓï¾ä
+	 *            å­˜å‚¨è¿‡ç¨‹è¯­å¥
 	 * @param params
-	 *            ²ÎÊıÊı×é
+	 *            å‚æ•°æ•°ç»„
 	 * @param outParamPos
-	 *            Êä³ö²ÎÊıÎ»ÖÃ
+	 *            è¾“å‡ºå‚æ•°ä½ç½®
 	 * @param SqlType
-	 *            Êä³ö²ÎÊıÀàĞÍ
-	 * @return Êä³ö²ÎÊıµÄÖµ
+	 *            è¾“å‡ºå‚æ•°ç±»å‹
+	 * @return è¾“å‡ºå‚æ•°çš„å€¼
 	 */
 	public Object excuteQuery(String sql, Object[] params, int outParamPos, int SqlType) {
 		Object object = null;
 		connnection = this.getConnection();
 		try {
-			// µ÷ÓÃ´æ´¢¹ı³Ì
+			// è°ƒç”¨å­˜å‚¨è¿‡ç¨‹
 			callableStatement = connnection.prepareCall(sql);
 
-			// ¸ø²ÎÊı¸³Öµ
+			// ç»™å‚æ•°èµ‹å€¼
 			if (params != null) {
 				for (int i = 0; i < params.length; i++) {
 					callableStatement.setObject(i + 1, params[i]);
 				}
 			}
 
-			// ×¢²áÊä³ö²ÎÊı
+			// æ³¨å†Œè¾“å‡ºå‚æ•°
 			callableStatement.registerOutParameter(outParamPos, SqlType);
 
-			// Ö´ĞĞ
+			// æ‰§è¡Œ
 			callableStatement.execute();
 
-			// µÃµ½Êä³ö²ÎÊı
+			// å¾—åˆ°è¾“å‡ºå‚æ•°
 			object = callableStatement.getObject(outParamPos);
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			closeAll();
 		}
 
@@ -292,10 +292,10 @@ public class JdbcUtil {
 	}
 
 	/**
-	 * ¹Ø±ÕËùÓĞ×ÊÔ´
+	 * å…³é—­æ‰€æœ‰èµ„æº
 	 */
 	private void closeAll() {
-		// ¹Ø±Õ½á¹û¼¯¶ÔÏó
+		// å…³é—­ç»“æœé›†å¯¹è±¡
 		if (resultSet != null) {
 			try {
 				resultSet.close();
@@ -304,7 +304,7 @@ public class JdbcUtil {
 			}
 		}
 
-		// ¹Ø±ÕPreparedStatement¶ÔÏó
+		// å…³é—­PreparedStatementå¯¹è±¡
 		if (preparedStatement != null) {
 			try {
 				preparedStatement.close();
@@ -313,7 +313,7 @@ public class JdbcUtil {
 			}
 		}
 
-		// ¹Ø±ÕCallableStatement ¶ÔÏó
+		// å…³é—­CallableStatement å¯¹è±¡
 		if (callableStatement != null) {
 			try {
 				callableStatement.close();
@@ -322,7 +322,7 @@ public class JdbcUtil {
 			}
 		}
 
-		// ¹Ø±ÕConnection ¶ÔÏó
+		// å…³é—­Connection å¯¹è±¡
 		if (connnection != null) {
 			try {
 				connnection.close();
