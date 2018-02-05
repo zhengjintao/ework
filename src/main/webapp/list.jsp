@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
 <!-- Standard Meta -->
 <meta charset="utf-8" />
@@ -89,7 +89,7 @@ footer {
 		<div class="ui yellow four item menu">
 			<a class="item" href="index.jsp"> <i class="home icon"></i> Home
 			</a> <a class="active item" href="list.jsp"> <i class="calendar icon"></i>
-				Work
+				出勤
 			</a> <a class="item" href="leave.jsp"> <i class="browser icon"></i>
 				Leave
 			</a> <a class="item" href="person.jsp"> <i class="user icon"></i>
