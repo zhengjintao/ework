@@ -36,31 +36,33 @@ footer {
 <body>
 	<div class="ui one column grid container">
 		<div class="column">
-			<form action="./addwork" method="post">
+			<form action="./list.do" method="post">
 				<div class="ui teal inverted segment">
 					<div class="ui inverted form">
 						<div class="inline field">
 							<div class="field">
 								<label>日期</label> <input type="date" name="wdate"
-									value="2018-02-01">
+									value=<%=(String) request.getAttribute("sysDate")%>>>
 							</div>
 						</div>
 						<div class="two fields">
-						<div class="one fields">
-							<div class="field">
-								<label>出勤时间</label> <input type="time" name="wbegin"
-									value="09:00"><br>
-							</div>
-							
-							<div class="field">
-								<div style="width:20px;vertical-align:middle;"></div>
-							</div>
-							
-							<div class="field">
-								<label>退勤时间</label> <input type="time" name="wend" value="17:00"><br>
+							<div class="one fields">
+								<div class="field">
+									<label>出勤时间</label> <input type="time" name="wbegin"
+										value=<%=(String) request.getAttribute("defaultBeginTime")%>><br>
+								</div>
+
+								<div class="field">
+									<div style="width: 20px; vertical-align: middle;"></div>
+								</div>
+
+								<div class="field">
+									<label>退勤时间</label> <input type="time" name="wend"
+										value=<%=(String) request.getAttribute("defaultEndTime")%>><br>
+								</div>
 							</div>
 						</div>
-						</div>
+						<input type="hidden" name="subKbn" value="true"><br>
 						<Button class="ui active teal button" type="submit">
 							<i class="add to calendar icon"></i> 签到
 						</Button>
@@ -68,8 +70,8 @@ footer {
 				</div>
 			</form>
 			<div class="ui grey inverted segment">
-			    <a class="ui orange right ribbon label">当周出勤</a>
-				<input type="date" name="wdate" value="2018-02-01">
+				<a class="ui orange right ribbon label">当周出勤</a> <input type="date"
+					name="wdate" value="2018-02-01">
 				<table class="ui celled table">
 					<tbody>
 						<tr>
@@ -95,12 +97,12 @@ footer {
 	<div style="height: 120px"></div>
 	<footer>
 		<div class="ui yellow four item menu">
-			<a class="item" href="index.jsp"> <i class="home icon"></i> 首页
-			</a> <a class="active item" href="list.jsp"> <i class="calendar icon"></i>
+			<a class="item" href="index.do"> <i class="home icon"></i> 首页
+			</a> <a class="active item" href="list.do"> <i class="calendar icon"></i>
 				出勤
-			</a> <a class="item" href="leave.jsp"> <i class="browser icon"></i>
+			</a> <a class="item" href="leave.do"> <i class="browser icon"></i>
 				请假
-			</a> <a class="item" href="personal.jsp"> <i class="user icon"></i>
+			</a> <a class="item" href="personal.do"> <i class="user icon"></i>
 				个人
 			</a>
 		</div>
