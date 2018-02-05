@@ -47,9 +47,13 @@ footer {
 
 			<div class="ui raised segment">
 				<a class="ui red ribbon label">通知</a>
-				<p class="lblheader">every one look here!</p>
+				<div class="ui inverted form lblheader">
+				<textarea style="height:100%;width:100%;resize:none" readonly="readonly"><%=(String)request.getAttribute("notice") %></textarea>
+				</div>
 				<a class="ui blue ribbon label">近期事件</a>
-				<div class="lblcontent">Today is the Day of Accounting Test.</div>
+				<div class="ui inverted form lblcontent">
+				<textarea style="height:100%;width:100%;resize:none" readonly="readonly"><%=(String)request.getAttribute("event") %></textarea>
+				</div>
 			</div>
 
 		</div>

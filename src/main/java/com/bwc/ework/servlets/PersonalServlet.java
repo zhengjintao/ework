@@ -52,6 +52,11 @@ public class PersonalServlet extends HttpServlet {
 		request.setAttribute("begintime", userinfo.getBeginTime().toString());
 		request.setAttribute("endtime", userinfo.getEndTime().toString());
 		
+		int hours = 10;
+		int days = 2;
+		request.setAttribute("hours", String.valueOf(hours));
+		request.setAttribute("days", String.valueOf(days));
+		
 		request.getRequestDispatcher("personal.jsp").forward(request, response);
 	}
 
