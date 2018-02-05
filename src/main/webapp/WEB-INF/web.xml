@@ -33,16 +33,16 @@
   	<servlet-class>com.bwc.ework.servlets.ListServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>leaveServlte</servlet-name>
-  	<display-name>leaveServlte</display-name>
+  	<servlet-name>LeaveServlet</servlet-name>
+  	<display-name>LeaveServlet</display-name>
   	<description></description>
-  	<servlet-class>com.bwc.ework.servlets.leaveServlte</servlet-class>
+  	<servlet-class>com.bwc.ework.servlets.LeaveServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>personalServlet</servlet-name>
-  	<display-name>personalServlet</display-name>
+  	<servlet-name>PersonalServlet</servlet-name>
+  	<display-name>PersonalServlet</display-name>
   	<description></description>
-  	<servlet-class>com.bwc.ework.servlets.personalServlet</servlet-class>
+  	<servlet-class>com.bwc.ework.servlets.PersonalServlet</servlet-class>
   </servlet>
     <servlet-mapping>
     	<servlet-name>LoginServlet</servlet-name>
@@ -57,11 +57,11 @@
     	<url-pattern>/list.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-    	<servlet-name>leaveServlte</servlet-name>
+    	<servlet-name>LeaveServlet</servlet-name>
     	<url-pattern>/leave.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-    	<servlet-name>personalServlet</servlet-name>
+    	<servlet-name>PersonalServlet</servlet-name>
     	<url-pattern>/personal.do</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -58,12 +58,12 @@ footer {
 
 	<footer>
 		<div class="ui yellow four item menu">
-			<a class="active item" href="index.jsp"> <i class="home icon"></i> 首页
-			</a> <a class="item" href="list.jsp"> <i class="calendar icon"></i>
+			<a class="active item" href="index.do"> <i class="home icon"></i> 首页
+			</a> <a class="item" href="list.do"> <i class="calendar icon"></i>
 				出勤
-			</a> <a class="item" href="leave.jsp"> <i class="browser icon"></i>
+			</a> <a class="item" href="leave.do"> <i class="browser icon"></i>
 				请假
-			</a> <a class="item" href="personal.jsp"> <i class="user icon"></i>
+			</a> <a class="item" href="personal.do"> <i class="user icon"></i>
 				个人
 			</a>
 		</div>
