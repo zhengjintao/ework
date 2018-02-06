@@ -107,14 +107,14 @@ footer {
 						<div class="ui red button">
 							<i class="checked calendar icon"></i> 本月出勤时间
 						</div>
-						<a class="ui basic red left pointing label"> <%=(String)request.getAttribute("hours") %>h </a>
+						<a class="ui basic red left pointing label"> <%=(String)request.getAttribute("hours") %>小时 </a>
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui blue button">
 							<i class="delete calendar icon"></i> 本月请假天数
 						</div>
-						<a class="ui basic left pointing blue label"> <%=(String)request.getAttribute("days") %>day </a>
+						<a class="ui basic left pointing blue label"> <%=(String)request.getAttribute("days") %>天 </a>
 					</div>
 				</div>
 				

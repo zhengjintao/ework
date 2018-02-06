@@ -1,6 +1,12 @@
 package com.bwc.ework.servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -53,8 +59,26 @@ public class PersonalServlet extends HttpServlet {
 		request.setAttribute("endtime", userinfo.getEndTime().toString());
 		
 		int hours = 10;
-		int days = 2;
 		request.setAttribute("hours", String.valueOf(hours));
+		
+		int days = 0;
+		String sql = "select * from cdata_leave where userid=?";
+		Object[] params = new Object[1];
+		params[0] = userinfo.getUserId();
+		List<Object> leaveinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
+		
+		if(leaveinfo == null || leaveinfo.size() > 0){
+			for(Object infoobj : leaveinfo){
+				Map<String, Object> info = (Map<String, Object>)infoobj;
+				Date leave = (Date)info.get("leavedate");
+				String str = leave.toString().substring(0, 8);
+				SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				String sysDate = formattime.format(new java.util.Date()).substring(0, 8);
+				if(sysDate.equals(str)){
+					days++;
+				}
+			}
+		}
 		request.setAttribute("days", String.valueOf(days));
 		
 		request.getRequestDispatcher("personal.jsp").forward(request, response);
