@@ -35,6 +35,11 @@ body>.grid {
 </style>
 <script>
 	$(document).ready(function() {
+		var message = "<%=(String)request.getAttribute("errmsg") %>";
+		if(message != "null" && message.length > 0){
+			alert(message);
+		}
+		
 		$('.ui.form').form({
 			fields : {
 				userid : {
@@ -72,8 +77,15 @@ body>.grid {
 				<div class="ui stacked segment">
 					<div class="field">
 						<div class="ui left icon input">
+						<%
+								
+							    %>
 							<i class="user icon"></i> <input type="text" name="userid"
-								placeholder="用户名">
+								placeholder="用户名" style="ime-mode:disabled;-webkit-ime-mode:disabled" 
+								value=<% 
+								Object userid = request.getAttribute("userid");
+							    userid = userid != null ? (String)userid : "";
+								out.print((String)userid); %>>
 						</div>
 					</div>
 					<div class="field">

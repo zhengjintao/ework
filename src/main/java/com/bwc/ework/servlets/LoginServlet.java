@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 		String pwd = request.getParameter("password");
 		
 		if(user == null || user.length() == 0 || pwd == null || pwd.length() == 0){
-			response.sendRedirect("login.jsp");
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 			return;
 		}
 		
@@ -50,7 +50,9 @@ public class LoginServlet extends HttpServlet {
 		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 		
 		if(userinfo == null || userinfo.size() != 1){
-			response.sendRedirect("login.jsp");
+			request.setAttribute("errmsg", "用户名和密码不正确！");
+			request.setAttribute("userid", user);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 			return;
 		}
 		
