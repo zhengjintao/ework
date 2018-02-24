@@ -111,7 +111,7 @@ footer {
 								</div>
 							</div>
 						</div>
-						<input type="hidden" name="subKbn" value="true"><br>
+						<input type="hidden" name="subKbn" value="true">
 						<Button class="ui active teal button">
 							<i class="add to calendar icon"></i> <span id="actionname"><%=(String) request.getAttribute("qiandao")%></span>
 						</Button>
@@ -121,7 +121,7 @@ footer {
 					</div>
 				</div>
 			<div class="ui grey inverted segment">
-				<a class="ui orange right ribbon label">当周出勤</a> <input type="date"
+				<a class="ui orange ribbon label">当周出勤</a> <input type="date"
 					name="wdate2" value=<%=(String) request.getAttribute("sysDate")%> onchange="getSettedtime()">
 				<table class="ui celled table">
 					<tbody>
