@@ -89,7 +89,7 @@ footer {
 	<div style="height: 120px"></div>
 	<footer>
 		<div class="ui yellow four item menu">
-			<a class="item" href="index.do"> <i class="home icon"></i> 首页
+			<a class="item" href="home.do"> <i class="home icon"></i> 首页
 			</a> <a class="item" href="list.do"> <i class="calendar icon"></i>
 				出勤
 			</a> <a class="active item" href="leave.do"> <i class="browser icon"></i>

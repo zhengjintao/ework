@@ -45,10 +45,10 @@
   	<servlet-class>com.bwc.ework.servlets.PersonalServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>IndexServlet</servlet-name>
-  	<display-name>IndexServlet</display-name>
+  	<servlet-name>HomeServlet</servlet-name>
+  	<display-name>HomeServlet</display-name>
   	<description></description>
-  	<servlet-class>com.bwc.ework.servlets.IndexServlet</servlet-class>
+  	<servlet-class>com.bwc.ework.servlets.HomeServlet</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>EditNoticeServlet</servlet-name>
@@ -83,8 +83,8 @@
     	<url-pattern>/personal.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-    	<servlet-name>IndexServlet</servlet-name>
-    	<url-pattern>/index.do</url-pattern>
+    	<servlet-name>HomeServlet</servlet-name>
+    	<url-pattern>/home.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>EditNoticeServlet</servlet-name>

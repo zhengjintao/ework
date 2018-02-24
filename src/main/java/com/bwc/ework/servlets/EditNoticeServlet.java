@@ -59,7 +59,7 @@ public class EditNoticeServlet extends HttpServlet {
 			params[5] = sysDate;
 			params[6] = "0";
 			JdbcUtil.getInstance().executeUpdate(sql, params);
-			request.getRequestDispatcher("index.do").forward(request, response);
+			request.getRequestDispatcher("home.do").forward(request, response);
 		}else{
 			// 编辑
 			subKbn = "1".equals(request.getParameter("type")) ? "notice" : "event";

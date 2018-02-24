@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.bwc.ework.common.JdbcUtil;
 
 /**
- * Servlet implementation class IndexServlet
+ * Servlet implementation class HomeServlet
  */
-public class IndexServlet extends HttpServlet {
+public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IndexServlet() {
+    public HomeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -56,7 +56,7 @@ public class IndexServlet extends HttpServlet {
 		   }
 		request.setAttribute("notice", notice);
 		request.setAttribute("event", event);
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
 
 	/**
