@@ -144,7 +144,7 @@ footer {
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui black button">
-							<i class="edit icon"></i><a class="header" href="editnotice.do?type=2">人员管理</a>
+							<i class="edit icon"></i><a class="header" href="location.jsp">定位签到</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
 					</div>
