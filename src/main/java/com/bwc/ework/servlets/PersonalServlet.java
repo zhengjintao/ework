@@ -81,7 +81,7 @@ public class PersonalServlet extends HttpServlet {
 				Map<String, Object> info = (Map<String, Object>)infoobj;
 				Date leave = (Date)info.get("leavedate");
 				String str = leave.toString().substring(0, 8);
-				SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String sysDate = formattime.format(new java.util.Date()).substring(0, 8);
 				if(sysDate.equals(str)){
 					days++;
@@ -90,6 +90,8 @@ public class PersonalServlet extends HttpServlet {
 		}
 		request.setAttribute("days", String.valueOf(days));
 		
+		String diplay = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "display: none";
+		request.setAttribute("display", diplay);
 		request.getRequestDispatcher("personal.jsp").forward(request, response);
 	}
 

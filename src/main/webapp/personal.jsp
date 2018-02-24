@@ -107,7 +107,7 @@ footer {
 						</Button>
 					</div>
 				</div>
-				<div class="ui grey inverted segment">
+				<div class="ui olive inverted segment">
 				<a class="ui orange right ribbon label">统计信息</a>
 				<div style="height=10px"></div>
 					<div class="ui labeled button" tabindex="0">
@@ -125,26 +125,29 @@ footer {
 					</div>
 				</div>
 				
-				<div class="ui brown segment">
+				<div class="ui red segment">
 				<a class="ui orange right ribbon label">功能模块</a>
 				<div style="height=10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<div class="ui black button">
-							<i class="edit icon"></i> <a class="header" href="editnotice.do?type=1">通知发布</a>
+						<div class="ui violet button">
+							<i class="marker alternate icon"></i><a class="header" style="color:white" href="location.jsp">定位签到</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
+					</div>
+				</div>
+				<div class="ui brown segment" style="<%=(String)request.getAttribute("display") %>">
+				<a class="ui orange right ribbon label">管理模块</a>
+				<div style="height=10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui brown button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="editnotice.do?type=1">通知发布</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<div class="ui black button">
-							<i class="edit icon"></i><a class="header" href="editnotice.do?type=2">活动发布</a>
-						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
-					</div>
-					<div style="height: 10px"></div>
-					<div class="ui labeled button" tabindex="0">
-						<div class="ui black button">
-							<i class="edit icon"></i><a class="header" href="location.jsp">定位签到</a>
+						<div class="ui green button">
+							<i class="edit icon"></i><a class="header" style="color:white" href="editnotice.do?type=2">活动发布</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
 					</div>
@@ -154,7 +157,7 @@ footer {
 		</div>
 	</div>
 
-	<div style="height: 200px"></div>
+	<div style="height: 300px"></div>
 
 	<footer>
 		<div class="ui yellow four item menu">

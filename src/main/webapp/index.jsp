@@ -48,10 +48,13 @@ footer {
 			<div class="ui raised segment">
 				<a class="ui red ribbon label">通知</a>
 				<div class="ui inverted form lblheader">
+				<div style="height: 2px"></div>
 				<textarea style="height:100%;width:100%;resize:none" readonly="readonly"><%=(String)request.getAttribute("notice") %></textarea>
 				</div>
+				<div style="height: 8px"></div>
 				<a class="ui blue ribbon label">近期事件</a>
 				<div class="ui inverted form lblcontent">
+				<div style="height: 2px"></div>
 				<textarea style="height:100%;width:100%;resize:none" readonly="readonly"><%=(String)request.getAttribute("event") %></textarea>
 				</div>
 			</div>
@@ -59,7 +62,7 @@ footer {
 		</div>
 	</div>
 
-	<div style="height: 100px"></div>
+	<div style="height: 80px"></div>
 
 	<footer>
 		<div class="ui yellow four item menu">

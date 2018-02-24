@@ -63,6 +63,7 @@ public class LoginServlet extends HttpServlet {
 		userdata.setEndTime((Time)info.get("endtime"));
 		userdata.setSex((String)info.get("sex"));
 		userdata.setUserPwd(HashEncoder.getResult((String)info.get("password")));
+		userdata.setAuthflg((String)info.get("authflg"));
 	    
 		HttpSession session = request.getSession();
 		session.setAttribute("userinfo", userdata);

@@ -10,6 +10,7 @@ public class User {
 	private Time beginTime;
 	private Time endTime;
 	private String sex;
+	private String authflg;
 	
 	public String getUserId() {
 		return userId;
@@ -52,6 +53,12 @@ public class User {
 	}
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+	public String getAuthflg() {
+		return authflg;
+	}
+	public void setAuthflg(String authflg) {
+		this.authflg = authflg;
 	}
 	
 }

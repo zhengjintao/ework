@@ -45,7 +45,7 @@ public class EditNoticeServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			User userinfo = (User)session.getAttribute("userinfo");
 			
-			SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String sysDate = formattime.format(new Date());
 			
 			String sql = "insert into cdata_notice value(?, ?, ?, ?, ?, ?, ?)";
