@@ -18,7 +18,7 @@
 
 <style type="text/css">
 body {
-	background-color: #FCFCFC;
+	background-color: #FFFFF0;
 }
 
 body>.grid {
@@ -37,13 +37,6 @@ body>.grid {
 	$(document).ready(function() {
 		$('.ui.form').form({
 			fields : {
-				userid : {
-					identifier : 'userid',
-					rules : [ {
-						type : 'empty',
-						prompt : '请输入用户名'
-					} ]
-				},
 				password : {
 					identifier : 'password',
 					rules : [ {
@@ -52,6 +45,26 @@ body>.grid {
 					}, {
 						type : 'length[5]',
 						prompt : '密码必须是5位以上'
+					} ]
+				},
+				newpassword : {
+					identifier : 'newpassword',
+					rules : [ {
+						type : 'empty',
+						prompt : '请输入新密码'
+					}, {
+						type : 'length[5]',
+						prompt : '新密码必须是5位以上'
+					} ]
+				},
+				repassword : {
+					identifier : 'repassword',
+					rules : [ {
+						type : 'empty',
+						prompt : '请输入新密码'
+					}, {
+						type : 'length[5]',
+						prompt : '新密码必须是5位以上'
 					} ]
 				}
 			}
@@ -62,36 +75,35 @@ body>.grid {
 <body>
 
 	<div class="ui middle aligned center aligned grid">
-
-
 		<div class="column">
 			<div class="ui large center aligned ">
-				<img class="ui large image" src="assets/images/logo.png">
 			</div>
-			<form class="ui large form" action="login.do" method="post">
+			<form class="ui large form" action="editpassword.do" method="post">
 				<div class="ui stacked segment">
 					<div class="field">
 						<div class="ui left icon input">
-							<i class="user icon"></i> <input type="text" name="userid"
-								placeholder="用户名">
+							<i class="lock icon"></i> <input type="password" name="password"
+								placeholder="原密码">
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui left icon input">
-							<i class="lock icon"></i> <input type="password" name="password"
-								placeholder="密码">
+							<i class="lock icon"></i> <input type="password" name="newpassword"
+								placeholder="新密码">
 						</div>
 					</div>
-					<div class="ui fluid large teal submit button">登陆</div>
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="lock icon"></i> <input type="password" name="repassword"
+								placeholder="重复输入新密码">
+						</div>
+					</div>
+					<div class="ui fluid large yellow submit button">确认修改</div>
 				</div>
 
 				<div class="ui error message"></div>
-
+				<input type="hidden" name="subKbn" value=<%=(String)request.getAttribute("subKbn") %>>
 			</form>
-
-			<div class="ui message" hidden>
-				New to us? <a href="#">Sign Up</a>
-			</div>
 		</div>
 	</div>
 

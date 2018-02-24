@@ -41,7 +41,7 @@ footer {
 			    <a class="ui olive top attached label center aligned">个人信息</a>
 				<div class="ui list">
 					<div class="item">
-						<img class="ui avatar image" src="assets/images/christian.jpg">
+						<img class="ui avatar image" src="<%=(String)request.getAttribute("sex") %>">
 						<div class="content">
 							<!-- <div class="description">00001</div> -->
 							<div class="header"><%=(String)request.getAttribute("userid") %></div>
@@ -52,11 +52,14 @@ footer {
 				<button class="ui basic button" onclick="logout()">
 					<i class="icon remove user"></i>注销
 				</button>
+				<button class="ui basic button" onclick="editpwd()">
+					<i class="icon key"></i>修改密码
+				</button>
 
 				<div class="ui small test modal transition hidden">
 					<div class="header">注销</div>
 					<div class="content">
-						<p>骚年，确认退出登陆吗?</p>
+						<p><%=(String)request.getAttribute("nickname") %>，确认退出登陆吗?</p>
 					</div>
 					<div class="actions">
 						<div class="ui negative button">取消</div>
@@ -74,6 +77,10 @@ footer {
 							}
 
 						}).modal('show');
+					}
+					
+					function editpwd() {
+						window.location.href = "editpassword.do";
 					}
 				</script>
 			</div>
@@ -130,7 +137,14 @@ footer {
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui black button">
-							<i class="edit icon"></i><a class="header" href="editnotice.do?type=2"> 活动发布</a>
+							<i class="edit icon"></i><a class="header" href="editnotice.do?type=2">活动发布</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
+					</div>
+					<div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui black button">
+							<i class="edit icon"></i><a class="header" href="editnotice.do?type=2">人员管理</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
 					</div>

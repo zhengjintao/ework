@@ -29,8 +29,8 @@ public class IndexServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String notice = "Nothing happen.";
-		String event = "Nothing happen.";
+		String notice = "最近没啥事，各自安好！";
+		String event = "近期没活动，自己high，自己浪！";
 		
 		String sql = "select * from cdata_notice where type=? and delflg=? and createdate =(select max(createdate) from cdata_notice where type=? and delflg=? group by type ) limit 1";
 		Object[] paramsnotice = new Object[4];
@@ -40,7 +40,8 @@ public class IndexServlet extends HttpServlet {
 		paramsnotice[3] = "0";
 		List<Object> notices = JdbcUtil.getInstance().excuteQuery(sql, paramsnotice);
 	   if(notices != null && notices.size() > 0){
-		   notice = (String)((Map<String, Object>)notices.get(0)).get("content");
+		   String temp = (String)((Map<String, Object>)notices.get(0)).get("content");
+		   notice = temp.length() > 0 ? temp : notice;
 	   }
 		
 		Object[] paramsevent = new Object[4];
@@ -50,7 +51,8 @@ public class IndexServlet extends HttpServlet {
 		paramsevent[3] = "0";
 		List<Object> events = JdbcUtil.getInstance().excuteQuery(sql, paramsevent);
 		if(events != null && events.size() > 0){
-			event = (String)((Map<String, Object>)events.get(0)).get("content");
+			String temp = (String)((Map<String, Object>)events.get(0)).get("content");
+			event = temp.length() > 0 ? temp : event;
 		   }
 		request.setAttribute("notice", notice);
 		request.setAttribute("event", event);

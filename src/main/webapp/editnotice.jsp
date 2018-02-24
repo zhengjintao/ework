@@ -41,9 +41,9 @@ footer {
 				<div class="ui teal inverted segment">
 				    <a class="ui orange ribbon label">发布<%=(String)request.getAttribute("title") %></a>
 					<div class="ui inverted form">
-						<textarea name="content" style="height:90%"></textarea>
+						<textarea name="content" style="height:90%"><%=(String)request.getAttribute("content") %></textarea>
 						
-						<input type="hidden" name="subKbn" value=<%=(String)request.getAttribute("type") %>>
+						<input type="hidden" name="subKbn" value=<%=(String)request.getAttribute("subKbn") %>>
 						<div style="height:10px"></div>
 						<Button class="ui active teal button" type="submit">
 							<i class="edit icon"></i> 发布

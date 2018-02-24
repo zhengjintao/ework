@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.List;
 import java.util.Map;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.HashEncoder;
 import com.bwc.ework.form.User;
 
 /**
@@ -58,7 +61,9 @@ public class LoginServlet extends HttpServlet {
 		userdata.setDelflg((String)info.get("delflg"));
 		userdata.setBeginTime((Time)info.get("begintime"));
 		userdata.setEndTime((Time)info.get("endtime"));
-		
+		userdata.setSex((String)info.get("sex"));
+		userdata.setUserPwd(HashEncoder.getResult((String)info.get("password")));
+	    
 		HttpSession session = request.getSession();
 		session.setAttribute("userinfo", userdata);
 		

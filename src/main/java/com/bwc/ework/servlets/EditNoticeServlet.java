@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +34,7 @@ public class EditNoticeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String subKbn = request.getParameter("subKbn");
+		// 发布
 		if(subKbn != null && subKbn.length() > 0){
 			String sqlcount = "select count(*) as count from cdata_notice";
 			Long count = (Long)JdbcUtil.getInstance().executeQuerySingle(sqlcount, null);
@@ -59,10 +61,28 @@ public class EditNoticeServlet extends HttpServlet {
 			JdbcUtil.getInstance().executeUpdate(sql, params);
 			request.getRequestDispatcher("index.do").forward(request, response);
 		}else{
-			String type = "1".equals(request.getParameter("type")) ? "notice" : "event";
+			// 编辑
+			subKbn = "1".equals(request.getParameter("type")) ? "notice" : "event";
 			String title = "1".equals(request.getParameter("type")) ? "通知" : "活动";
-			request.setAttribute("type", type);
+			request.setAttribute("subKbn", subKbn);
 			request.setAttribute("title", title);
+			
+			String content = "1".equals(request.getParameter("type")) ? "最近没啥事，各自安好！" : "近期没活动，自己high，自己浪！";
+			
+			String sql = "select * from cdata_notice where type=? and delflg=? and createdate =(select max(createdate) from cdata_notice where type=? and delflg=? group by type ) limit 1";
+			Object[] paramsnotice = new Object[4];
+			paramsnotice[0] = "1".equals(request.getParameter("type")) ? "1" : "2";  // notice kbn
+			paramsnotice[1] = "0";
+			paramsnotice[2] = "1".equals(request.getParameter("type")) ? "1" : "2";  // notice kbn
+			paramsnotice[3] = "0";
+			List<Object> notices = JdbcUtil.getInstance().excuteQuery(sql, paramsnotice);
+		   if(notices != null && notices.size() > 0){
+			   String temp = (String)((Map<String, Object>)notices.get(0)).get("content");
+			   content = temp.length() > 0 ? temp : content;
+		   }
+	
+			request.setAttribute("content", content);
+			
 			request.getRequestDispatcher("editnotice.jsp").forward(request, response);
 		}
 	}

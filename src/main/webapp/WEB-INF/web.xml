@@ -56,6 +56,12 @@
   	<description></description>
   	<servlet-class>com.bwc.ework.servlets.EditNoticeServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>EditPasswordServlet</servlet-name>
+  	<display-name>EditPasswordServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.bwc.ework.servlets.EditPasswordServlet</servlet-class>
+  </servlet>
     <servlet-mapping>
     	<servlet-name>LoginServlet</servlet-name>
     	<url-pattern>/login.do</url-pattern>
@@ -83,5 +89,9 @@
     <servlet-mapping>
     	<servlet-name>EditNoticeServlet</servlet-name>
     	<url-pattern>/editnotice.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>EditPasswordServlet</servlet-name>
+    	<url-pattern>/editpassword.do</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -58,6 +58,15 @@ public class PersonalServlet extends HttpServlet {
 		request.setAttribute("begintime", userinfo.getBeginTime().toString());
 		request.setAttribute("endtime", userinfo.getEndTime().toString());
 		
+		String personalImg = "assets/images/christian.jpg";
+		String nickname = "帅锅";
+		if("F".equals(userinfo.getSex())){
+			personalImg = "assets/images/rachel.png";
+			nickname = "镁铝";
+		}
+		request.setAttribute("nickname", nickname);
+		request.setAttribute("sex", personalImg);
+		
 		int hours = 10;
 		request.setAttribute("hours", String.valueOf(hours));
 		

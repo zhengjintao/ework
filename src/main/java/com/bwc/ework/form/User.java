@@ -9,6 +9,7 @@ public class User {
 	private String delflg;
 	private Time beginTime;
 	private Time endTime;
+	private String sex;
 	
 	public String getUserId() {
 		return userId;
@@ -45,6 +46,12 @@ public class User {
 	}
 	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 	
 }

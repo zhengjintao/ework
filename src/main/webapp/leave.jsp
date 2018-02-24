@@ -36,7 +36,7 @@ footer {
 <body>
 	<div class="ui one column grid container">
 		<div class="column">
-			<form action="./addleave" method="post">
+			<form action="./addleave.do" method="post">
 				<div class="ui yellow inverted segment">
 					<div class="ui inverted form">
 						<div class="inline field">
