@@ -1,6 +1,7 @@
 ﻿package com.bwc.ework.servlets;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,21 +66,27 @@ public class ListServlet extends HttpServlet {
 					
 			// 数据存在更新操作
 			if(list.size()>0){
-				String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?"
+				String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?"
 						+ " where userid=? and date=?";
-				Object[] updateparams = new Object[8];
+				Object[] updateparams = new Object[9];
 				updateparams[0] = year;
 				updateparams[1] = month;
 				updateparams[2] = day;
 				updateparams[3] = date;
 				updateparams[4] = begin;
 				updateparams[5] = end;
-				updateparams[6] = userid;
-				updateparams[7] = date;
+				try {
+					updateparams[6] = DateTimeUtil.getHours(begin,end);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				updateparams[7] = userid;
+				updateparams[8] = date;
+				
 				JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
 			}else{
-				String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?)";
-				Object[] insertparams = new Object[7];
+				String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?)";
+				Object[] insertparams = new Object[8];
 				insertparams[0] = userid;
 				insertparams[1] = year;
 				insertparams[2] = month;
@@ -87,6 +94,11 @@ public class ListServlet extends HttpServlet {
 				insertparams[4] = date;
 				insertparams[5] = begin;
 				insertparams[6] = end;
+				try {
+					insertparams[7] = DateTimeUtil.getHours(begin,end);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 			}
 			

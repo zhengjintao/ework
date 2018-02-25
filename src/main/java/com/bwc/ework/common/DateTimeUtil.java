@@ -1,6 +1,7 @@
 package com.bwc.ework.common;
 
 import java.sql.Time;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -49,5 +50,19 @@ public class DateTimeUtil {
 				return null;
 			}
 		}
+	}
+	
+	public static String getHours(String beginTime,String endTime) throws ParseException{
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+		DecimalFormat df2=new DecimalFormat("0.0");
+		java.util.Date begin = df.parse(beginTime);
+		java.util.Date end=df.parse(endTime);
+			long l=end.getTime()-begin.getTime();
+		float h = (float)l/(60*60*1000);
+		if(begin.getHours()<12){
+			h = h-1;
+		}
+		String hour=df2.format(h);
+		return hour;
 	}
 }
