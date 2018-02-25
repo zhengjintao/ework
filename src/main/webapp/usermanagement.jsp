@@ -1,4 +1,6 @@
-﻿<html>
+﻿
+<%@ page import="java.util.List"%>
+<html>
 <head>
 <!-- Standard Meta -->
 <meta charset="utf-8" />
@@ -45,46 +47,37 @@ footer {
 			</div>
 		</div>
 		<div class="column" style="margin-top: -20px;">
+			<form action="./useredit.do" method="post">
+				<div class="ui teal inverted segment">
 
-			<div class="ui teal inverted segment">
-				<form action="./location.jsp" method="post">
+					<button class="ui basic button">
+						<i class="icon user"></i> 追加
+					</button>
+				</div>
+				<div class="ui teal inverted segment">
+
 					<div class="ui middle aligned divided list">
-						<div class="item">
-							<div class="right floated content">
-								<div class="ui button">编辑</div>
-							</div>
-							<img class="ui avatar image" src="assets/images/rachel.png">
-							<div class="content">Lena</div>
-						</div>
-						<div class="item">
-							<div class="right floated content">
-								<div class="ui button">编辑</div>
-							</div>
-							<img class="ui avatar image"
-								src="assets/images/rachel.png">
-							<div class="content">Lindsay</div>
-						</div>
-						<div class="item">
-							<div class="right floated content">
-								<div class="ui button">编辑</div>
-							</div>
-							<img class="ui avatar image" src="assets/images/rachel.png">
-							<div class="content">Mark</div>
-						</div>
-						<div class="item">
-							<div class="right floated content">
-								<div class="ui button">编辑</div>
-							</div>
-							<img class="ui avatar image"
-								src="assets/images/rachel.png">
-							<div class="content">Molly</div>
-						</div>
+						<%
+						List<String[]> userinfo = (List<String[]>) request.getAttribute("userinfo");
+						for (String[] each : userinfo) {
+							out.print("<div class='item'>");
+							out.print("<div class='right floated content'>");
+							out.print("<div class='ui basic button'>");
+							out.print("<a href='" + "useredit.do?u="+ each[0] + "p="+ each[2] + "s="+ each[3] + "a="+ each[4] + "' style='color:white'>编辑</a></div>");
+							out.print("</div>");
+							out.print("<img class='ui avatar image' src='" + each[5] + "'>");
+							out.print("<div class='content'>");
+							out.print(each[1]);  // 姓名
+							out.print("</div>");
+							out.print("</div>");
+						}
+					%>
 					</div>
-				</form>
 
+					
 
-			</div>
-
+				</div>
+			</form>
 		</div>
 
 	</div>
