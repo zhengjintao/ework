@@ -158,6 +158,13 @@ footer {
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
+					<div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="usermanagement.do">用户管理</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
 				</div>
 
 			</form>
