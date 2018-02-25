@@ -51,7 +51,7 @@ public class StatisticsWorkServlet extends HttpServlet {
                      "where wk.year= ? " + 
                            "and wk.month = ? " + 
                            "and user.delflg ='0' "+
-                     "group by user.username";
+                     "group by user.username,user.userid";
 		Object[] params = new Object[2];
 		params[0] = year;
 		params[1] = month;
