@@ -14,6 +14,29 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.js"></script>
 <script src="dist/components/transition.js"></script>
+<script src="dist/semantic.min.js"></script>
+
+<script>
+	function check() {
+		var errmsg = "";
+		var userid = $("#euserid").val();
+
+		if (userid == null || userid == "undefine" || userid.length == 0) {
+			errmsg = errmsg + "账号必须输入。";
+
+		}
+
+		var username = $("#eusername").val();
+		if (username == null || username == "undefine" || username.length == 0) {
+			errmsg = errmsg + "\r\n" + "姓名必须输入。";
+		}
+
+		if (errmsg.length > 0) {
+			alert(errmsg);
+			return false;
+		}
+	}
+</script>
 <style>
 body {
 	font: 12px sans-serif;
@@ -40,7 +63,8 @@ footer {
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i
 						class="right chevron icon divider"></i> <a class="section"
-						href="personal.do">用户管理</a> <i class="right chevron icon divider"></i>
+						href="usermanagement.do">用户管理</a> <i
+						class="right chevron icon divider"></i>
 					<div class="active section">用户编辑</div>
 				</div>
 			</div>
@@ -48,35 +72,31 @@ footer {
 		<div class="column" style="margin-top: -20px;">
 
 			<div class="ui teal inverted segment">
-				<form action="useredit.do" method="post">
+				<form action="useredit.do" method="post" onsubmit="return check();">
 					<div class="ui middle aligned divided list">
 						<div class="item">
 							<div class="ui labeled input">
 								<div class="ui label">账号</div>
-								<input type="text" placeholder="必须（5～30位）">
+								<input id="euserid" name="euserid" type="text"
+									placeholder="必须（5～30位）"
+									<%if ((Boolean) request.getAttribute("hasuserid")) {
+				out.print("value='" + (String) request.getAttribute("userid") + "' " + "readonly='readonly'");
+			}%>>
 							</div>
 						</div>
 					</div>
-					<div class="ui inverted divider"></div>
+
 
 
 					<div class="ui middle aligned divided list">
 						<div class="item">
 							<div class="ui labeled input">
 								<div class="ui label">姓名</div>
-								<input type="text" placeholder="必须（请使用真名）">
-							</div>
-						</div>
-					</div>
-					<div class="ui middle aligned divided list">
-						<div class="item">
-							<div class="ui labeled input">
-								<div class="ui label">密码</div>
-								<input type="password" placeholder="必须（5～30位）" value="111111"
-									readonly="readonly">
-								<div class="ui left floated  segment">
-									<input type="checkbox">
-								</div>
+								<input id="eusername" name="eusername" type="text"
+									placeholder="必须（请使用真名）"
+									<%if ((Boolean) request.getAttribute("hasuserid")) {
+				out.print("value='" + (String) request.getAttribute("username") + "' ");
+			}%>>
 							</div>
 						</div>
 					</div>
@@ -84,9 +104,15 @@ footer {
 						<div class="item">
 							<div class="ui labeled input">
 								<div class="ui label">性别</div>
-								<select class="ui search dropdown">
-									<option value="M">帅锅</option>
-									<option value="F">镁铝</option>
+								<select name="esex" class="ui search dropdown">
+									<option value="M"
+										<%if (!(Boolean) request.getAttribute("isfemale")) {
+				out.print("selected='selected'");
+			}%>>帅锅</option>
+									<option value="F"
+										<%if ((Boolean) request.getAttribute("isfemale")) {
+				out.print("selected='selected'");
+			}%>>镁铝</option>
 
 								</select>
 							</div>
@@ -96,19 +122,69 @@ footer {
 						<div class="item">
 							<div class="ui labeled input">
 								<div class="ui label">权限</div>
-								<select class="ui search dropdown">
-									<option value="1">管理员</option>
-									<option value="2">一般用户</option>
+								<select name="eauthflg" class="ui search dropdown">
+									<option value="2"
+										<%if (!(Boolean) request.getAttribute("isadmin")) {
+				out.print("selected='selected'");
+			}%>>一般用户</option>
+									<option value="1"
+										<%if ((Boolean) request.getAttribute("isadmin")) {
+				out.print("selected='selected'");
+			}%>>管理员</option>
+
 
 								</select>
 							</div>
 						</div>
 					</div>
-
+					<div class="ui middle aligned divided list"
+						<%if (!(Boolean) request.getAttribute("hasuserid")) {
+				out.print("style='display: none'");
+			}%>>
+						<div class="item">
+							<div class="ui toggle checkbox">
+								<input name="initpwd" type="checkbox" name="public"> <label>初始化密码</label>
+							</div>
+						</div>
+					</div>
 					<div class="ui inverted divider"></div>
-					<button class="ui basic button">
+					<input type="hidden" name="edit"
+						value=<%=(Boolean) request.getAttribute("hasuserid")%>>
+					<button class="ui basic submit button">
 						<i class="icon user"></i> 提交
 					</button>
+					<button type="button" class="ui basic button"
+						onclick="deleteuser();"
+						<%if (!(Boolean) request.getAttribute("hasuserid")) {
+				out.print("style='display: none'");
+			}%>>
+						<i class="icon user"></i> 删除
+					</button>
+
+					<div class="ui small test modal transition hidden">
+						<div class="header">删除用户</div>
+						<div class="content">
+							<p>确认删除该用户吗?
+							</p>
+						</div>
+						<div class="actions">
+							<div class="ui negative button">取消</div>
+							<div class="ui positive right labeled icon button">
+								确认 <i class="checkmark icon"></i>
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript">
+					function deleteuser() {
+						$('.ui.modal').modal({
+							closable : false,
+							onApprove : function() {
+								window.location.href = "useredit.do?delflg=true&deluserid=<%=(String) request.getAttribute("userid")%>";
+							}
+
+						}).modal('show');
+					}
+				</script>
 				</form>
 			</div>
 

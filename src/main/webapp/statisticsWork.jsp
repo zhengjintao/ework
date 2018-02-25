@@ -44,7 +44,7 @@ footer {
 			</div>
 		</div>
 	</div>
-	<div class="column" style="margin-top: -350px;">
+	<div class="column" style="margin-top: -200px;">
 		<form action="./statisticsWork.do" method="post">
 			<div class="ui teal inverted segment">
 				<div class="ui inverted form">

@@ -63,7 +63,7 @@ footer {
 							out.print("<div class='item'>");
 							out.print("<div class='right floated content'>");
 							out.print("<div class='ui basic button'>");
-							out.print("<a href='" + "useredit.do?u="+ each[0] + "p="+ each[2] + "s="+ each[3] + "a="+ each[4] + "' style='color:white'>编辑</a></div>");
+							out.print("<a href='" + "useredit.do?userid="+ each[0] + "&sex="+ each[3] +"&username="+ each[1] + "&authflg="+ each[4] + "' style='color:white'>编辑</a></div>");
 							out.print("</div>");
 							out.print("<img class='ui avatar image' src='" + each[5] + "'>");
 							out.print("<div class='content'>");
