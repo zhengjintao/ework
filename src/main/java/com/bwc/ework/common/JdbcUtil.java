@@ -1,5 +1,7 @@
 ﻿package com.bwc.ework.common;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * 数据库连接类 说明:封装了 无参，有参，存储过程的调用
@@ -18,6 +21,13 @@ import java.util.Map;
  */
 public class JdbcUtil {
 
+	private static final String driver = "jdbc.driver";
+	private static final String host = "jdbc.host";
+	private static final String port = "jdbc.port";
+	private static final String dbname = "jdbc.dbname";
+	private static final String username = "jdbc.username";
+	private static final String password = "jdbc.password";
+	
 	/**
 	 * 数据库驱动类名称
 	 */
@@ -27,16 +37,10 @@ public class JdbcUtil {
 	 * 连接字符串
 	 */
 	private static final String URLSTR = "jdbc:mysql://localhost:3306/ework?characterEncoding=UTF-8";
-
-	/**
-	 * 用户名
-	 */
-	private static final String USERNAME = "root";
-
-	/**
-	 * 密码
-	 */
-	private static final String USERPASSWORD = "1989416";
+	
+	private static String url = null;
+	private static String user = null;
+	private static String pwd = null;
 
 	/**
 	 * 创建数据库连接对象
@@ -88,9 +92,34 @@ public class JdbcUtil {
 	 * @return 数据库连接
 	 */
 	public Connection getConnection() {
+		
+		
+		if(url== null){
+			Properties prop = new Properties();
+			FileInputStream fileInput = null;
+			String path = Thread.currentThread().getContextClassLoader().getResource("jdbc.properties").getPath(); 
+			try {
+				
+				fileInput = new FileInputStream(path);
+				prop.load(fileInput);
+				fileInput.close();
+				
+				// "jdbc:mysql://localhost:3306/ework?characterEncoding=UTF-8"
+				url = "jdbc:mysql://"+ prop.getProperty(host) + ":" + prop.getProperty(port) + "/" + prop.getProperty(dbname) +"?characterEncoding=UTF-8";
+				System.out.println("DB连接信息：" + url);
+				user= prop.getProperty(username);
+				pwd= prop.getProperty(password);
+				
+
+			} catch (IOException io) {
+				System.out.println("Read file[jdbc.properties] failed.");
+			}
+		}			
+		
+		
 		try {
 			// 获取连接
-			connnection = DriverManager.getConnection(URLSTR, USERNAME, USERPASSWORD);
+			connnection = DriverManager.getConnection(url, user, pwd);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
