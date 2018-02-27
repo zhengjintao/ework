@@ -12,8 +12,8 @@
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="dist/components/form.js"></script>
-<script src="dist/components/transition.js"></script>
+<script src="dist/components/form.min.js"></script>
+<script src="dist/components/transition.min.js"></script>
 <style>
 body {
 	font: 12px sans-serif;
