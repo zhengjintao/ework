@@ -132,6 +132,6 @@
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>DeployServlet</servlet-name>
-    	<url-pattern>/deploy.html</url-pattern>
+    	<url-pattern>/deploy.do</url-pattern>
     </servlet-mapping>
 </web-app>

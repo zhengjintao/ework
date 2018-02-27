@@ -45,7 +45,7 @@ footer {
 		<div class="column" style="margin-top: 10px;">
 
 			<div class="ui teal inverted segment">
-				<form action="deploy.html" method="post" onsubmit="return check();">
+				<form action="deploy.do" method="post" onsubmit="return check();">
 				<div class="ui middle aligned divided list">
 						<div class="item">
 							<div class="ui labeled input">

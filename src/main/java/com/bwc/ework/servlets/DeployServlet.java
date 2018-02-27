@@ -53,6 +53,7 @@ public class DeployServlet extends HttpServlet {
 					prop.setProperty("jdbc.dbname", dbname);
 					prop.setProperty("jdbc.username", userid);
 					prop.setProperty("jdbc.password", password);
+					prop.setProperty("jdbc.deploy", "ok");
 				 prop.store(oFile, "The New properties file");
 				 fileInput.close();
 				 oFile.close();
