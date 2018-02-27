@@ -72,8 +72,9 @@ public class StatisticsWorkServlet extends HttpServlet {
 		
 		// 系统当前时间取得
 		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
+		String dateStr= wdate == null ? formattime.format(new Date()): wdate;
 		// 日期设定
-		request.setAttribute("sysDate", wdate == null ? formattime.format(new Date()): wdate);
+		request.setAttribute("sysDate", DateTimeUtil.GetMonth(dateStr));
 		
 		request.setAttribute("dataList", dataList);
 		request.getRequestDispatcher("statisticsWork.jsp").forward(request, response);

@@ -50,7 +50,7 @@ footer {
 				<div class="ui inverted form">
 					<div class="inline field">
 						<div class="field">
-							<label>日期</label> <input type="date" name="wdate" value=<%=(String) request.getAttribute("sysDate")%>>
+							<label>月份</label> <input type="month" name="wdate" value=<%=(String) request.getAttribute("sysDate")%>>
 						</div>
 					</div>
 					<Button class="ui active teal button">

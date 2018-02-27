@@ -56,7 +56,7 @@ public class LeaveServlet extends HttpServlet {
 		// 初期化
 		if (subkbn == null) {
 			wdate = now;
-			wdate2 = wdate;
+			wdate2 = DateTimeUtil.GetMonth(wdate);
 		} else {
 
 			// 删除
@@ -100,7 +100,7 @@ public class LeaveServlet extends HttpServlet {
 					JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 				}
 
-				wdate2 = wdate;
+				wdate2 = DateTimeUtil.GetMonth(wdate);
 			}
 		}
 

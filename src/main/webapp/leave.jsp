@@ -76,7 +76,7 @@ footer {
 
 			<div class="ui grey inverted segment">
 			    <a class="ui orange ribbon label">当月请假</a>
-				<input type="date" name="wdate2" value=<%=(String) request.getAttribute("sysDate2")%> onchange="getSettedtime()">
+				<input type="month" name="wdate2" value=<%=(String) request.getAttribute("sysDate2")%> onchange="getSettedtime()">
 
 				<table class="ui celled table">
 					<tbody>

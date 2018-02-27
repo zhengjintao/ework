@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,8 +68,7 @@ public class PersonalServlet extends HttpServlet {
 		request.setAttribute("nickname", nickname);
 		request.setAttribute("sex", personalImg);
 		
-		int hours = 10;
-		request.setAttribute("hours", String.valueOf(hours));
+		
 		
 		int days = 0;
 		String sql = "select * from cdata_leave where userid=?";
@@ -89,6 +89,42 @@ public class PersonalServlet extends HttpServlet {
 			}
 		}
 		request.setAttribute("days", String.valueOf(days));
+		
+		// 系统当前时间取得
+				SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd");
+				String now = formattime.format(new java.util.Date());
+		
+		// 出勤化的时候，当前时间取得
+		String year = DateTimeUtil.stringToDate(now).getYear();
+		String month = DateTimeUtil.stringToDate(now).getMonth();
+		
+		String sql2 = "select user.username, " +
+		                     "user.userid, " +
+				             "sum(wk.worktime) as worktime " +
+				     "from cdata_worktime  wk join mstr_user user " +
+                           "on wk.userid = user.userid " +
+                     "where wk.year= ? " + 
+                           "and wk.month = ? " + 
+                           "and user.delflg ='0' "+
+                           "and user.userid =? " +
+                     "group by user.userid";
+		Object[] params2 = new Object[3];
+		params2[0] = year;
+		params2[1] = month;
+		params2[2] = userinfo.getUserId();
+		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+
+		String hours = "0";
+		
+		if(resultList.size() > 0){
+			Map<String, Object> row = (Map<String, Object>) resultList.get(0);
+			
+			// 出勤时间
+			hours = row.get("worktime").toString();
+		}
+		
+		
+		request.setAttribute("hours", hours);
 		
 		String diplay = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "display: none";
 		request.setAttribute("display", diplay);

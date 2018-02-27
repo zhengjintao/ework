@@ -31,8 +31,16 @@ public class DateTimeUtil {
 		Date date= new Date();
 		date.setYear(str.substring(0, 4));
 		date.setMonth(str.substring(5, 7));
-		date.setDay(str.substring(8, 10));
+		
+		if(str.length()>7){
+			date.setDay(str.substring(8, 10));
+		}
+		
 		return date;
+	}
+	
+	public static String GetMonth(String str) {
+		return str.substring(0, 7);
 	}
 
 	public static Time stringToTime(String str) {
