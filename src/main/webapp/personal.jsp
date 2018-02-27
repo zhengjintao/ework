@@ -16,6 +16,27 @@
 <script src="dist/components/transition.min.js"></script>
 <script src="dist/semantic.min.js"></script>
 
+<script>
+	function check() {
+		var errmsg = "";
+		var wbegin = $("#wbegin").val();
+
+		if (wbegin == null || wbegin == "undefine" || wbegin.length == 0) {
+			errmsg = errmsg + "默认出勤时间必须输入。";
+
+		}
+
+		var wend = $("#wend").val();
+		if (wend == null || wend == "undefine" || wend.length == 0) {
+			errmsg = errmsg + "\r\n" + "默认退勤时间必须输入。";
+		}
+
+		if (errmsg.length > 0) {
+			alert(errmsg);
+			return false;
+		}
+	}
+</script>
 <style type="text/css">
 body {
 	margin-top: 10px;
@@ -85,18 +106,18 @@ footer {
 				</script>
 			</div>
 
-			<form action="./personal.do" method="post">
+			<form action="./personal.do" method="post" onsubmit="return check();">
 				<div class="ui teal inverted segment">
 				    <a class="ui orange right ribbon label">默认时间</a>
 					<div class="ui inverted form">
 						<div class="two fields">
 						<div class="one fields">
 							<div class="field">
-								<label>出勤</label> <input type="time" name="wbegin"
+								<label>出勤</label> <input id="wbegin" type="time" name="wbegin"
 									value=<%=(String)request.getAttribute("begintime") %>><br>
 							</div>
 							<div class="field">
-								<label>退勤</label> <input type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
+								<label>退勤</label> <input id="wend" type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
 							</div>
 						</div>
 						</div>
