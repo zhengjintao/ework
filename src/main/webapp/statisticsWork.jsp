@@ -79,7 +79,7 @@ footer {
 					for(String[] each : dataList){
 						out.print("<tr>");
 						out.print("<td>");
-						out.print("<a href='userworkdetail.do?userid=" + each[3]+"'>");
+						out.print("<a href='userworkdetail.do?userid=" + each[3]+"&wdate=" + each[4]+"'>");
 						out.print(each[0]);
 						out.print("</a>");
 						out.print("</td>");

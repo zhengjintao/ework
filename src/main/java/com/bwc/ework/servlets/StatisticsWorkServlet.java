@@ -64,10 +64,13 @@ public class StatisticsWorkServlet extends HttpServlet {
 		params[1] = month;
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 
+		// 系统当前时间取得
+		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
+		String dateStr= wdate == null ? formattime.format(new Date()): wdate;
 		// 结果取得整理（画面显示用）
 		for (Object result : resultList) {
 			Map<String, Object> row = (Map<String, Object>) result;
-			String[] data = new String[4];
+			String[] data = new String[5];
 			// 用户名
 			data[0] = row.get("username").toString();
 			// 出勤时间
@@ -76,12 +79,12 @@ public class StatisticsWorkServlet extends HttpServlet {
 			data[2] = getLeaveTime(row.get("userid").toString(),year,month);
 			
 			data[3] = row.get("userid").toString();
+			data[4] = dateStr;
 			dataList.add(data);
 		}
 		
-		// 系统当前时间取得
-		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
-		String dateStr= wdate == null ? formattime.format(new Date()): wdate;
+		
+		
 		// 日期设定
 		request.setAttribute("sysDate", DateTimeUtil.GetMonth(dateStr));
 		
