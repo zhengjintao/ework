@@ -86,6 +86,12 @@
   	<description></description>
   	<servlet-class>com.bwc.ework.servlets.DeployServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>UserWorkDetailServlet</servlet-name>
+  	<display-name>UserWorkDetailServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.bwc.ework.servlets.UserWorkDetailServlet</servlet-class>
+  </servlet>
     <servlet-mapping>
     	<servlet-name>LoginServlet</servlet-name>
     	<url-pattern>/login.do</url-pattern>
@@ -133,5 +139,9 @@
     <servlet-mapping>
     	<servlet-name>DeployServlet</servlet-name>
     	<url-pattern>/deploy.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>UserWorkDetailServlet</servlet-name>
+    	<url-pattern>/userworkdetail.do</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -130,7 +130,7 @@ footer {
 				</div>
 				<div class="ui olive inverted segment">
 				<a class="ui orange right ribbon label">统计信息</a>
-				<div style="height=10px"></div>
+				   <div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui red button">
 							<i class="checked calendar icon"></i> 本月出勤时间
@@ -148,7 +148,14 @@ footer {
 				
 				<div class="ui red segment">
 				<a class="ui orange right ribbon label">功能模块</a>
-				<div style="height=10px"></div>
+				   <div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui violet button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="statisticsWork.do">出勤统计</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
+				<div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui violet button">
 							<i class="marker alternate icon"></i><a class="header" style="color:white" href="location.jsp">定位签到</a>
@@ -172,13 +179,7 @@ footer {
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
 					</div>
-				    <div style="height: 10px"></div>
-					<div class="ui labeled button" tabindex="0">
-						<div class="ui green button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="statisticsWork.do">全员出勤</a>
-						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
-					</div>
+				    
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui green button">
@@ -187,7 +188,6 @@ footer {
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
 				</div>
-
 			</form>
 		</div>
 	</div>

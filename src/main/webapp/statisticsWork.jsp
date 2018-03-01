@@ -40,7 +40,7 @@ footer {
 		<div class="ui teal segment">
 			<div class="ui  breadcrumb">
 				<a class="section"  href="personal.do">个人</a> <i class="right chevron icon divider"></i>
-				<div class="active section">全员出勤</div>
+				<div class="active section">出勤统计</div>
 			</div>
 		</div>
 	</div>
@@ -63,7 +63,7 @@ footer {
 				<div class="ui inverted form">
 					<div class="inline field">
 						<div class="field">
-							<label>全员出勤情况</label>
+							<label>出勤情况一览</label>
 						</div>
 					</div>
 				</div>
@@ -79,12 +79,14 @@ footer {
 					for(String[] each : dataList){
 						out.print("<tr>");
 						out.print("<td>");
+						out.print("<a href='userworkdetail.do?userid=" + each[3]+"'>");
 						out.print(each[0]);
+						out.print("</a>");
 						out.print("</td>");
-						out.print("<td>");
+						out.print("<td style='text-align:right;'>");
 						out.print(each[1]);
 						out.print("</td>");
-						out.print("<td>");
+						out.print("<td style='text-align:right;'>");
 						out.print(each[2]);
 						out.print("</td>");
 						out.print("</tr>");
