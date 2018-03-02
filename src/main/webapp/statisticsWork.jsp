@@ -44,7 +44,7 @@ footer {
 			</div>
 		</div>
 	</div>
-	<div class="column" style="margin-top: -200px;">
+	<div class="column" style="margin-top: -150px;">
 		<form action="./statisticsWork.do" method="post">
 			<div class="ui teal inverted segment">
 				<div class="ui inverted form">
@@ -70,9 +70,9 @@ footer {
 			</div>
 				<table class="ui unstackable celled table">
 					<tr bgcolor="#48d1cc">
-						<th width="50%" style="text-align:center;">姓名</th>
-						<th width="25%" style="text-align:center;">出勤(小时)</th>
-						<th width="25%" style="text-align:center;">休假(小时)</th>
+						<th width="30%" style="text-align:center;">姓名</th>
+						<th width="35%" style="text-align:center;">出勤</th>
+						<th width="35%" style="text-align:center;">休假</th>
 					</tr>
 					<%
 					List<String[]> dataList = (List<String[]>) request.getAttribute("dataList");
@@ -84,10 +84,10 @@ footer {
 						out.print("</a>");
 						out.print("</td>");
 						out.print("<td style='text-align:right;'>");
-						out.print(each[1]);
+						out.print(each[5]+"(天) /" + each[1] + "(H)");
 						out.print("</td>");
 						out.print("<td style='text-align:right;'>");
-						out.print(each[2]);
+						out.print(each[6]+"(天) /" + each[2] + "(H)");
 						out.print("</td>");
 						out.print("</tr>");
 					}

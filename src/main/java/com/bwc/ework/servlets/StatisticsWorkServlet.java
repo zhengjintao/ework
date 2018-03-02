@@ -51,7 +51,8 @@ public class StatisticsWorkServlet extends HttpServlet {
 		String selectuser = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "and user.userid ='" +userinfo.getUserId() +"' " ;
 		String sql = "select user.username, " +
 		                     "user.userid, " +
-				             "sum(wk.worktime) as worktime " +
+				             "sum(wk.worktime) as worktime," +
+				             "count(wk.worktime) as workday " +
 				     "from cdata_worktime  wk join mstr_user user " +
                            "on wk.userid = user.userid " +
                      "where wk.year= ? " + 
@@ -70,16 +71,19 @@ public class StatisticsWorkServlet extends HttpServlet {
 		// 结果取得整理（画面显示用）
 		for (Object result : resultList) {
 			Map<String, Object> row = (Map<String, Object>) result;
-			String[] data = new String[5];
+			String[] data = new String[7];
 			// 用户名
 			data[0] = row.get("username").toString();
 			// 出勤时间
 			data[1] = row.get("worktime").toString();
+			String[] leaveinfo = getLeaveTime(row.get("userid").toString(),year,month);
 			// 请假时间
-			data[2] = getLeaveTime(row.get("userid").toString(),year,month);
+			data[2] = leaveinfo[0];
 			
 			data[3] = row.get("userid").toString();
 			data[4] = dateStr;
+			data[5] = row.get("workday").toString();
+			data[6] = leaveinfo[1];
 			dataList.add(data);
 		}
 		
@@ -101,7 +105,7 @@ public class StatisticsWorkServlet extends HttpServlet {
 	}
 	
 	
-	private String getLeaveTime(String userid,String year,String month){
+	private String[] getLeaveTime(String userid,String year,String month){
 		DecimalFormat df2=new DecimalFormat("0.0");
 		
 		String sql = "select * from cdata_leave where userid= ? and year = ? and month= ?";
@@ -110,7 +114,7 @@ public class StatisticsWorkServlet extends HttpServlet {
 		params[1] = year;
 		params[2] = month;
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
-		return df2.format(resultList.size() * 8);
+		return new String[]{df2.format(resultList.size() * 8), String.valueOf(resultList.size())};
 	}
 
 }

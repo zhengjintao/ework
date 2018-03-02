@@ -94,7 +94,7 @@ body>.grid {
 								placeholder="密码">
 						</div>
 					</div>
-					<div class="ui fluid large teal submit button">登陆</div>
+					<div class="ui fluid large teal submit button">登录</div>
 				</div>
 
 				<div class="ui error message"></div>

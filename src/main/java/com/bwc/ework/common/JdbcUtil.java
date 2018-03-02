@@ -190,6 +190,7 @@ public class JdbcUtil {
 
 			// 执行
 			resultSet = preparedStatement.executeQuery();
+			System.out.println(preparedStatement.toString());
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
