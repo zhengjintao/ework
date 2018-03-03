@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.form.User;
@@ -42,16 +43,21 @@ public class LeaveServlet extends HttpServlet {
 		User userinfo = (User) session.getAttribute("userinfo");
 		String wdate = request.getParameter("wdate");
 		String wdate2 = request.getParameter("wdate2");
-		String wcomment = request.getParameter("wcomment");
-		if(wcomment != null){
-			wcomment = new String(wcomment.getBytes("iso-8859-1"), "utf-8");
-		}
-		
-		String subkbn = request.getParameter("subKbn");
 
 		// 系统当前时间取得
 		SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd");
 		String now = formattime.format(new Date());
+		if (wdate == null || wdate.length() == 0 || wdate2 == null || wdate2.length() == 0) {
+			wdate = now;
+			wdate2 = DateTimeUtil.GetMonth(wdate);
+		}
+
+		String wcomment = request.getParameter("wcomment");
+		if (wcomment != null) {
+			wcomment = new String(wcomment.getBytes("iso-8859-1"), "utf-8");
+		}
+
+		String subkbn = request.getParameter("subKbn");
 
 		// 初期化
 		if (subkbn == null) {
@@ -65,28 +71,29 @@ public class LeaveServlet extends HttpServlet {
 			}
 
 			// 初期化的场合
-			if ("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg")) && !"1".equals(request.getParameter("deleteFlg"))) {
+			if ("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg"))
+					&& !"1".equals(request.getParameter("deleteFlg"))) {
 				String sql = "select * from cdata_leave where userid=? and leavedate=?";
 				Object[] params = new Object[2];
 				params[0] = userinfo.getUserId();
 				params[1] = request.getParameter("wdate");
 				List<Object> list = JdbcUtil.getInstance().excuteQuery(sql, params);
 
-				com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(request.getParameter("wdate").toString());
+				com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(wdate);
 				String userid = userinfo.getUserId();
 				String year = date1.getYear();
 				String month = date1.getMonth();
 				String date = request.getParameter("wdate");
-				
-			    sql = "select * from cdata_worktime where userid=? and date=?";
+
+				sql = "select * from cdata_worktime where userid=? and date=?";
 				params = new Object[2];
 				params[0] = userinfo.getUserId();
 				params[1] = request.getParameter("wdate");
 				List<Object> listw = JdbcUtil.getInstance().excuteQuery(sql, params);
-				
-				if(listw.size() >0){
+
+				if (listw.size() > 0) {
 					request.setAttribute("errmsg", "当天已请假，无法签到！");
-				}else{
+				} else {
 					// 数据存在更新操作
 					if (list.size() > 0) {
 						String updateSql = "update cdata_leave set year=?,month=?,content=?"
@@ -118,17 +125,28 @@ public class LeaveServlet extends HttpServlet {
 		request.setAttribute("sysDate", wdate);
 		// 日期设定
 		request.setAttribute("sysDate2", wdate2);
-		
+
 		String sql = "select * from cdata_leave where userid=? and leavedate=?";
 		Object[] params = new Object[2];
 		params[0] = userinfo.getUserId();
 		params[1] = wdate;
 		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
+		String comment = "";
 		if (list1.size() > 0) {
 			Map<String, Object> set = (Map<String, Object>) list1.get(0);
-			request.setAttribute("wcomment", set.get("content").toString());
-		} else {
-			request.setAttribute("wcomment", "");
+			comment = set.get("content").toString();
+			request.setAttribute("wcomment", comment);
+		}
+
+		request.setAttribute("wcomment", comment);
+
+		if ("1".equals(request.getParameter("selectChg"))) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("comment", comment);
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(jsonObject.toString());
+
+			return;
 		}
 		request.setAttribute("monthdata", getMonthData(userinfo.getUserId(), wdate2));
 		RequestDispatcher re = request.getRequestDispatcher("leave.jsp");

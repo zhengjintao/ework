@@ -40,6 +40,8 @@ public class ListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String paramwdate =request.getParameter("wdate");
+		
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
 		request.setAttribute("qiandao", "签到");
@@ -58,15 +60,15 @@ public class ListServlet extends HttpServlet {
 			String sql = "select * from cdata_worktime where userid=? and date=?";
 			Object[] params = new Object[2];
 			params[0] = userinfo.getUserId();
-			params[1] = request.getParameter("wdate");
+			params[1] = paramwdate;
 			List<Object> list = JdbcUtil.getInstance().excuteQuery(sql, params);
 			
-			com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(request.getParameter("wdate").toString());
+			com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(paramwdate);
 			String userid = userinfo.getUserId();
 			String year = date1.getYear();
 			String month = date1.getMonth();
 			String day = date1.getDay();
-			String date = request.getParameter("wdate");
+			String date = paramwdate;
 			String begin = request.getParameter("wbegin");
 			String end = request.getParameter("wend");
 			if(listl.size() > 0){
@@ -130,8 +132,8 @@ public class ListServlet extends HttpServlet {
 			SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
 			
 			// 日期设定
-			request.setAttribute("sysDate", "1".equals(request.getParameter("selectChg")) ? request.getParameter("wdate") : formattime.format(new Date()));
-			String dateTime = "1".equals(request.getParameter("selectChg")) ? request.getParameter("wdate") : formattime.format(new Date());
+			request.setAttribute("sysDate", "1".equals(request.getParameter("selectChg")) ? paramwdate : formattime.format(new Date()));
+			String dateTime = "1".equals(request.getParameter("selectChg")) ? paramwdate: formattime.format(new Date());
 			
 			String sql = "select * from cdata_worktime where userid=? and date=?";
 			Object[] params = new Object[2];

@@ -54,10 +54,10 @@ public class EditPasswordServlet extends HttpServlet {
 			}
 			
 			if(updatepwd){
-				String sql = "update mstr_user set password=? , endtime=? where userid=?";
+				String sql = "update mstr_user set password=? where userid=?";
 				Object[] params = new Object[3];
 				params[0] = newpassword;
-				params[2] = userinfo.getUserId();
+				params[1] = userinfo.getUserId();
 				JdbcUtil.getInstance().executeUpdate(sql, params);
 				
 				userinfo.setUserPwd(HashEncoder.getResult(newpassword));

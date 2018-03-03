@@ -24,8 +24,18 @@ $(document).ready(function() {
 }
 );
 function getSettedtime()
-{
-	window.location.href = "leave.do?"+ $("form").serialize() + "&selectChg=1";
+{	
+	$.ajax({ 
+	    type: "post", 
+	    url: "leave.do?"+ $("form").serialize() + "&selectChg=1", 
+	    dataType: "json", 
+	    success: function (data) {
+	    	$("#wcomment").val(data.comment)
+	    }, 
+	    error: function() {
+	            alert("网络异常，请稍后重试");
+	    } 
+	});
 }
 
 function deleteData()
@@ -60,13 +70,13 @@ footer {
 					<div class="ui inverted form">
 						<div class="inline field">
 							<div class="field">
-								<label>日期</label> <input type="date" name="wdate"
+								<label>日期</label> <input type="date" id="wdate" name="wdate"
 									value=<%=(String) request.getAttribute("sysDate")%> onchange="getSettedtime()">
 							</div>
 						</div>
 						<div class="two fields">
 							<div class="field">
-								<label>理由</label> <input type="text" name="wcomment" value=<%=(String) request.getAttribute("wcomment")%>>
+								<label>理由</label> <input type="text" id="wcomment" name="wcomment" value=<%=(String) request.getAttribute("wcomment")%>>
 							</div>
 						</div>
 						<input type="hidden" name="subKbn" value="true">
@@ -83,7 +93,7 @@ footer {
 
 			<div class="ui grey inverted segment">
 			    <a class="ui orange ribbon label">当月请假</a>
-				<input type="month" name="wdate2" value=<%=(String) request.getAttribute("sysDate2")%> onchange="getSettedtime()">
+				<input type="month"  id="wdate2" name="wdate2" value=<%=(String) request.getAttribute("sysDate2")%> onchange="getSettedtime()">
 
 				<table class="ui celled table">
 					<tbody>

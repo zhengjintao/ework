@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 		
 		Cookie[] cookies = request.getCookies();
 		
-		if(cookies!=null){
+		if(user == null && pwd == null && cookies!=null){
 			for(int i=0; i < cookies.length; i++){
 				Cookie ck = cookies[i];
 				System.out.println(ck.getName()+"--->"+ck.getValue());
@@ -87,7 +87,7 @@ public class LoginServlet extends HttpServlet {
 		session.setAttribute("userinfo", userdata);
 		
 		if("on".equals(rembpwd)){
-			Cookie ucookies = new Cookie("ucookies", pwd);
+			Cookie ucookies = new Cookie("ucookies", user);
 			ucookies.setMaxAge(604800);
 			Cookie pcookies = new Cookie("pcookies", pwd);
 			pcookies.setMaxAge(604800);
