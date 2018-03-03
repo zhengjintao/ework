@@ -77,27 +77,37 @@ public class LeaveServlet extends HttpServlet {
 				String year = date1.getYear();
 				String month = date1.getMonth();
 				String date = request.getParameter("wdate");
-
-				// 数据存在更新操作
-				if (list.size() > 0) {
-					String updateSql = "update cdata_leave set year=?,month=?,content=?"
-							+ " where userid=? and leavedate=?";
-					Object[] updateparams = new Object[5];
-					updateparams[0] = year;
-					updateparams[1] = month;
-					updateparams[2] = wcomment == null || wcomment.length() == 0 ? "未填写理由" : wcomment;
-					updateparams[3] = userid;
-					updateparams[4] = date;
-					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
-				} else {
-					String insertSql = "insert into cdata_leave value(?,?,?,?,?)";
-					Object[] insertparams = new Object[5];
-					insertparams[0] = userid;
-					insertparams[1] = date;
-					insertparams[2] = year;
-					insertparams[3] = month;
-					insertparams[4] = wcomment == null || wcomment.length() == 0 ? "未填写理由" : wcomment;
-					JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
+				
+			    sql = "select * from cdata_worktime where userid=? and date=?";
+				params = new Object[2];
+				params[0] = userinfo.getUserId();
+				params[1] = request.getParameter("wdate");
+				List<Object> listw = JdbcUtil.getInstance().excuteQuery(sql, params);
+				
+				if(listw.size() >0){
+					request.setAttribute("errmsg", "当天已请假，无法签到！");
+				}else{
+					// 数据存在更新操作
+					if (list.size() > 0) {
+						String updateSql = "update cdata_leave set year=?,month=?,content=?"
+								+ " where userid=? and leavedate=?";
+						Object[] updateparams = new Object[5];
+						updateparams[0] = year;
+						updateparams[1] = month;
+						updateparams[2] = wcomment == null || wcomment.length() == 0 ? "未填写理由" : wcomment;
+						updateparams[3] = userid;
+						updateparams[4] = date;
+						JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
+					} else {
+						String insertSql = "insert into cdata_leave value(?,?,?,?,?)";
+						Object[] insertparams = new Object[5];
+						insertparams[0] = userid;
+						insertparams[1] = date;
+						insertparams[2] = year;
+						insertparams[3] = month;
+						insertparams[4] = wcomment == null || wcomment.length() == 0 ? "未填写理由" : wcomment;
+						JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
+					}
 				}
 
 				wdate2 = DateTimeUtil.GetMonth(wdate);

@@ -49,6 +49,12 @@ public class ListServlet extends HttpServlet {
 		}
 		// 初期化的场合
 		if("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg"))){
+			String sqll = "select * from cdata_leave where userid=? and leavedate=?";
+			Object[] paramsl = new Object[2];
+			paramsl[0] = userinfo.getUserId();
+			paramsl[1] = request.getParameter("wdate");
+			List<Object> listl = JdbcUtil.getInstance().excuteQuery(sqll, paramsl);
+			
 			String sql = "select * from cdata_worktime where userid=? and date=?";
 			Object[] params = new Object[2];
 			params[0] = userinfo.getUserId();
@@ -63,43 +69,48 @@ public class ListServlet extends HttpServlet {
 			String date = request.getParameter("wdate");
 			String begin = request.getParameter("wbegin");
 			String end = request.getParameter("wend");
-					
-			// 数据存在更新操作
-			if(list.size()>0){
-				String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?"
-						+ " where userid=? and date=?";
-				Object[] updateparams = new Object[9];
-				updateparams[0] = year;
-				updateparams[1] = month;
-				updateparams[2] = day;
-				updateparams[3] = date;
-				updateparams[4] = begin;
-				updateparams[5] = end;
-				try {
-					updateparams[6] = DateTimeUtil.getHours(begin,end);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				updateparams[7] = userid;
-				updateparams[8] = date;
-				
-				JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
+			if(listl.size() > 0){
+				request.setAttribute("errmsg", "当天已请假，无法签到！");
 			}else{
-				String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?)";
-				Object[] insertparams = new Object[8];
-				insertparams[0] = userid;
-				insertparams[1] = year;
-				insertparams[2] = month;
-				insertparams[3] = day;
-				insertparams[4] = date;
-				insertparams[5] = begin;
-				insertparams[6] = end;
-				try {
-					insertparams[7] = DateTimeUtil.getHours(begin,end);
-				} catch (ParseException e) {
-					e.printStackTrace();
+				// 数据存在更新操作
+				if(list.size()>0){
+					String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?"
+							+ " where userid=? and date=?";
+					Object[] updateparams = new Object[9];
+					updateparams[0] = year;
+					updateparams[1] = month;
+					updateparams[2] = day;
+					updateparams[3] = date;
+					updateparams[4] = begin;
+					updateparams[5] = end;
+					try {
+						updateparams[6] = DateTimeUtil.getHours(begin,end);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					updateparams[7] = userid;
+					updateparams[8] = date;
+					
+					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
+				}else{
+					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?)";
+					Object[] insertparams = new Object[8];
+					insertparams[0] = userid;
+					insertparams[1] = year;
+					insertparams[2] = month;
+					insertparams[3] = day;
+					insertparams[4] = date;
+					insertparams[5] = begin;
+					insertparams[6] = end;
+					try {
+						insertparams[7] = DateTimeUtil.getHours(begin,end);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 				}
-				JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
+				
+				request.setAttribute("qiandao", "已签");
 			}
 			
 			// 日期设定
@@ -108,7 +119,6 @@ public class ListServlet extends HttpServlet {
 			request.setAttribute("defaultBeginTime",begin);
 			// 默认结束时间
 			request.setAttribute("defaultEndTime", end);
-			request.setAttribute("qiandao", "已签");
 			try {
 				getWeekData(request);
 			} catch (ParseException e) {

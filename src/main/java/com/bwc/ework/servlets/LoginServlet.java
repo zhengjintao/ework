@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.List;
 import java.util.Map;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +35,23 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String user = request.getParameter("userid");
 		String pwd = request.getParameter("password");
+		String rembpwd = request.getParameter("rembpwd");
+		
+		Cookie[] cookies = request.getCookies();
+		
+		if(cookies!=null){
+			for(int i=0; i < cookies.length; i++){
+				Cookie ck = cookies[i];
+				System.out.println(ck.getName()+"--->"+ck.getValue());
+				if("ucookies".equals(ck.getName())){
+					user = ck.getValue();
+				}
+				
+				if("pcookies".equals(ck.getName())){
+					pwd = ck.getValue();
+				}
+			}
+		}
 		
 		if(user == null || user.length() == 0 || pwd == null || pwd.length() == 0){
 			request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -70,6 +86,17 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("userinfo", userdata);
 		
+		if("on".equals(rembpwd)){
+			Cookie ucookies = new Cookie("ucookies", pwd);
+			ucookies.setMaxAge(604800);
+			Cookie pcookies = new Cookie("pcookies", pwd);
+			pcookies.setMaxAge(604800);
+			response.addCookie(ucookies);
+			response.addCookie(pcookies);
+		}
+		
+
+
 		response.sendRedirect("list.do");
 	}
 

@@ -35,11 +35,11 @@ body>.grid {
 </style>
 <script>
 	$(document).ready(function() {
-		var message = "<%=(String)request.getAttribute("errmsg") %>";
-		if(message != "null" && message.length > 0){
+		var message = "<%=(String) request.getAttribute("errmsg")%>";
+		if (message != "null" && message.length > 0) {
 			alert(message);
 		}
-		
+
 		$('.ui.form').form({
 			fields : {
 				userid : {
@@ -77,21 +77,28 @@ body>.grid {
 				<div class="ui stacked segment">
 					<div class="field">
 						<div class="ui left icon input">
-						<%
+							<%
 								
-							    %>
+							%>
 							<i class="user icon"></i> <input type="text" name="userid"
-								placeholder="用户名" style="ime-mode:disabled;-webkit-ime-mode:disabled" 
-								value=<% 
-								Object userid = request.getAttribute("userid");
-							    userid = userid != null ? (String)userid : "";
-								out.print((String)userid); %>>
+								placeholder="用户名"
+								style="ime-mode: disabled; -webkit-ime-mode: disabled"
+								value=<%Object userid = request.getAttribute("userid");
+			userid = userid != null ? (String) userid : "";
+			out.print((String) userid);%>>
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui left icon input">
 							<i class="lock icon"></i> <input type="password" name="password"
 								placeholder="密码">
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui left icon input">
+							<div class="ui checked checkbox">
+								<input type="checkbox" name="rembpwd"> <label>记住密码(一周)</label>
+							</div>
 						</div>
 					</div>
 					<div class="ui fluid large teal submit button">登录</div>

@@ -15,6 +15,14 @@
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+	var message = "<%=(String) request.getAttribute("errmsg")%>";
+	if (message != "null" && message.length > 0) {
+		alert(message);
+	}
+}
+);
+
 function getSettedtime()
 {
 	$.ajax({ 

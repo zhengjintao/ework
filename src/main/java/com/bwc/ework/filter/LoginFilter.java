@@ -45,7 +45,7 @@ public class LoginFilter implements Filter {
 				Object userId = session.getAttribute("userinfo");
 				
 				if(userId == null){
-					rep.sendRedirect("login.jsp");
+					rep.sendRedirect("login.do");
 					return;
 				}
 			}
