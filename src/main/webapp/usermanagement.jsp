@@ -18,6 +18,7 @@
 <script src="dist/components/transition.min.js"></script>
 <style>
 body {
+    margin-top: 10px;
 	font: 12px sans-serif;
 }
 
@@ -37,7 +38,7 @@ footer {
 <body>
 
 	<div class="ui one column grid container">
-		<div class="column" style="margin-top: -20px;">
+		<div class="column">
 		   <div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i

@@ -35,16 +35,13 @@ footer {
 </head>
 <body>
 	<div class="ui one column grid container">
-	<div class="column">
-			<div class="ui teal segment">
+		<div class="column">
+		    <div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section"  href="personal.do">个人</a> <i class="right chevron icon divider"></i>
 					<div class="active section"><%=(String)request.getAttribute("title") %>发布</div>
 				</div>
 			</div>
-		</div>
-		<div class="column" style="margin-top: -50px;">
-
 			<form action="./editnotice.do" method="post">
 				<div class="ui teal inverted segment">
 				    <a class="ui orange ribbon label">发布<%=(String)request.getAttribute("title") %></a>
@@ -59,7 +56,8 @@ footer {
 					</div>
 				</div>
 			</form>
-
+		</div>
+	    <div class="column">
 		</div>
 	</div>
 </body>

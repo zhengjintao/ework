@@ -50,7 +50,7 @@ footer {
 				<div style="height: 5px"></div>
 				<textarea style="height:100%;width:100%;resize:none" readonly="readonly"><%=(String)request.getAttribute("notice") %></textarea>
 				</div>
-				<div style="height: 10px"></div>
+				<div style="height: 12px"></div>
 				<a class="ui blue ribbon label" href="noticelist.do?type=2">近期活动</a>
 				<div class="ui inverted form lblcontent">
 				<div style="height: 5px"></div>
