@@ -1,6 +1,7 @@
-package com.bwc.ework.filter;
+﻿package com.bwc.ework.filter;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpSession;
  * Servlet Filter implementation class LoginFilter
  */
 public class LoginFilter implements Filter {
-
     /**
      * Default constructor. 
      */
@@ -51,9 +51,13 @@ public class LoginFilter implements Filter {
 			}
 		}
 	    
-		rep.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.  
-		rep.setHeader("Pragma", "no-cache"); // HTTP 1.0.  
-		rep.setDateHeader("Expires", 0); // Proxies. 
+		// min.css / min.js 以外不缓存
+		if(!uri.contains("min.css") && !uri.contains("min.js")){
+			System.out.println(uri);
+			rep.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.  
+			rep.setHeader("Pragma", "no-cache"); // HTTP 1.0.  
+			rep.setDateHeader("Expires", 0); // Proxies. 
+		}
 		
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
