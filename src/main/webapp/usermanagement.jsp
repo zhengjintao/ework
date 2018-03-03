@@ -37,16 +37,14 @@ footer {
 <body>
 
 	<div class="ui one column grid container">
-		<div class="column">
-			<div class="ui teal segment">
+		<div class="column" style="margin-top: -20px;">
+		   <div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i
 						class="right chevron icon divider"></i>
 					<div class="active section">用户管理</div>
 				</div>
 			</div>
-		</div>
-		<div class="column" style="margin-top: -20px;">
 			<form action="./useredit.do" method="post">
 				<div class="ui teal inverted segment">
 
@@ -74,7 +72,7 @@ footer {
 					%>
 					</div>
 
-					
+					<div class="column"></div>
 
 				</div>
 			</form>

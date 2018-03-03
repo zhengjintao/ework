@@ -74,7 +74,7 @@ body>.grid {
 </head>
 <body>
 
-	<div class="ui middle aligned center aligned grid">
+	<div class="ui middle aligned center aligned grid container">
 		<div class="column">
 			<div class="ui large center aligned ">
 			</div>

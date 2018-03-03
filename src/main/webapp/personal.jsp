@@ -145,6 +145,24 @@ footer {
 						<a class="ui basic left pointing blue label"> <%=(String)request.getAttribute("leavedays") %>天 </a>
 					</div>
 				</div>
+				
+				<div class="ui red segment">
+				<a class="ui orange right ribbon label">功能模块</a>
+				   <div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui violet button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="statisticsWork.do">出勤统计</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
+				<div style="height:10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui violet button">
+							<i class="marker alternate icon"></i><a class="header" style="color:white" href="location.jsp">定位签到</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
+					</div>
+				</div>
 				<div class="ui brown segment" style="<%=(String)request.getAttribute("display") %>">
 				<a class="ui orange right ribbon label">管理模块</a>
 				    <div style="height: 10px"></div>
@@ -170,29 +188,11 @@ footer {
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
 				</div>
-				<div class="ui red segment">
-				<a class="ui orange right ribbon label">功能模块</a>
-				   <div style="height: 10px"></div>
-					<div class="ui labeled button" tabindex="0">
-						<div class="ui violet button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="statisticsWork.do">出勤统计</a>
-						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
-					</div>
-				<div style="height:10px"></div>
-					<div class="ui labeled button" tabindex="0">
-						<div class="ui violet button">
-							<i class="marker alternate icon"></i><a class="header" style="color:white" href="location.jsp">定位签到</a>
-						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
-					</div>
-				</div>
-				
 			</form>
 		</div>
+	    <div class="column">
+	    </div>
 	</div>
-
-	<div style="height: 350px"></div>
 
 	<footer>
 		<div class="ui yellow four item menu">

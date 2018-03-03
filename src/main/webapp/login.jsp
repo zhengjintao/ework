@@ -66,9 +66,7 @@ body>.grid {
 </head>
 <body>
 
-	<div class="ui middle aligned center aligned grid">
-
-
+	<div class="ui middle aligned center aligned grid container">
 		<div class="column">
 			<div class="ui large center aligned ">
 				<img class="ui large image" src="assets/images/logo.png">
@@ -77,9 +75,6 @@ body>.grid {
 				<div class="ui stacked segment">
 					<div class="field">
 						<div class="ui left icon input">
-							<%
-								
-							%>
 							<i class="user icon"></i> <input type="text" name="userid"
 								placeholder="用户名"
 								style="ime-mode: disabled; -webkit-ime-mode: disabled"
@@ -112,6 +107,7 @@ body>.grid {
 				New to us? <a href="#">Sign Up</a>
 			</div>
 		</div>
+
 	</div>
 
 </body>

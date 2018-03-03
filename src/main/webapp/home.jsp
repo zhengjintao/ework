@@ -44,7 +44,6 @@ footer {
 <body>
 	<div class="ui one column grid container">
 		<div class="column">
-
 			<div class="ui raised segment">
 				<a class="ui red ribbon label" href="noticelist.do?type=1">通知</a>
 				<div class="ui inverted form lblheader">
@@ -60,9 +59,9 @@ footer {
 			</div>
 
 		</div>
+	    <div class="column">
+	    </div>
 	</div>
-
-	<div style="height: 80px"></div>
 
 	<footer>
 		<div class="ui yellow four item menu">

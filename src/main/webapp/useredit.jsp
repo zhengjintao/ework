@@ -59,7 +59,7 @@ footer {
 
 	<div class="ui one column grid container">
 		<div class="column">
-			<div class="ui teal segment">
+		    <div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i
 						class="right chevron icon divider"></i> <a class="section"
@@ -68,9 +68,6 @@ footer {
 					<div class="active section">用户编辑</div>
 				</div>
 			</div>
-		</div>
-		<div class="column" style="margin-top: -20px;">
-
 			<div class="ui teal inverted segment">
 				<form action="useredit.do" method="post" onsubmit="return check();">
 					<div class="ui middle aligned divided list">
@@ -189,7 +186,8 @@ footer {
 			</div>
 
 		</div>
-
+        <div class="column">
+		</div>
 	</div>
 
 </body>

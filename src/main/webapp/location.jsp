@@ -120,9 +120,6 @@ footer {
 					<div class="active section">定位签到</div>
 				</div>
 			</div>
-		</div>
-		<div class="column" style="margin-top: -20px;">
-			
 			<div class="ui teal inverted segment">
 			<form action="./location.jsp" method="post">
 
@@ -141,6 +138,7 @@ footer {
 			</div>
 			
 		</div>
-		
+		<div class="column">
+		</div>
 	</div>
 </body>

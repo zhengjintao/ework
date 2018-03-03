@@ -159,9 +159,10 @@ footer {
 			</div>
 		</form>
 		</div>
+		<div class="column">
+		</div>
 
 	</div>
-	<div style="height: 120px"></div>
 	<footer>
 		<div class="ui yellow four item menu">
 			<a class="item" href="home.do"> <i class="home icon"></i> 首页

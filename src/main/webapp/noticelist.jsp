@@ -39,16 +39,15 @@ footer {
 <body>
 
 	<div class="ui one column grid container">
+		
 		<div class="column">
-			<div class="ui teal segment">
+		<div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="home.do">首页</a> <i
 						class="right chevron icon divider"></i>
 					<div class="active section"><%=(String)request.getAttribute("name") %>一览</div>
 				</div>
 			</div>
-		</div>
-		<div class="column" style="margin-top: -10px;">
 			<form action="./useredit.do" method="post">
 				<div class="ui teal inverted segment">
 
@@ -124,8 +123,8 @@ footer {
 							
 						}
 					</script>
+					</div>
 			</form>
 		</div>
-
 	</div>
 </body>
