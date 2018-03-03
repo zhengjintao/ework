@@ -68,46 +68,57 @@ body>.grid {
 
 	<div class="ui middle aligned center aligned grid container">
 		<div class="column">
+			<div class="ui middle center aligned ">
+				<div class="ui buttons">
+					<button class="ui button">
+						<a href="login.do"><i class="diamond icon"></i><span>e-work</span></a>
+					</button>
+					<div class="or" data-text="@" style="margin-top: 18px"></div>
+					<button class="ui button">
+						<a href="https://www.bridgeworld.co.jp"><img
+							src="assets/images/logo.png"></a>
+					</button>
+				</div>
+				</div>
 			<div class="ui large center aligned ">
-				<img class="ui large image" src="assets/images/logo.png">
-			</div>
-			<form class="ui large form" action="login.do" method="post">
-				<div class="ui stacked segment">
-					<div class="field">
-						<div class="ui left icon input">
-							<i class="user icon"></i> <input type="text" name="userid"
-								placeholder="用户名"
-								style="ime-mode: disabled; -webkit-ime-mode: disabled"
-								value=<%Object userid = request.getAttribute("userid");
+
+				<form class="ui large form" action="login.do" method="post">
+					<div class="ui stacked segment" style="margin-top: 10px">
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="user icon"></i> <input type="text" name="userid"
+									placeholder="用户名"
+									style="ime-mode: disabled; -webkit-ime-mode: disabled"
+									value=<%Object userid = request.getAttribute("userid");
 			userid = userid != null ? (String) userid : "";
 			out.print((String) userid);%>>
-						</div>
-					</div>
-					<div class="field">
-						<div class="ui left icon input">
-							<i class="lock icon"></i> <input type="password" name="password"
-								placeholder="密码">
-						</div>
-					</div>
-					<div class="field">
-						<div class="ui left icon input">
-							<div class="ui checked checkbox">
-								<input type="checkbox" name="rembpwd"> <label>记住密码(一周)</label>
 							</div>
 						</div>
+						<div class="field">
+							<div class="ui left icon input">
+								<i class="lock icon"></i> <input type="password" name="password"
+									placeholder="密码">
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui left icon input">
+								<div class="ui checked checkbox">
+									<input type="checkbox" name="rembpwd"> <label>记住密码(一周)</label>
+								</div>
+							</div>
+						</div>
+						<div class="ui fluid large teal submit button">登录</div>
 					</div>
-					<div class="ui fluid large teal submit button">登录</div>
+
+					<div class="ui error message"></div>
+
+				</form>
+
+				<div class="ui message" hidden>
+					New to us? <a href="#">Sign Up</a>
 				</div>
-
-				<div class="ui error message"></div>
-
-			</form>
-
-			<div class="ui message" hidden>
-				New to us? <a href="#">Sign Up</a>
 			</div>
 		</div>
-
 	</div>
 
 </body>
