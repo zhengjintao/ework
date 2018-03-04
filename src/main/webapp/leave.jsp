@@ -18,6 +18,17 @@
 <script src="dist/semantic.min.js"></script>
 
 <script type="text/javascript">
+function checkdata(){
+	var comment = $("#wcomment").val();
+    if(comment.length > 50){
+    	$("#errmsg").html("请假理由超长（50字以内）");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;
+    }
+}
 function getSettedtime()
 {	
 	$.ajax({ 
@@ -85,16 +96,16 @@ footer {
 			}).modal('show');
 		}});
 	</script>
-	<div class="ui small test modal transition hidden">
+	<div id="cmodal" class="ui small test modal transition hidden">
 	    <i class="close icon"></i>
 		<div class="content">
-			<p><%=(String) request.getAttribute("errmsg")%>
+			<p id="errmsg"><%=(String) request.getAttribute("errmsg")%>
 			</p>
 		</div>
 	</div>
 	<div class="ui one column grid container">
 		<div class="column">
-			<form action="./leave.do" method="post">
+			<form action="./leave.do" method="post" onsubmit="return checkdata();">
 				<div class="ui yellow inverted segment">
 					<div class="ui inverted form">
 						<div class="inline field">

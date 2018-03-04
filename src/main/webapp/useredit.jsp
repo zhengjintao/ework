@@ -32,6 +32,22 @@
 			}
 			errmsg = errmsg + "姓名必须输入。";
 		}
+		
+		var userid = $("#euserid").val();
+		if (userid.length > 30 || userid.length < 5) {
+			if(errmsg.length > 0){
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "账号长度不正确（必须5-30位）";
+		}
+		
+		var username = $("#eusername").val();
+		if (username.length > 20) {
+			if(errmsg.length > 0){
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "姓名长度不正确（20位以内）";
+		}
 
 		if (errmsg.length > 0) {
 			$("#errmsg").html(errmsg);

@@ -42,6 +42,19 @@
 			}).modal('show');
 			return false;
 		}
+		
+		var date1="1999-01-01 " + $("#wbegin").val();
+		var date2="1999-01-01 " + $("#wend").val();
+		var oDate1 = new Date(date1);
+	    var oDate2 = new Date(date2);
+	    if(oDate1.getTime() > oDate2.getTime()){
+	    	$("#errmsg").html("默认退勤时间必须大于默认出勤时间！");
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
+	        return false;
+	    }
 	}
 </script>
 <style type="text/css">

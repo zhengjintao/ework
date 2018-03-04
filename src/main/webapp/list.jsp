@@ -17,6 +17,20 @@
 <script src="dist/semantic.min.js"></script>
 
 <script type="text/javascript">
+function checkdate(){
+	var date1="1999-01-01 " + $("#wbegin").val();
+	var date2="1999-01-01 " + $("#wend").val();
+	var oDate1 = new Date(date1);
+    var oDate2 = new Date(date2);
+    if(oDate1.getTime() > oDate2.getTime()){
+    	$("#errmsg").html("退勤时间必须大于出勤时间！");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;
+    }
+}
 function getSettedtime()
 {
 	$.ajax({ 
@@ -89,22 +103,22 @@ footer {
 	$(document).ready(function() {
 		var message = "<%=(String) request.getAttribute("errmsg")%>";
 		if (message != "null" && message.length > 0) {
-			$('.ui.modal').modal({
+			$('#cmodal').modal({
 				closable : false
 
 			}).modal('show');
 		}});
 	</script>
-	<div class="ui small test modal transition hidden">
+	<div id="cmodal" class="ui small test modal transition hidden">
 	    <i class="close icon"></i>
 		<div class="content">
-			<p><%=(String) request.getAttribute("errmsg")%>
+			<p id="errmsg"><%=(String) request.getAttribute("errmsg")%>
 			</p>
 		</div>
 	</div>
 	<div class="ui one column grid container">
 		<div class="column">
-			<form action="./list.do" method="post">
+			<form action="./list.do" method="post" onsubmit="return checkdate();">
 				<div class="ui teal inverted segment">
 					<div class="ui inverted form">
 						<div class="inline field">
