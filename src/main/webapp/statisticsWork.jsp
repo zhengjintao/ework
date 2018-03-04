@@ -82,10 +82,10 @@ footer {
 						out.print("</a>");
 						out.print("</td>");
 						out.print("<td style='text-align:right;'>");
-						out.print(each[5]+"(天) /" + each[1] + "(H)");
+						out.print(each[1] + "(H) /" + each[5]+"(天)");
 						out.print("</td>");
 						out.print("<td style='text-align:right;'>");
-						out.print(each[6]+"(天) /" + each[2] + "(H)");
+						out.print(each[2] + "(H) /" + each[6]+"(天)");
 						out.print("</td>");
 						out.print("</tr>");
 					}

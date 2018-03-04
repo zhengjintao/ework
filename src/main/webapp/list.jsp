@@ -30,6 +30,15 @@ function checkdate(){
 		}).modal('show');
         return false;
     }
+    
+    if(date1 > date2){
+    	$("#errmsg").html("退勤时间必须大于出勤时间！");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;
+    }
 }
 function getSettedtime()
 {

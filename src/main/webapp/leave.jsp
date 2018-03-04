@@ -20,6 +20,14 @@
 <script type="text/javascript">
 function checkdata(){
 	var comment = $("#wcomment").val();
+	if(comment.length == 0){
+    	$("#errmsg").html("请假理由必须输入");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;
+    }
     if(comment.length > 50){
     	$("#errmsg").html("请假理由超长（50字以内）");
 		$('#cmodal').modal({

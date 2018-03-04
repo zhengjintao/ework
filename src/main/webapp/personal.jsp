@@ -55,6 +55,15 @@
 			}).modal('show');
 	        return false;
 	    }
+
+	    if(date1 > date2){
+	    	$("#errmsg").html("退勤时间必须大于出勤时间！");
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
+	        return false;
+	    }
 	}
 </script>
 <style type="text/css">
@@ -165,7 +174,7 @@ footer {
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<a class="ui blue button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>">
+						<a class="ui blue button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>&username=<%=(String)request.getAttribute("username") %>">
 							<i class="delete calendar icon"></i> 本月请假天数
 						</a>
 						<a class="ui basic left pointing blue label"> <%=(String)request.getAttribute("leavedays") %>天 </a>
