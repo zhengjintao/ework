@@ -24,8 +24,8 @@
 
 		var showtab = "tab2" == id ? "#table2" : "#table1";
 		var hidetab = "tab2" != id ? "#table2" : "#table1";
-		$(showtab).show();
-		$(hidetab).hide();
+		$(showtab).show().css("margin", "0");
+		$(hidetab).hide().css("margin", "0");
 	}
 </script>
 <style type="text/css">
@@ -63,16 +63,6 @@ footer {
 					<div class="ui inverted form">
 						<div class="inline field">
 							<div class="field">
-								<label>出勤详细情况</label>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="ui teal inverted segment">
-					<div class="ui inverted form">
-						<div class="inline field">
-							<div class="field">
 								<label>月份</label> <input type="month" name="wdate"
 									value=<%=(String) request.getAttribute("sysDate")%>>
 							</div>
@@ -84,17 +74,27 @@ footer {
 						</Button>
 					</div>
 				</div>
-
+				
+				<div class="ui teal inverted segment">
+					<div class="ui inverted form">
+						<div class="inline field">
+							<div class="field">
+								<label>出勤详细情况 - <%=(String) request.getAttribute("username")%></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				
 				<div class="ui top attached tabular menu">
 					<div id="tab1" class="active item" onclick="tabclick('tab1')">出勤</div>
 					<div id="tab2" class="item" onclick="tabclick('tab2')">休假</div>
 				</div>
 				<div class="ui bottom attached active tab segment">
 					<table id="table1" class="ui unstackable celled table">
-						<tr bgcolor="#48d1cc">
-							<th width="40%" style="text-align: center;">日期</th>
-							<th width="30%" style="text-align: center;">出勤</th>
-							<th width="30%" style="text-align: center;">退勤</th>
+						<tr bgcolor="#00B5AB">
+							<th width="40%" style="text-align: center; color:white">日期</th>
+							<th width="30%" style="text-align: center; color:white">出勤</th>
+							<th width="30%" style="text-align: center; color:white">退勤</th>
 						</tr>
 						<tbody>
 							<%
@@ -124,9 +124,9 @@ footer {
 					</table>
 					<table id="table2" class="ui unstackable celled table"
 						style="display: none;">
-						<tr bgcolor="#48d1cc">
-							<th width="40%" style="text-align: center;">日期</th>
-							<th width="60%" style="text-align: center;">理由</th>
+						<tr bgcolor="#00B5AB">
+							<th width="40%" style="text-align: center; color:white">日期</th>
+							<th width="60%" style="text-align: center; color:white">理由</th>
 						</tr>
 						<tbody>
 							<%

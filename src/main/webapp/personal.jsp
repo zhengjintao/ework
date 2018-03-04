@@ -145,7 +145,7 @@ footer {
 				<a class="ui orange right ribbon label">统计信息</a>
 				   <div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<a class="ui red button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>">
+						<a class="ui red button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>&username=<%=(String)request.getAttribute("username") %>">
 							<i class="checked calendar icon"></i> 本月出勤时间
 						</a>
 						<a class="ui basic red left pointing label"> <%=(String)request.getAttribute("hours") %>小时(<%=(String)request.getAttribute("days") %>天) </a>

@@ -35,6 +35,10 @@ public class UserWorkDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userid = request.getParameter("userid");
+		String username = request.getParameter("username");
+		if (username != null) {
+			username = new String(username.getBytes("iso-8859-1"), "utf-8");
+		}
 		//查询月份取得
 		String wdate = request.getParameter("wdate");
 	
@@ -45,6 +49,7 @@ public class UserWorkDetailServlet extends HttpServlet {
 		// 日期设定
 		request.setAttribute("sysDate", DateTimeUtil.GetMonth(dateStr));
 		request.setAttribute("userid", userid);
+		request.setAttribute("username", username);
 		
 		request.setAttribute("monthdata", getMonthData(userid, DateTimeUtil.GetMonth(dateStr)));
 		request.setAttribute("workdata", getworktime(userid, DateTimeUtil.GetMonth(dateStr)));

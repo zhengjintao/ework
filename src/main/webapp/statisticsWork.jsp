@@ -67,17 +67,17 @@ footer {
 				</div>
 			</div>
 				<table class="ui unstackable celled table">
-					<tr bgcolor="#48d1cc">
-						<th width="30%" style="text-align:center;">姓名</th>
-						<th width="35%" style="text-align:center;">出勤</th>
-						<th width="35%" style="text-align:center;">休假</th>
+					<tr bgcolor="#00B5AB">
+						<th width="30%" style="text-align:center; color:white">姓名</th>
+						<th width="35%" style="text-align:center; color:white">出勤</th>
+						<th width="35%" style="text-align:center; color:white">休假</th>
 					</tr>
 					<%
 					List<String[]> dataList = (List<String[]>) request.getAttribute("dataList");
 					for(String[] each : dataList){
 						out.print("<tr>");
 						out.print("<td>");
-						out.print("<a href='userworkdetail.do?userid=" + each[3]+"&wdate=" + each[4]+"'>");
+						out.print("<a href='userworkdetail.do?userid=" + each[3]+"&wdate=" + each[4]+ "&username=" + each[0] + "'>");
 						out.print(each[0]);
 						out.print("</a>");
 						out.print("</td>");
