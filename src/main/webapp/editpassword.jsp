@@ -15,9 +15,11 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
+<script src="dist/semantic.min.js"></script>
 
 <style type="text/css">
 body {
+    margin-top: 10px;
 	background-color: #FFFFF0;
 }
 
@@ -73,9 +75,31 @@ body>.grid {
 </script>
 </head>
 <body>
+   <script type="text/javascript">
+	$(document).ready(function() {
+		var message = "<%=(String) request.getAttribute("errmsg")%>";
+		if (message != "null" && message.length > 0) {
+			$('.ui.modal').modal({
+				closable : false
 
-	<div class="ui middle aligned center aligned grid container">
+			}).modal('show');
+		}});
+	</script>
+	<div class="ui small test modal transition hidden">
+	    <i class="close icon"></i>
+		<div class="content">
+			<p><%=(String) request.getAttribute("errmsg")%>
+			</p>
+		</div>
+	</div>
+	<div class="ui center aligned grid container">
 		<div class="column">
+		   <div class="ui left aligned teal segment">
+				<div class="ui  breadcrumb">
+					<a class="section"  href="personal.do">个人</a> <i class="right chevron icon divider"></i>
+					<div class="active section">密码修改</div>
+				</div>
+			</div>
 			<div class="ui large center aligned ">
 			</div>
 			<form class="ui large form" action="editpassword.do" method="post">

@@ -23,23 +23,29 @@
 
 		if (userid == null || userid == "undefine" || userid.length == 0) {
 			errmsg = errmsg + "账号必须输入。";
-
 		}
 
 		var username = $("#eusername").val();
 		if (username == null || username == "undefine" || username.length == 0) {
-			errmsg = errmsg + "\r\n" + "姓名必须输入。";
+			if(errmsg.length > 0){
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "姓名必须输入。";
 		}
 
 		if (errmsg.length > 0) {
-			alert(errmsg);
+			$("#errmsg").html(errmsg);
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
 			return false;
 		}
 	}
 </script>
 <style>
 body {
-    margin-top: 10px;
+	margin-top: 10px;
 	font: 12px sans-serif;
 }
 
@@ -57,10 +63,15 @@ footer {
 
 </head>
 <body>
-
+	<div id="cmodal" class="ui small test modal transition hidden">
+		<i class="close icon"></i>
+		<div class="content">
+			<p id="errmsg"></p>
+		</div>
+	</div>
 	<div class="ui one column grid container">
 		<div class="column">
-		    <div class="ui teal segment">
+			<div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i
 						class="right chevron icon divider"></i> <a class="section"
@@ -159,11 +170,10 @@ footer {
 						<i class="icon user"></i> 删除
 					</button>
 
-					<div class="ui small test modal transition hidden">
+					<div id="almodal" class="ui small test modal transition hidden">
 						<div class="header">删除用户</div>
 						<div class="content">
-							<p>确认删除该用户吗?
-							</p>
+							<p>确认删除该用户吗?</p>
 						</div>
 						<div class="actions">
 							<div class="ui negative button">取消</div>
@@ -174,21 +184,20 @@ footer {
 					</div>
 					<script type="text/javascript">
 					function deleteuser() {
-						$('.ui.modal').modal({
+						$('#almodal').modal({
 							closable : false,
 							onApprove : function() {
 								window.location.href = "useredit.do?delflg=true&deluserid=<%=(String) request.getAttribute("userid")%>";
-							}
+												}
 
-						}).modal('show');
-					}
-				</script>
+											}).modal('show');
+						}
+					</script>
 				</form>
 			</div>
 
 		</div>
-        <div class="column">
-		</div>
+		<div class="column"></div>
 	</div>
 
 </body>

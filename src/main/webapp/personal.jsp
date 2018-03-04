@@ -28,11 +28,18 @@
 
 		var wend = $("#wend").val();
 		if (wend == null || wend == "undefine" || wend.length == 0) {
-			errmsg = errmsg + "\r\n" + "默认退勤时间必须输入。";
+			if(errmsg.length > 0){
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "默认退勤时间必须输入。";
 		}
 
 		if (errmsg.length > 0) {
-			alert(errmsg);
+			$("#errmsg").html(errmsg);
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
 			return false;
 		}
 	}
@@ -56,6 +63,12 @@ footer {
 </style>
 </head>
 <body>
+	<div id="cmodal" class="ui small test modal transition hidden">
+		<i class="close icon"></i>
+		<div class="content">
+			<p id="errmsg"></p>
+		</div>
+	</div>
 	<div class="ui one column grid container">
 		<div class="column">
 			<div class="ui yellow inverted segment">
@@ -77,7 +90,7 @@ footer {
 					<i class="icon key"></i>修改密码
 				</button>
 
-				<div class="ui small test modal transition hidden">
+				<div id="almodal" class="ui small test modal transition hidden">
 					<div class="header">注销</div>
 					<div class="content">
 						<p><%=(String)request.getAttribute("nickname") %>，确认退出登陆吗?</p>
@@ -91,7 +104,7 @@ footer {
 				</div>
 				<script type="text/javascript">
 					function logout() {
-						$('.ui.modal').modal({
+						$('#almodal').modal({
 							closable : false,
 							onApprove : function() {
 								window.location.href = "logout.do";
@@ -132,14 +145,14 @@ footer {
 				<a class="ui orange right ribbon label">统计信息</a>
 				   <div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<a class="ui red button" href="statisticsWork.do">
+						<a class="ui red button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>">
 							<i class="checked calendar icon"></i> 本月出勤时间
 						</a>
 						<a class="ui basic red left pointing label"> <%=(String)request.getAttribute("hours") %>小时(<%=(String)request.getAttribute("days") %>天) </a>
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<a class="ui blue button" href="statisticsWork.do">
+						<a class="ui blue button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>">
 							<i class="delete calendar icon"></i> 本月请假天数
 						</a>
 						<a class="ui basic left pointing blue label"> <%=(String)request.getAttribute("leavedays") %>天 </a>

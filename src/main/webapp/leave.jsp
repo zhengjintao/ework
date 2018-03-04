@@ -15,14 +15,9 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
+<script src="dist/semantic.min.js"></script>
+
 <script type="text/javascript">
-$(document).ready(function() {
-	var message = "<%=(String) request.getAttribute("errmsg")%>";
-	if (message != "null" && message.length > 0) {
-		alert(message);
-	}
-}
-);
 function getSettedtime()
 {	
 	$.ajax({ 
@@ -30,7 +25,24 @@ function getSettedtime()
 	    url: "leave.do?"+ $("form").serialize() + "&selectChg=1", 
 	    dataType: "json", 
 	    success: function (data) {
-	    	$("#wcomment").val(data.comment)
+	    	$("#wcomment").val(data.comment);
+	    	$("#oklabel").html(data.oklabel);
+	    }, 
+	    error: function() {
+	            alert("网络异常，请稍后重试");
+	    } 
+	});
+}
+
+function getleaveinfomonth()
+{	
+	$.ajax({ 
+	    type: "post", 
+	    url: "leave.do?"+ $("form").serialize() + "&leaveinfo=1", 
+	    dataType: "json", 
+	    success: function (data) {
+	    	$('#infobody').empty();
+	    	$('#infobody').append(data.info);
 	    }, 
 	    error: function() {
 	            alert("网络异常，请稍后重试");
@@ -63,6 +75,23 @@ footer {
 </style>
 </head>
 <body>
+   <script type="text/javascript">
+	$(document).ready(function() {
+		var message = "<%=(String) request.getAttribute("errmsg")%>";
+		if (message != "null" && message.length > 0) {
+			$('.ui.modal').modal({
+				closable : false
+
+			}).modal('show');
+		}});
+	</script>
+	<div class="ui small test modal transition hidden">
+	    <i class="close icon"></i>
+		<div class="content">
+			<p><%=(String) request.getAttribute("errmsg")%>
+			</p>
+		</div>
+	</div>
 	<div class="ui one column grid container">
 		<div class="column">
 			<form action="./leave.do" method="post">
@@ -81,7 +110,7 @@ footer {
 						</div>
 						<input type="hidden" name="subKbn" value="true">
 						<Button class="ui active yellow button" type="submit">
-							<i class="add to calendar icon"></i> 确定
+							<i class="add to calendar icon"></i><span id="oklabel"><%=(String) request.getAttribute("oklabel")%></span>
 						</Button>
 						<div class="ui active yellow button" onclick = "deleteData()" >
 							<i class="trash icon"></i> 删除
@@ -93,30 +122,11 @@ footer {
 
 			<div class="ui grey inverted segment">
 			    <a class="ui orange ribbon label">当月请假</a>
-				<input type="month"  id="wdate2" name="wdate2" value=<%=(String) request.getAttribute("sysDate2")%> onchange="getSettedtime()">
+				<input type="month"  id="wdate2" name="wdate2" value=<%=(String) request.getAttribute("sysDate2")%> onchange="getleaveinfomonth()">
 
 				<table class="ui celled table">
-					<tbody>
-					<%
-					List<String[]> monthData = (List<String[]>) request.getAttribute("monthdata");
-					if(monthData.size() == 0){
-						out.print("<tr>");
-						out.print("<td>");
-						out.print("当月没有请假");
-						out.print("</td>");
-						out.print("</tr>");
-					}
-					for(String[] each : monthData){
-						out.print("<tr>");
-						out.print("<td>");
-						out.print(each[0]);
-						out.print("</td>");
-						out.print("<td>");
-						out.print(each[1]);
-						out.print("</td>");
-						out.print("</tr>");
-					}
-					%>
+					<tbody id="infobody">
+					<%=(String) request.getAttribute("info")%>
 					</tbody>
 				</table>
 

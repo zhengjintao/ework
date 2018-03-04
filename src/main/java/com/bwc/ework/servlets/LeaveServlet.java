@@ -58,6 +58,7 @@ public class LeaveServlet extends HttpServlet {
 		}
 
 		String subkbn = request.getParameter("subKbn");
+		String oklabel = "确定";
 
 		// 初期化
 		if (subkbn == null) {
@@ -71,7 +72,7 @@ public class LeaveServlet extends HttpServlet {
 			}
 
 			// 初期化的场合
-			if ("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg"))
+			if ("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg"))  && !"1".equals(request.getParameter("leaveinfo"))
 					&& !"1".equals(request.getParameter("deleteFlg"))) {
 				String sql = "select * from cdata_leave where userid=? and leavedate=?";
 				Object[] params = new Object[2];
@@ -92,7 +93,7 @@ public class LeaveServlet extends HttpServlet {
 				List<Object> listw = JdbcUtil.getInstance().excuteQuery(sql, params);
 
 				if (listw.size() > 0) {
-					request.setAttribute("errmsg", "当天已请假，无法签到！");
+					request.setAttribute("errmsg", "当天已签到，无法请假！");
 				} else {
 					// 数据存在更新操作
 					if (list.size() > 0) {
@@ -136,6 +137,7 @@ public class LeaveServlet extends HttpServlet {
 			Map<String, Object> set = (Map<String, Object>) list1.get(0);
 			comment = set.get("content").toString();
 			request.setAttribute("wcomment", comment);
+			oklabel = "已请";
 		}
 
 		request.setAttribute("wcomment", comment);
@@ -143,12 +145,43 @@ public class LeaveServlet extends HttpServlet {
 		if ("1".equals(request.getParameter("selectChg"))) {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("comment", comment);
+			jsonObject.put("oklabel", oklabel);
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write(jsonObject.toString());
 
 			return;
 		}
-		request.setAttribute("monthdata", getMonthData(userinfo.getUserId(), wdate2));
+		
+		List<String[]> monthinfo = getMonthData(userinfo.getUserId(), wdate2);
+		StringBuilder info= new StringBuilder();
+		if(monthinfo.size() == 0){
+			info.append("<tr>");
+			info.append("<td>");
+			info.append("当月没有请假");
+			info.append("</td>");
+			info.append("</tr>");
+		}
+		for(String[] each : monthinfo){
+			info.append("<tr>");
+			info.append("<td>");
+			info.append(each[0]);
+			info.append("</td>");
+			info.append("<td>");
+			info.append(each[1]);
+			info.append("</td>");
+			info.append("</tr>");
+		}
+		if ("1".equals(request.getParameter("leaveinfo"))) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("info", info.toString());
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(jsonObject.toString());
+
+			return;
+		}
+		
+		request.setAttribute("oklabel", oklabel);
+		request.setAttribute("info", info.toString());
 		RequestDispatcher re = request.getRequestDispatcher("leave.jsp");
 		re.forward(request, response);
 	}

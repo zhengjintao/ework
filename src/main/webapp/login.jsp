@@ -15,6 +15,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
+<script src="dist/semantic.min.js"></script>
 
 <style type="text/css">
 body {
@@ -34,12 +35,7 @@ body>.grid {
 }
 </style>
 <script>
-	$(document).ready(function() {
-		var message = "<%=(String) request.getAttribute("errmsg")%>";
-		if (message != "null" && message.length > 0) {
-			alert(message);
-		}
-
+$(document).ready(function() {
 		$('.ui.form').form({
 			fields : {
 				userid : {
@@ -65,6 +61,23 @@ body>.grid {
 </script>
 </head>
 <body>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var message = "<%=(String) request.getAttribute("errmsg")%>";
+		if (message != "null" && message.length > 0) {
+			$('.ui.modal').modal({
+				closable : false
+
+			}).modal('show');
+		}});
+	</script>
+	<div class="ui small test modal transition hidden">
+	    <i class="close icon"></i>
+		<div class="content">
+			<p><%=(String) request.getAttribute("errmsg")%>
+			</p>
+		</div>
+	</div>
 
 	<div class="ui middle aligned center aligned grid container">
 		<div class="column">
@@ -79,7 +92,7 @@ body>.grid {
 							src="assets/images/logo.png"></a>
 					</button>
 				</div>
-				</div>
+			</div>
 			<div class="ui large center aligned ">
 
 				<form class="ui large form" action="login.do" method="post">
@@ -103,7 +116,7 @@ body>.grid {
 						<div class="field">
 							<div class="ui left icon input">
 								<div class="ui checked checkbox">
-									<input type="checkbox" name="rembpwd"> <label>记住密码(一周)</label>
+									<input type="checkbox" name="rembpwd"> <label style="">记住密码(一周)</label>
 								</div>
 							</div>
 						</div>

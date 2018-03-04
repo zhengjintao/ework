@@ -34,8 +34,11 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String user = request.getParameter("userid");
-		String pwd = request.getParameter("password");
+		String pwd = HashEncoder.getResult(request.getParameter("password"));
 		String rembpwd = request.getParameter("rembpwd");
+		if (user != null) {
+			user = new String(user.getBytes("iso-8859-1"), "utf-8");
+		}
 		
 		Cookie[] cookies = request.getCookies();
 		
@@ -58,21 +61,30 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		
-		String sql = "select * from mstr_user where userid=? and password=? and delflg=?";
-		Object[] params = new Object[3];
+		String sql = "select * from mstr_user where userid=? and delflg=?";
+		Object[] params = new Object[2];
 		params[0] = user;
-		params[1] = pwd;
-		params[2] = "0";
+		params[1] = "0";
 		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 		
+		Boolean correctflg = true;
 		if(userinfo == null || userinfo.size() != 1){
-			request.setAttribute("errmsg", "用户名和密码不正确！");
+			request.setAttribute("errmsg", "用户名不正确！");
 			request.setAttribute("userid", user);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			return;
 		}
 		
 		Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
+		String enpwd = HashEncoder.getResult((String)info.get("password"));
+		
+		if(!enpwd.equals(pwd)){
+			request.setAttribute("errmsg", "密码不正确！<br>(注意：密码区分大小写)");
+			request.setAttribute("userid", user);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			return;
+		}
+		
 		User userdata = new User();
 		userdata.setUserId((String)info.get("userid"));
 		userdata.setUserName((String)info.get("username"));
@@ -80,7 +92,7 @@ public class LoginServlet extends HttpServlet {
 		userdata.setBeginTime((Time)info.get("begintime"));
 		userdata.setEndTime((Time)info.get("endtime"));
 		userdata.setSex((String)info.get("sex"));
-		userdata.setUserPwd(HashEncoder.getResult((String)info.get("password")));
+		userdata.setUserPwd(enpwd);
 		userdata.setAuthflg((String)info.get("authflg"));
 	    
 		HttpSession session = request.getSession();
@@ -89,14 +101,12 @@ public class LoginServlet extends HttpServlet {
 		if("on".equals(rembpwd)){
 			Cookie ucookies = new Cookie("ucookies", user);
 			ucookies.setMaxAge(604800);
-			Cookie pcookies = new Cookie("pcookies", pwd);
+			Cookie pcookies = new Cookie("pcookies", enpwd);
 			pcookies.setMaxAge(604800);
 			response.addCookie(ucookies);
 			response.addCookie(pcookies);
 		}
 		
-
-
 		response.sendRedirect("list.do");
 	}
 

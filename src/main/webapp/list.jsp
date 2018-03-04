@@ -14,15 +14,9 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-	var message = "<%=(String) request.getAttribute("errmsg")%>";
-	if (message != "null" && message.length > 0) {
-		alert(message);
-	}
-}
-);
+<script src="dist/semantic.min.js"></script>
 
+<script type="text/javascript">
 function getSettedtime()
 {
 	$.ajax({ 
@@ -91,6 +85,23 @@ footer {
 </style>
 </head>
 <body>
+   <script type="text/javascript">
+	$(document).ready(function() {
+		var message = "<%=(String) request.getAttribute("errmsg")%>";
+		if (message != "null" && message.length > 0) {
+			$('.ui.modal').modal({
+				closable : false
+
+			}).modal('show');
+		}});
+	</script>
+	<div class="ui small test modal transition hidden">
+	    <i class="close icon"></i>
+		<div class="content">
+			<p><%=(String) request.getAttribute("errmsg")%>
+			</p>
+		</div>
+	</div>
 	<div class="ui one column grid container">
 		<div class="column">
 			<form action="./list.do" method="post">

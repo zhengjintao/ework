@@ -125,6 +125,8 @@ public class PersonalServlet extends HttpServlet {
 		
 		String diplay = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "display: none";
 		request.setAttribute("display", diplay);
+		
+		request.setAttribute("userid", userinfo.getUserId());
 		request.getRequestDispatcher("personal.jsp").forward(request, response);
 	}
 
