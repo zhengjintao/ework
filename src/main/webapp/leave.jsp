@@ -124,7 +124,7 @@ footer {
 						</div>
 						<div class="two fields">
 							<div class="field">
-								<label>理由</label> <input type="text" id="wcomment" name="wcomment" value=<%=(String) request.getAttribute("wcomment")%>>
+								<label>理由</label> <input type="text" id="wcomment" name="wcomment" placeholder="必填项目" value=<%=(String) request.getAttribute("wcomment")%>>
 							</div>
 						</div>
 						<input type="hidden" name="subKbn" value="true">

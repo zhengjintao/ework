@@ -49,6 +49,7 @@ function getSettedtime()
 	    success: function (data) {
 	    	$("#wbegin").val(data.defaultBeginTime)
 	    	$("#wend").val(data.defaultEndTime)
+	    	$("#wcomment").val(data.comment)
 	    	$("#actionname").html("1" == data.settedFlg ? "已签" : "签到")
 	    	$("#week0").html(data.week0)
 	    	$("#week1").html(data.week1)
@@ -73,6 +74,7 @@ function deleteData()
 	    success: function (data) {
 	    	$("#wbegin").val(data.defaultBeginTime)
 	    	$("#wend").val(data.defaultEndTime)
+	    	$("#wcomment").val(data.comment)
 	    	$("#actionname").html("1" == data.settedFlg ? "已签" : "签到")
 	    	$("#week0").html(data.week0)
 	    	$("#week1").html(data.week1)
@@ -110,6 +112,8 @@ footer {
 <body>
    <script type="text/javascript">
 	$(document).ready(function() {
+		$('.ui.accordion').accordion();
+		
 		var message = "<%=(String) request.getAttribute("errmsg")%>";
 		if (message != "null" && message.length > 0) {
 			$('#cmodal').modal({
@@ -153,6 +157,18 @@ footer {
 								</div>
 							</div>
 						</div>
+						<div class="field">
+							<div class="ui accordion" >
+								<div class="title" style="color:white">
+									<i class="dropdown icon"></i> 备注
+								</div>
+								<div class="content">
+									<p class="transition visible"
+										style="display: block !important;">
+										<textarea id="wcomment" name="wcomment" rows="3" cols="0" placeholder="填写作业内容等（选填）"><%=(String) request.getAttribute("comment")%></textarea>
+								</div>
+								</div>
+							</div>
 						<input type="hidden" name="subKbn" value="true">
 						<Button class="ui active teal button">
 							<i class="add to calendar icon"></i> <span id="actionname"><%=(String) request.getAttribute("qiandao")%></span>

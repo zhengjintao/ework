@@ -51,24 +51,39 @@ public class UserEditServlet extends HttpServlet {
 		if(edit != null){
 			// 新建
 			if("false".equals(edit)){
-				//更新
-				String sql = "insert into mstr_user values(?,?,?,?,?,?,?,?)";
-				Object[] params = new Object[8];
-				
+				String sql1 = "select * from mstr_user where userid=?";
+				Object[] params1 = new Object[1];
+				params1[0] = request.getParameter("euserid");
+				List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql1, params1);
 				String eusername = request.getParameter("eusername");
-				if(eusername != null){
+				if (eusername != null) {
 					eusername = new String(eusername.getBytes("iso-8859-1"), "utf-8");
 				}
 				
-				params[0] = request.getParameter("euserid");
-				params[1] = eusername;
-				params[2] = "111111";
-				params[3] = "0";
-				params[4] = "09:30:00.0000";
-				params[5] = "18:30:00.0000";
-				params[6] = request.getParameter("esex");
-				params[7] = request.getParameter("eauthflg");
-				JdbcUtil.getInstance().executeUpdate(sql, params);
+				if(list1.size() > 0){
+					request.setAttribute("errmsg", "该账号已存在");
+					request.setAttribute("userid", request.getParameter("euserid"));
+					request.setAttribute("username", eusername);
+					request.setAttribute("hasuserid", false);
+					request.setAttribute("isfemale", "F".equals(request.getParameter("esex")));
+					request.setAttribute("isadmin", "1".equals(request.getParameter("eauthflg")));
+					request.getRequestDispatcher("useredit.jsp").forward(request, response);
+					return;
+				}else{
+					//更新
+					String sql = "insert into mstr_user values(?,?,?,?,?,?,?,?)";
+					Object[] params = new Object[8];
+					
+					params[0] = request.getParameter("euserid");
+					params[1] = eusername;
+					params[2] = "111111";
+					params[3] = "0";
+					params[4] = "09:30:00.0000";
+					params[5] = "18:30:00.0000";
+					params[6] = request.getParameter("esex");
+					params[7] = request.getParameter("eauthflg");
+					JdbcUtil.getInstance().executeUpdate(sql, params);
+				}
 			}else{
 				//更新
 				String sql = "update mstr_user set username=? , sex=? , authflg=? where userid=?";
@@ -94,7 +109,6 @@ public class UserEditServlet extends HttpServlet {
 					JdbcUtil.getInstance().executeUpdate(sql2, params2);
 				}
 			}
-			
 			request.getRequestDispatcher("usermanagement.do").forward(request, response);
 			return;
 			

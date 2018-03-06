@@ -79,10 +79,20 @@ footer {
 
 </head>
 <body>
+   <script type="text/javascript">
+	$(document).ready(function() {
+		var message = "<%=(String) request.getAttribute("errmsg")%>";
+		if (message != "null" && message.length > 0) {
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
+		}});
+	</script>
 	<div id="cmodal" class="ui small test modal transition hidden">
 		<i class="close icon"></i>
 		<div class="content">
-			<p id="errmsg"></p>
+			<p id="errmsg"><%=(String) request.getAttribute("errmsg")%></p>
 		</div>
 	</div>
 	<div class="ui one column grid container">
@@ -106,6 +116,8 @@ footer {
 									placeholder="必须（5～30位）"
 									<%if ((Boolean) request.getAttribute("hasuserid")) {
 				out.print("value='" + (String) request.getAttribute("userid") + "' " + "readonly='readonly'");
+			} else if (request.getAttribute("userid") != null) {
+				out.print("value='" + request.getAttribute("userid").toString() + "'");
 			}%>>
 							</div>
 						</div>
@@ -121,6 +133,8 @@ footer {
 									placeholder="必须（请使用真名）"
 									<%if ((Boolean) request.getAttribute("hasuserid")) {
 				out.print("value='" + (String) request.getAttribute("username") + "' ");
+			} else if (request.getAttribute("username") != null) {
+				out.print("value='" + request.getAttribute("username").toString() + "'");
 			}%>>
 							</div>
 						</div>

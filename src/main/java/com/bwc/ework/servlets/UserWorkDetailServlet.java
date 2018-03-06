@@ -77,10 +77,11 @@ public class UserWorkDetailServlet extends HttpServlet {
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 		for (Object data : resultList) {
 			Map<String, Object> row = (Map<String, Object>) data;
-			String[] each = new String[3];
+			String[] each = new String[4];
 			each[0] = row.get("date").toString();
 			each[1] = row.get("begintime").toString();
 			each[2] = row.get("endtime").toString();
+			each[3] = row.get("comment") == null ? "" : row.get("comment").toString().replace("\r\n", "<br>");
 			monthData.add(each);
 		}
 

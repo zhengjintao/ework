@@ -41,6 +41,13 @@ public class ListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String paramwdate =request.getParameter("wdate");
+		String comment =request.getParameter("wcomment");
+		
+		if (comment != null) {
+			comment = new String(comment.getBytes("iso-8859-1"), "utf-8");
+		}else{
+			comment = "";
+		}
 		
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
@@ -76,27 +83,27 @@ public class ListServlet extends HttpServlet {
 			}else{
 				// 数据存在更新操作
 				if(list.size()>0){
-					String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?"
+					String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?,comment=?"
 							+ " where userid=? and date=?";
-					Object[] updateparams = new Object[9];
+					Object[] updateparams = new Object[10];
 					updateparams[0] = year;
 					updateparams[1] = month;
 					updateparams[2] = day;
 					updateparams[3] = date;
 					updateparams[4] = begin;
 					updateparams[5] = end;
+					updateparams[7] = comment;
 					try {
 						updateparams[6] = DateTimeUtil.getHours(begin,end);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
-					updateparams[7] = userid;
-					updateparams[8] = date;
-					
+					updateparams[8] = userid;
+					updateparams[9] = date;
 					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
 				}else{
-					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?)";
-					Object[] insertparams = new Object[8];
+					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?)";
+					Object[] insertparams = new Object[9];
 					insertparams[0] = userid;
 					insertparams[1] = year;
 					insertparams[2] = month;
@@ -104,6 +111,7 @@ public class ListServlet extends HttpServlet {
 					insertparams[4] = date;
 					insertparams[5] = begin;
 					insertparams[6] = end;
+					insertparams[8] = comment;
 					try {
 						insertparams[7] = DateTimeUtil.getHours(begin,end);
 					} catch (ParseException e) {
@@ -121,6 +129,7 @@ public class ListServlet extends HttpServlet {
 			request.setAttribute("defaultBeginTime",begin);
 			// 默认结束时间
 			request.setAttribute("defaultEndTime", end);
+			request.setAttribute("comment", comment);
 			try {
 				getWeekData(request);
 			} catch (ParseException e) {
@@ -154,10 +163,12 @@ public class ListServlet extends HttpServlet {
 					Map<String, Object> set = (Map<String, Object>)list1.get(0);
 					jsonObject.put("defaultBeginTime", set.get("begintime").toString()); 
 					jsonObject.put("defaultEndTime", set.get("endtime").toString());
+					jsonObject.put("comment", set.get("comment").toString());
 					jsonObject.put("settedFlg", "1");
 				}else{
 					jsonObject.put("defaultBeginTime",userinfo.getBeginTime().toString());
 					jsonObject.put("defaultEndTime", userinfo.getEndTime().toString());
+					jsonObject.put("comment", "");
 					jsonObject.put("settedFlg", "0");
 				}
 				jsonObject.put("week0", request.getAttribute("week0"));
@@ -180,6 +191,8 @@ public class ListServlet extends HttpServlet {
 					// 默认结束时间
 					request.setAttribute("defaultEndTime", set.get("endtime").toString());
 					
+					request.setAttribute("comment", set.get("comment").toString());
+					
 					request.setAttribute("qiandao", "已签");
 					try {
 						getWeekData(request);
@@ -193,7 +206,9 @@ public class ListServlet extends HttpServlet {
 					// 默认结束时间
 					request.setAttribute("defaultEndTime", userinfo.getEndTime().toString());
 					
+					request.setAttribute("comment", "");
 					request.setAttribute("qiandao", "签到");
+					
 					try {
 						getWeekData(request);
 					} catch (ParseException e) {
@@ -325,6 +340,7 @@ public class ListServlet extends HttpServlet {
 		
 		jsonObject.put("defaultBeginTime",userinfo.getBeginTime().toString());
 		jsonObject.put("defaultEndTime", userinfo.getEndTime().toString());
+		jsonObject.put("comment", "");
 		jsonObject.put("settedFlg", "0");
 		jsonObject.put("week0", request.getAttribute("week0"));
 		jsonObject.put("week1", request.getAttribute("week1"));

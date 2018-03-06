@@ -15,7 +15,13 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
+<script src="dist/semantic.min.js"></script>
+
 <script type="text/javascript">
+$(document).ready(function() {
+	$('.ui.accordion').accordion();
+	});
+	
 	function tabclick(id) {
 		var addtab = "tab2" == id ? "#tab2" : "#tab1";
 		var rmvtab = "tab2" != id ? "#tab2" : "#tab1";
@@ -27,6 +33,7 @@
 		$(showtab).show().css("margin", "0");
 		$(hidetab).hide().css("margin", "0");
 	}
+
 </script>
 <style type="text/css">
 body {
@@ -68,13 +75,15 @@ footer {
 							</div>
 						</div>
 						<input type="hidden" name="userid"
-							value=<%=(String) request.getAttribute("userid")%>>
+							value='<%=(String) request.getAttribute("userid")%>'>
+						<input type="hidden" name="username"
+							value='<%=(String) request.getAttribute("username")%>'>
 						<Button class="ui active teal button">
 							<i class="search icon"></i>查询
 						</Button>
 					</div>
 				</div>
-				
+
 				<div class="ui teal inverted segment">
 					<div class="ui inverted form">
 						<div class="inline field">
@@ -84,17 +93,17 @@ footer {
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="ui top attached tabular menu">
 					<div id="tab1" class="active item" onclick="tabclick('tab1')">出勤</div>
 					<div id="tab2" class="item" onclick="tabclick('tab2')">休假</div>
 				</div>
 				<div class="ui bottom attached active tab segment">
-					<table id="table1" class="ui unstackable celled table">
+					<table id="table1" class="ui unstackable celled table" border="1">
 						<tr bgcolor="#00B5AB">
-							<th width="40%" style="text-align: center; color:white">日期</th>
-							<th width="30%" style="text-align: center; color:white">出勤</th>
-							<th width="30%" style="text-align: center; color:white">退勤</th>
+							<th width="40%" style="text-align: center; color: white">日期</th>
+							<th width="30%" style="text-align: center; color: white">出勤</th>
+							<th width="30%" style="text-align: center; color: white">退勤</th>
 						</tr>
 						<tbody>
 							<%
@@ -108,7 +117,7 @@ footer {
 								}
 								for (String[] each : workdata) {
 									out.print("<tr>");
-									out.print("<td style='text-align:center;'>");
+									out.print("<td style='text-align:center;'  rowspan='2'>");
 									out.print(each[0]);
 									out.print("</td>");
 									out.print("<td style='text-align:center;'>");
@@ -118,6 +127,23 @@ footer {
 									out.print(each[2]);
 									out.print("</td>");
 									out.print("</tr>");
+									out.print("<tr>");
+									out.print("<td style='text-align:left;' colspan='2'>");
+									out.print("<div class='ui accordion'  height='10px'>");
+									out.print("<div class='title' style='color:black'>");
+									out.print("<i class='dropdown icon'></i> 备注");
+									out.print("</div>");
+									out.print("<div class='content'>");
+									out.print("<span class='transition visible' style='display: block !important;'>");
+									//out.print("<div class='ui tall stacked segment'>");
+									out.print(each[3]);
+									//out.print("</div>");
+									out.print("</span>");
+									out.print("</div>");
+									out.print("</div>");
+									out.print("</div>");
+									out.print("</td>");
+									out.print("</tr>");
 								}
 							%>
 						</tbody>
@@ -125,8 +151,8 @@ footer {
 					<table id="table2" class="ui unstackable celled table"
 						style="display: none;">
 						<tr bgcolor="#00B5AB">
-							<th width="40%" style="text-align: center; color:white">日期</th>
-							<th width="60%" style="text-align: center; color:white">理由</th>
+							<th width="40%" style="text-align: center; color: white">日期</th>
+							<th width="60%" style="text-align: center; color: white">理由</th>
 						</tr>
 						<tbody>
 							<%
