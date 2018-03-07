@@ -18,10 +18,14 @@
 <script src="dist/semantic.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function() {
-	$('.ui.accordion').accordion();
+	$(document).ready(function() {
+		$('.ui.accordion').accordion();
+		$('.custom.button').popup({
+			popup : $('.custom.popup'),
+			on : 'click'
+		});
 	});
-	
+
 	function tabclick(id) {
 		var addtab = "tab2" == id ? "#tab2" : "#tab1";
 		var rmvtab = "tab2" != id ? "#tab2" : "#tab1";
@@ -34,6 +38,29 @@ $(document).ready(function() {
 		$(hidetab).hide().css("margin", "0");
 	}
 
+	function sendmail() {
+		var mailname = $("#mailname").val();
+		var mail = $("#mail").val();
+		if (mailname.length == 0 || mail.length == 0) {
+			$("#errmsg").html("邮件名和邮件地址必须输入");
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
+			return false;
+		}
+		
+		$.ajax({ 
+		    type: "post", 
+		    url: "./sendmail.do?" + $("form").serialize(), 
+		    dataType: "json", 
+		    success: function (data) {},
+		    error: function() {
+	            alert("网络异常，请稍后重试");
+		    } 
+		});
+
+	}
 </script>
 <style type="text/css">
 body {
@@ -54,6 +81,14 @@ footer {
 </style>
 </head>
 <body>
+	<div id="cmodal" class="ui small test modal transition hidden">
+		<i class="close icon"></i>
+		<div class="content">
+			<p id="errmsg"><%=(String) request.getAttribute("errmsg")%>
+			</p>
+		</div>
+	</div>
+
 	<div class="ui one column grid container">
 		<div class="column" style="padding-top: 14px">
 			<div class="ui teal segment">
@@ -75,8 +110,8 @@ footer {
 							</div>
 						</div>
 						<input type="hidden" name="userid"
-							value='<%=(String) request.getAttribute("userid")%>'>
-						<input type="hidden" name="username"
+							value='<%=(String) request.getAttribute("userid")%>'> <input
+							type="hidden" name="username"
 							value='<%=(String) request.getAttribute("username")%>'>
 						<Button class="ui active teal button">
 							<i class="search icon"></i>查询
@@ -92,8 +127,33 @@ footer {
 							</div>
 						</div>
 					</div>
-				</div>
 
+					<div class="some-wrapping-div">
+						<div class="ui custom button">
+							<i class="envelope outline  icon"></i>发送邮件
+						</div>
+					</div>
+					<div class="ui custom popup top left transition hidden">
+						<div class="ui yellow inverted segment">
+							<div class="ui inverted form">
+								<div class="inline field"></div>
+								<div class="two fields">
+									<div class="ui custom button" onclick="sendmail()">
+										<i class="envelope outline  icon"></i>OK
+									</div>
+									<div class="field">
+										<input type="text" id="mailname" name="mailname"
+											placeholder="邮件名" value="房康明_201803">
+									</div>
+								</div>
+								<div class="field">
+									</label> <input type="text" id="mail" name="mail" placeholder="邮箱地址"
+										value="382362074@qq.com">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="ui top attached tabular menu">
 					<div id="tab1" class="active item" onclick="tabclick('tab1')">出勤</div>
 					<div id="tab2" class="item" onclick="tabclick('tab2')">休假</div>
