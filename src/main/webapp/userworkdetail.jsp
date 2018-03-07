@@ -20,7 +20,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.ui.accordion').accordion();
-		$('.custom.button').popup({
+		$('.envelope').popup({
 			popup : $('.custom.popup'),
 			on : 'click'
 		});
@@ -39,25 +39,26 @@
 	}
 
 	function sendmail() {
-		var mailname = $("#mailname").val();
+		$('.custom.popup').hidden();
 		var mail = $("#mail").val();
-		if (mailname.length == 0 || mail.length == 0) {
-			$("#errmsg").html("邮件名和邮件地址必须输入");
+		if (mail.length == 0) {
+			$("#errmsg").html("邮件地址必须输入");
 			$('#cmodal').modal({
 				closable : false
 
 			}).modal('show');
 			return false;
 		}
-		
-		$.ajax({ 
-		    type: "post", 
-		    url: "./sendmail.do?" + $("form").serialize(), 
-		    dataType: "json", 
-		    success: function (data) {},
-		    error: function() {
-	            alert("网络异常，请稍后重试");
-		    } 
+
+		$.ajax({
+			type : "post",
+			url : "./sendmail.do?" + $("form").serialize(),
+			dataType : "json",
+			success : function(data) {
+			},
+			error : function() {
+				alert("网络异常，请稍后重试");
+			}
 		});
 
 	}
@@ -119,36 +120,36 @@ footer {
 					</div>
 				</div>
 
-				<div class="ui teal inverted segment">
-					<div class="ui inverted form">
+				<div class="ui teal inverted segment" style="height: 45px;">
+					<div class="ui inverted form" style="float: left;">
 						<div class="inline field">
 							<div class="field">
 								<label>出勤详细情况 - <%=(String) request.getAttribute("username")%></label>
 							</div>
 						</div>
 					</div>
-
-					<div class="some-wrapping-div">
-						<div class="ui custom button">
-							<i class="envelope outline  icon"></i>发送邮件
-						</div>
+					<div class="some-wrapping-div" style="float: right;">
+						<i class="envelope outline  icon"></i>
 					</div>
 					<div class="ui custom popup top left transition hidden">
 						<div class="ui yellow inverted segment">
 							<div class="ui inverted form">
-								<div class="inline field"></div>
-								<div class="two fields">
+								<div class="inline field">
 									<div class="ui custom button" onclick="sendmail()">
 										<i class="envelope outline  icon"></i>OK
 									</div>
+								</div>
+
+								<div class="two fields">
+
 									<div class="field">
 										<input type="text" id="mailname" name="mailname"
-											placeholder="邮件名" value="房康明_201803">
+											placeholder="邮件名" value="当月出勤统计">
 									</div>
 								</div>
 								<div class="field">
-									</label> <input type="text" id="mail" name="mail" placeholder="邮箱地址"
-										value="382362074@qq.com">
+									</label> <input type="text" id="mail" name="mail" placeholder="邮箱地址(必须)"
+										value="">
 								</div>
 							</div>
 						</div>
