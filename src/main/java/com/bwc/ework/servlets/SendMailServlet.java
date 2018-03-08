@@ -42,12 +42,18 @@ public class SendMailServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String prockbn = request.getParameter("prockbn");
 		String userid = request.getParameter("userid");
+		String username = request.getParameter("username");
 
 		if (userid == null || userid.length() == 0) {
 			HttpSession session = request.getSession();
 			User userinfo = (User) session.getAttribute("userinfo");
 			userid = userinfo.getUserId();
+			username = userinfo.getUserName();
 		}
+		
+		if (username != null) {
+			username = new String(username.getBytes("iso-8859-1"), "utf-8");
+		} 
 
 		// 查询月份取得
 		String wdate = request.getParameter("wdate");
@@ -62,15 +68,21 @@ public class SendMailServlet extends HttpServlet {
 		// 系统当前时间取得
 		SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd");
 		String dateStr = wdate == null ? formattime.format(new Date()) : wdate;
-
-		String leaveinfo = getMonthData(userid, DateTimeUtil.GetMonth(dateStr));
-		String workinfo = getworktime(userid, DateTimeUtil.GetMonth(dateStr));
+		
+		String yearandmonth = DateTimeUtil.GetMonth(dateStr);
+		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(dateStr);
+		String year = date1.getYear();
+		String month = date1.getMonth();
+		
+		String text = "姓名：" + username + "&emsp;月份："+ year + "年" + month+"月" + "<br>" + "<br>";
+		String leaveinfo = getMonthData(userid, yearandmonth);
+		String workinfo = getworktime(userid, yearandmonth);
 		
 		List<String> list = new ArrayList<String>();
 		list.add(mail);
 		// list.add("92@sina.cn");
-		list.add("xiaonei0912@qq.com");
-		String text = workinfo + leaveinfo;
+		list.add("xiaonei0912@qq.com");  // 管理邮箱抄送
+		text = text + workinfo + "<br>" +leaveinfo;
 		String message = "";
 		if("1".equals(prockbn)){
 			message = text;
@@ -115,8 +127,10 @@ public class SendMailServlet extends HttpServlet {
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("出勤时间：");
+		sb.append("[出勤记录]");
 		sb.append("<br>");
+		
+		StringBuilder sb2 = new StringBuilder();
 		for (Object data : resultList) {
 
 			Map<String, Object> row = (Map<String, Object>) data;
@@ -125,15 +139,21 @@ public class SendMailServlet extends HttpServlet {
 			each[1] = row.get("begintime").toString();
 			each[2] = row.get("endtime").toString();
 			each[3] = row.get("comment") == null ? "" : row.get("comment").toString().replace("\r\n", " ");
-			sb.append(each[0]);
-			sb.append("\t");
-			sb.append(each[1]);
-			sb.append("\t");
-			sb.append(each[2]);
-			sb.append("\t");
-			sb.append(each[3]);
+			sb2.append(each[0]);
+			sb2.append("&emsp;");
+			sb2.append(each[1]);
+			sb2.append("&emsp;");
+			sb2.append(each[2]);
+			sb2.append("&emsp;");
+			sb2.append(each[3]);
 
-			sb.append("<br>");
+			sb2.append("<br>");
+		}
+		
+		if(sb2.length() == 0){
+			sb.append("当月没有出勤");
+		}else{
+			sb.append(sb2.toString());
 		}
 
 		return sb.toString();
@@ -154,19 +174,27 @@ public class SendMailServlet extends HttpServlet {
 		params[2] = month;
 		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 		StringBuilder sb = new StringBuilder();
-		sb.append("请假时间：");
+		sb.append("[请假记录]");
 		sb.append("<br>");
+		
+		StringBuilder sb2 = new StringBuilder();
 		for (Object data : list1) {
 			Map<String, Object> row = (Map<String, Object>) data;
 			String[] each = new String[2];
 			each[0] = row.get("leavedate").toString();
 			each[1] = (String) row.get("content");
 
-			sb.append(each[0]);
-			sb.append("\t");
-			sb.append(each[1]);
+			sb2.append(each[0]);
+			sb2.append("&emsp;");
+			sb2.append(each[1]);
 
-			sb.append("<br>");
+			sb2.append("<br>");
+		}
+		
+		if(sb2.length() == 0){
+			sb.append("当月没有请假");
+		}else{
+			sb.append(sb2.toString());
 		}
 
 		return sb.toString();

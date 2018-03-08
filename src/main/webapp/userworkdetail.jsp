@@ -20,7 +20,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.ui.accordion').accordion();
-		$('.envelope').popup({
+		$('#envelope').popup({
 			popup : $('.custom.popup'),
 			on : 'click'
 		});
@@ -39,7 +39,7 @@
 	}
 
 	function sendmail() {
-		$('.custom.popup').hidden();
+		$('#envelope').popup('hide all');
 		var mail = $("#mail").val();
 		if (mail.length == 0) {
 			$("#errmsg").html("邮件地址必须输入");
@@ -55,6 +55,11 @@
 			url : "./sendmail.do?" + $("form").serialize(),
 			dataType : "json",
 			success : function(data) {
+				$("#errmsg").html(data.message);
+				$('#cmodal').modal({
+					closable : false
+
+				}).modal('show');
 			},
 			error : function() {
 				alert("网络异常，请稍后重试");
@@ -129,16 +134,12 @@ footer {
 						</div>
 					</div>
 					<div class="some-wrapping-div" style="float: right;">
-						<i class="envelope outline  icon"></i>
+						<i id='envelope' class="envelope outline  icon"></i>
 					</div>
 					<div class="ui custom popup top left transition hidden">
 						<div class="ui yellow inverted segment">
 							<div class="ui inverted form">
-								<div class="inline field">
-									<div class="ui custom button" onclick="sendmail()">
-										<i class="envelope outline  icon"></i>OK
-									</div>
-								</div>
+								
 
 								<div class="two fields">
 
@@ -148,8 +149,13 @@ footer {
 									</div>
 								</div>
 								<div class="field">
-									</label> <input type="text" id="mail" name="mail" placeholder="邮箱地址(必须)"
+								<input type="text" id="mail" name="mail" placeholder="收件邮箱地址(必须)"
 										value="">
+								</div>
+								<div class="inline field" >
+									<div class="ui custom button" onclick="sendmail()">
+										<i class="envelope icon"></i>送信
+									</div>
 								</div>
 							</div>
 						</div>

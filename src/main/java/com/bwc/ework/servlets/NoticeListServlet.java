@@ -31,7 +31,7 @@ public class NoticeListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String type = request.getParameter("type");
-		String sql = "select * from cdata_notice where delflg=? and type =? order by id desc";
+		String sql = "select * from cdata_notice where delflg=? and type =? order by createdate desc";
 		Object[] params = new Object[2];
 		params[0] = "0";
 		params[1] = type;
@@ -66,7 +66,7 @@ public class NoticeListServlet extends HttpServlet {
 	
 	private String formateContent(String content){
 		if(content != null && content.length() > 10){
-			content = content.substring(0, 9);
+			content = content.trim().replace("　", "").substring(0, 9);
 		}
 		
 		return content + "...";
