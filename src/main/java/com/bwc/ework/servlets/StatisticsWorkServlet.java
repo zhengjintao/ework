@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,9 +66,12 @@ public class StatisticsWorkServlet extends HttpServlet {
 		params[1] = month;
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 
+		Map<String, String[]> leaveinfo = getLeaveTime(year,month);
+		
 		// 系统当前时间取得
 		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
 		String dateStr= wdate == null ? formattime.format(new Date()): wdate;
+		List<String> done = new ArrayList<String>();
 		// 结果取得整理（画面显示用）
 		for (Object result : resultList) {
 			Map<String, Object> row = (Map<String, Object>) result;
@@ -76,18 +80,38 @@ public class StatisticsWorkServlet extends HttpServlet {
 			data[0] = row.get("username").toString();
 			// 出勤时间
 			data[1] = row.get("worktime").toString();
-			String[] leaveinfo = getLeaveTime(row.get("userid").toString(),year,month);
-			// 请假时间
-			data[2] = leaveinfo[0];
 			
-			data[3] = row.get("userid").toString();
+			String userid = row.get("userid").toString();
+			String[] linfo = leaveinfo.containsKey(userid) ? leaveinfo.get(userid) : null;
+			// 请假时间
+			data[2] = linfo == null ? "0.0" : linfo[3];
+			
+			data[3] = userid;
 			data[4] = dateStr;
 			data[5] = row.get("workday").toString();
-			data[6] = leaveinfo[1];
+			data[6] = linfo == null ? "0" : linfo[2];
 			dataList.add(data);
+			done.add(userid);
 		}
 		
-		
+		for (String userid : leaveinfo.keySet()) {
+			if(!done.contains(userid)){
+				String[] linfo = leaveinfo.get(userid);
+				String[] data = new String[7];
+				// 用户名
+				data[0] = linfo[1];
+				// 出勤时间
+				data[1] = "0.0";
+				// 请假时间
+				data[2] = linfo[3];
+				
+				data[3] = userid;
+				data[4] = dateStr;
+				data[5] = "0";
+				data[6] = linfo[2];
+				dataList.add(data);
+			}
+		}
 		
 		// 日期设定
 		request.setAttribute("sysDate", DateTimeUtil.GetMonth(dateStr));
@@ -105,16 +129,28 @@ public class StatisticsWorkServlet extends HttpServlet {
 	}
 	
 	
-	private String[] getLeaveTime(String userid,String year,String month){
+	private Map<String, String[]> getLeaveTime(String year,String month){
 		DecimalFormat df2=new DecimalFormat("0.0");
 		
-		String sql = "select * from cdata_leave where userid= ? and year = ? and month= ?";
-		Object[] params = new Object[3];
-		params[0] = userid;
-		params[1] = year;
-		params[2] = month;
+		String sql = "select  user.userid, user.username, count(*) as lcount from cdata_leave cl "
+				+ "join mstr_user user on user.userid = cl.userid "
+				+ "where cl.year = ? and cl.month= ? and user.delflg = '0' "
+				+ "group by user.userid, user.username";
+		Object[] params = new Object[2];
+		params[0] = year;
+		params[1] = month;
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
-		return new String[]{df2.format(resultList.size() * 8), String.valueOf(resultList.size())};
+		Map<String, String[]> linfo = new HashMap<String, String[]>();
+		for (Object result : resultList) {
+			Map<String, Object> row = (Map<String, Object>) result;
+			String[] data = new String[4];
+			data[0] = row.get("userid").toString();
+			data[1] = row.get("username").toString();
+			data[2] = row.get("lcount").toString();
+			data[3] = df2.format(((Long)row.get("lcount")) * 8);
+			linfo.put(data[0], data);
+		}
+		return linfo;
 	}
 
 }

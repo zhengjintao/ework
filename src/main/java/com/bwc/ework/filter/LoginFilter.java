@@ -51,8 +51,8 @@ public class LoginFilter implements Filter {
 			}
 		}
 	    
-		// min.css / min.js 以外不缓存
-		if(!uri.contains("min.css") && !uri.contains("min.js")){
+		// .min.css / .min.js / .woff2 以外不缓存
+		if(!uri.contains(".min.css") && !uri.contains(".min.js") && !uri.contains(".woff2")){
 			System.out.println(uri);
 			rep.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.  
 			rep.setHeader("Pragma", "no-cache"); // HTTP 1.0.  
