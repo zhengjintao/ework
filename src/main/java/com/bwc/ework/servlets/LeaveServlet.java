@@ -1,6 +1,7 @@
 package com.bwc.ework.servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +21,7 @@ import org.json.JSONObject;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.mail.SendMailFactory;
 import com.bwc.ework.form.User;
 
 /**
@@ -185,6 +188,10 @@ public class LeaveServlet extends HttpServlet {
 						insertparams[4] = wcomment == null || wcomment.length() == 0 ? "未填写理由" : wcomment;
 						JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 					}
+					
+					if(wdateList.size()>0){
+						sendMail(userinfo.getUserName(), wdate, wcomment);
+					}
 				}
 
 				wdate2 = DateTimeUtil.GetMonth(wdateList.get(0));
@@ -236,4 +243,33 @@ public class LeaveServlet extends HttpServlet {
 		re.forward(request, response);
 	}
 
+	// 向管理员发送请假邮件
+	private void sendMail(String username,String wdate,String wcomment) throws UnsupportedEncodingException{
+		//管理员邮箱取得
+		String sql = "select mail from mstr_user where authflg=?";
+		Object[] params = new Object[1];
+		params[0] = "1";
+		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
+		List<String> list = new ArrayList<String>();
+		if(userlist.size() > 0){
+			for(int i=0;i<userlist.size();i++){
+				Map<String, Object> set = (Map<String, Object>)userlist.get(i);
+				if(set.get("mail")!= null){
+					list.add(set.get("mail").toString());
+				}
+			}
+		}
+		
+		if(list.size()>0){
+			String mailname = "请假通知_" + username;
+			String text = "尊敬的管理员您好：" +"<br>" +  
+			              "&emsp;&emsp;本人(" + username + ")由于" + wcomment+"<br>" +
+					      "因此,计划于" +wdate + "请假" +"<br>" + 
+			              "望批准";
+			try {
+				SendMailFactory.getInstance().getMailSender().sendMessage(list, mailname, text);
+			} catch (MessagingException e) {
+			}
+		}
+	}
 }
