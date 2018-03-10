@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.alibaba.fastjson.JSONObject;
+import org.json.JSONObject;
+
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.form.User;
