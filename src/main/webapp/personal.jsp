@@ -101,7 +101,7 @@ footer {
 						<div class="content">
 							<!-- <div class="description">00001</div> -->
 							<div class="header"><%=(String)request.getAttribute("userid") %></div>
-							<div class="description"><%=(String)request.getAttribute("username") %></div>
+							<div class="description"><a href="userInfoEdit.do?userid=<%=(String)request.getAttribute("userid") %>"><%=(String)request.getAttribute("username") %></a></div>
 						</div>
 					</div>
 				</div>
@@ -137,6 +137,9 @@ footer {
 					
 					function editpwd() {
 						window.location.href = "editpassword.do";
+					}
+					function userinfoedit() {
+						window.location.href = "userInfoEdit.do";
 					}
 				</script>
 			</div>

@@ -11,6 +11,8 @@ public class User {
 	private Time endTime;
 	private String sex;
 	private String authflg;
+	private String mail;
+	private Date birthday;
 	
 	public String getUserId() {
 		return userId;
@@ -59,6 +61,18 @@ public class User {
 	}
 	public void setAuthflg(String authflg) {
 		this.authflg = authflg;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 	
 }
