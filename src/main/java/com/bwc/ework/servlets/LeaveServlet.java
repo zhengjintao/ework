@@ -117,6 +117,8 @@ public class LeaveServlet extends HttpServlet {
 		String wcomment = request.getParameter("wcomment");
 		if (wcomment != null) {
 			wcomment = new String(wcomment.getBytes("iso-8859-1"), "utf-8");
+		}else{
+			wcomment ="";
 		}
 
 		String subkbn = request.getParameter("subKbn");
@@ -140,8 +142,7 @@ public class LeaveServlet extends HttpServlet {
         
 		// 初期化
 		if (subkbn == null) {
-			wdate = now;
-			wdate2 = DateTimeUtil.GetMonth(wdate);
+			wdate2 = DateTimeUtil.GetMonth(now);
 		} else {
 
 			// 删除
@@ -156,7 +157,12 @@ public class LeaveServlet extends HttpServlet {
 
 				List<Object> listw = JdbcUtil.getInstance().excuteQuery(sql, params);
 				if (listw.size() > 0) {
-					request.setAttribute("errmsg", "当天已签到，无法请假！");
+					StringBuilder dayinfo = new StringBuilder();
+					for (Object data : listw) {
+						Map<String, Object> row = (Map<String, Object>) data;
+						dayinfo.append(String.valueOf(row.get("date")) + "<br>");
+					}
+					request.setAttribute("errmsg", "下面日期已签到，无法请假。<br>" + dayinfo);
 				} else {
 					// 删除
 					String deleteSql = "delete from cdata_leave where userid=? and leavedate in ("+ buffer.toString() +")";
@@ -188,6 +194,7 @@ public class LeaveServlet extends HttpServlet {
 		request.setAttribute("sysDate", wdateList.get(0));
 		// 日期设定
 		request.setAttribute("sysDate2", wdate2);
+		request.setAttribute("wcomment", wcomment);
 
 		String sql = "select * from cdata_leave where userid=? and leavedate in ("+ buffer.toString() +")";
 		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
@@ -203,10 +210,10 @@ public class LeaveServlet extends HttpServlet {
 		}
 		for(String[] each : monthinfo){
 			info.append("<tr>");
-			info.append("<td style='width:38%'>");
+			info.append("<td style='width:40%'>");
 			info.append(each[0]);
 			info.append("</td>");
-			info.append("<td style='width:62%'> ");
+			info.append("<td style='width:60%'> ");
 			info.append(each[1]);
 			info.append("</td>");
 			info.append("<td style='width:6%'>");

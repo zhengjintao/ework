@@ -70,6 +70,10 @@ function getleaveinfomonth()
 	});
 }
 
+function cancel(wdate)
+{
+	$('#pp').popup('hide all');
+}
 function ondelete(wdate)
 {
 	var swdate = wdate.toString();
@@ -131,17 +135,29 @@ footer {
 		}).on("changeDate",function(e) {
 	        // `e` here contains the extra attributes
 	        var str ='';
+	        var strlist ='';
 	        var obj = e.dates;
-	        for (k in obj)
+	        var arr = new Array(e.dates.length);
+	        for(i=0 ; i< e.dates.length; i++){
+	        	var datestr = formatDate(obj[i]);
+	        	arr[i] = datestr;
+	        }
+	        arr.sort();
+	        for (k in arr)
 	        {
+	        	
 	        	if(str!=''){
-	        		str = str + ',' + formatDate(obj[k]);
+	        		str = str + ',' + arr[k];
+	        		strlist = strlist + '\r\n' + arr[k];
 	        	}else{
-	        		str = formatDate(obj[k]);
+	        		str = arr[k];
+	        		strlist = arr[k];
 	        	}
 	        	
 	        }
 			$('#wdate').val(str);
+			$('#llist').val(strlist);
+			
 	    });
 		
 		$('#pp')
@@ -194,13 +210,19 @@ footer {
 						<div class="ui custom popup top right transition hidden">
                             <div class="ui yellow inverted segment">
 							<div class="ui inverted form">
+							    <div class="field">
+								 <textarea id='llist' rows=4 placeholder="选择请假日期" readonly="readonly"></textarea>
+								</div>
 								<div class="field">
 								<input type="text" id="wcomment" name="wcomment" placeholder="输入理由(必填)"
-										value="">
+										value=<%=(String)request.getAttribute("wcomment") %>>
 								</div>
 								<div class="inline field" >
 									<button class="ui active yellow button" type="submit">
 										OK
+									</button>
+									<button class="ui active yellow button" type="button" onclick='cancel();'>
+										Cancel
 									</button>
 								</div>
 							</div>
