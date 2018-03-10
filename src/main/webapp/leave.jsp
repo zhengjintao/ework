@@ -17,8 +17,23 @@
 <script src="dist/components/transition.min.js"></script>
 <script src="dist/semantic.min.js"></script>
 
+<link id="bsdp-css" href="dist/datepicker/css/bootstrap-datepicker3.standalone.min.css" rel="stylesheet">
+<script src="dist/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="dist/datepicker/locales/bootstrap-datepicker.ja.min.js"></script>
+
 <script type="text/javascript">
 function checkdata(){
+	var data = $('.datepicker');
+	$('#pp').popup('hide all');
+	var wdate = $('#wdate').val();
+	if(wdate.length == 0){
+    	$("#errmsg").html("未选择请假日期");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;
+    }
 	var comment = $("#wcomment").val();
 	if(comment.length == 0){
     	$("#errmsg").html("请假理由必须输入");
@@ -36,21 +51,7 @@ function checkdata(){
 		}).modal('show');
         return false;
     }
-}
-function getSettedtime()
-{	
-	$.ajax({ 
-	    type: "post", 
-	    url: "leave.do?"+ $("form").serialize() + "&selectChg=1", 
-	    dataType: "json", 
-	    success: function (data) {
-	    	$("#wcomment").val(data.comment);
-	    	$("#oklabel").html(data.oklabel);
-	    }, 
-	    error: function() {
-	            alert("网络异常，请稍后重试");
-	    } 
-	});
+    return true;
 }
 
 function getleaveinfomonth()
@@ -69,9 +70,22 @@ function getleaveinfomonth()
 	});
 }
 
-function deleteData()
+function ondelete(wdate)
 {
-	window.location.href = "leave.do?"+ $("form").serialize() + "&deleteFlg=1";
+	var swdate = wdate.toString();
+	var fwdate = swdate.substring(0, 4) + "-"+ swdate.substring(4,6) + "-" + swdate.substring(6 ,8);
+	$.ajax({ 
+	    type: "post", 
+	    url: "leave.do?"+ "wdate=" + fwdate + "&deleteFlg=1&subKbn=1", 
+	    dataType: "json", 
+	    success: function (data) {
+	    	$('#infobody').empty();
+	    	$('#infobody').append(data.info);
+	    }, 
+	    error: function() {
+	            alert("网络异常，请稍后重试");
+	    } 
+	});
 }
 </script>
 
@@ -94,8 +108,49 @@ footer {
 </style>
 </head>
 <body>
+
    <script type="text/javascript">
 	$(document).ready(function() {
+		function formatDate(d) {
+		        month = '' + (d.getMonth() + 1),
+		        day = '' + d.getDate(),
+		        year = d.getFullYear();
+
+		    if (month.length < 2) month = '0' + month;
+		    if (day.length < 2) day = '0' + day;
+
+		    return [year, month, day].join('-');
+		}
+		
+		$('#sandbox-container div').datepicker({
+			format: "yyyy-mm-dd",
+		    language: "ja",
+		    multidate: true,
+		    daysOfWeekHighlighted: "0,6",
+		    todayHighlight: true
+		}).on("changeDate",function(e) {
+	        // `e` here contains the extra attributes
+	        var str ='';
+	        var obj = e.dates;
+	        for (k in obj)
+	        {
+	        	if(str!=''){
+	        		str = str + ',' + formatDate(obj[k]);
+	        	}else{
+	        		str = formatDate(obj[k]);
+	        	}
+	        	
+	        }
+			$('#wdate').val(str);
+	    });
+		
+		$('#pp')
+		  .popup({
+		    popup : $('.custom.popup'),
+		    on    : 'click'
+		  })
+		;
+		
 		var message = "<%=(String) request.getAttribute("errmsg")%>";
 		if (message != "null" && message.length > 0) {
 			$('.ui.modal').modal({
@@ -103,6 +158,8 @@ footer {
 
 			}).modal('show');
 		}});
+	
+	
 	</script>
 	<div id="cmodal" class="ui small test modal transition hidden">
 	    <i class="close icon"></i>
@@ -111,31 +168,50 @@ footer {
 			</p>
 		</div>
 	</div>
+					
 	<div class="ui one column grid container">
 		<div class="column">
 			<form action="./leave.do" method="post" onsubmit="return checkdata();">
 				<div class="ui yellow inverted segment">
 					<div class="ui inverted form">
-						<div class="inline field">
-							<div class="field">
-								<label>日期</label> <input type="date" id="wdate" name="wdate"
-									value=<%=(String) request.getAttribute("sysDate")%> onchange="getSettedtime()">
-							</div>
-						</div>
-						<div class="two fields">
-							<div class="field">
-								<label>理由</label> <input type="text" id="wcomment" name="wcomment" placeholder="必填项目" value=<%=(String) request.getAttribute("wcomment")%>>
-							</div>
-						</div>
-						<input type="hidden" name="subKbn" value="true">
-						<Button class="ui active yellow button" type="submit">
-							<i class="add to calendar icon"></i><span id="oklabel"><%=(String) request.getAttribute("oklabel")%></span>
-						</Button>
-						<div class="ui active yellow button" onclick = "deleteData()" >
-							<i class="trash icon"></i> 删除
-						</div>
+					<div class="inline field">
+					<div id='sandbox-container' style='background-color:white;' align="center"><div> </div> </div>
+			             <input type="hidden" id="wdate" name="wdate">
 					</div>
-
+					
+					<!-- 	<div class="two fields">
+							<div class="field">
+								<input type="text" style="width:96%" id="wcomment" name="wcomment" placeholder="理由(必填)">
+							</div>
+						</div>
+						
+						-->
+						<input type="hidden" name="subKbn" value="true">
+						
+						<div id= "pp"  class="some-wrapping-div ui active yellow button" >
+							<i class="add to calendar icon"></i><span>确定</span>
+						</div>
+						<div class="ui custom popup top right transition hidden">
+                            <div class="ui yellow inverted segment">
+							<div class="ui inverted form">
+								<div class="field">
+								<input type="text" id="wcomment" name="wcomment" placeholder="输入理由(必填)"
+										value="">
+								</div>
+								<div class="inline field" >
+									<button class="ui active yellow button" type="submit">
+										OK
+									</button>
+								</div>
+							</div>
+					    	</div>
+                        </div>
+					<!-- 
+						<div class="ui active yellow button" onclick = "deleteData()" >
+							<i class="trash icon"></i> Clear
+						</div>
+					 -->
+					</div>
 				</div>
 			
 
@@ -143,7 +219,7 @@ footer {
 			    <a class="ui orange ribbon label">当月请假</a>
 				<input type="month"  id="wdate2" name="wdate2" value=<%=(String) request.getAttribute("sysDate2")%> onchange="getleaveinfomonth()">
 
-				<table class="ui celled table">
+				<table class="ui unstackable celled table">
 					<tbody id="infobody">
 					<%=(String) request.getAttribute("info")%>
 					</tbody>
