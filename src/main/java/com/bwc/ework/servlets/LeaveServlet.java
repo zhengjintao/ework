@@ -189,9 +189,7 @@ public class LeaveServlet extends HttpServlet {
 						JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 					}
 					
-					if(wdateList.size()>0){
-						sendMail(userinfo.getUserName(), wdate, wcomment);
-					}
+					sendMail(userinfo.getUserName(), wdate, wcomment);
 				}
 
 				wdate2 = DateTimeUtil.GetMonth(wdateList.get(0));
@@ -203,9 +201,6 @@ public class LeaveServlet extends HttpServlet {
 		// 日期设定
 		request.setAttribute("sysDate2", wdate2);
 		request.setAttribute("wcomment", wcomment);
-
-		String sql = "select * from cdata_leave where userid=? and leavedate in ("+ buffer.toString() +")";
-		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 		
 		List<String[]> monthinfo = getMonthData(userinfo.getUserId(), wdate2);
 		StringBuilder info= new StringBuilder();
@@ -225,7 +220,7 @@ public class LeaveServlet extends HttpServlet {
 			info.append(each[1]);
 			info.append("</td>");
 			info.append("<td style='width:6%'>");
-			info.append("<i class='window close outline icon' onclick='ondelete("+ each[0].replace("-", "") +");'></i>");
+			info.append("<i class='close icon' onclick='ondelete("+ each[0].replace("-", "") +");'></i>");
 			info.append("</td>");
 			info.append("</tr>");
 		}
@@ -246,7 +241,7 @@ public class LeaveServlet extends HttpServlet {
 	// 向管理员发送请假邮件
 	private void sendMail(String username,String wdate,String wcomment) throws UnsupportedEncodingException{
 		//管理员邮箱取得
-		String sql = "select mail from mstr_user where authflg=?";
+		String sql = "select mail from mstr_user where authflg=? and delflg='0' and mail is not null";
 		Object[] params = new Object[1];
 		params[0] = "1";
 		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
@@ -266,10 +261,24 @@ public class LeaveServlet extends HttpServlet {
 			              "&emsp;&emsp;本人(" + username + ")由于" + wcomment+"<br>" +
 					      "因此,计划于" +wdate + "请假" +"<br>" + 
 			              "望批准";
-			try {
-				SendMailFactory.getInstance().getMailSender().sendMessage(list, mailname, text);
-			} catch (MessagingException e) {
-			}
+			final List<String> ulist = list;
+			final String umailname = mailname;
+			final String utext = text;
+			Thread t = new Thread(new Runnable(){
+				public void run(){
+					try {
+						try {
+							SendMailFactory.getInstance().getMailSender().sendMessage(ulist, umailname, utext);
+						} catch (MessagingException e) {
+						}
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			t.start();
+			
 		}
 	}
 }
