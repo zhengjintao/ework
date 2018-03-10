@@ -12,9 +12,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.form.User;
 
 /**
  * Servlet implementation class UserWorkDetailServlet
@@ -42,9 +44,12 @@ public class UserWorkDetailServlet extends HttpServlet {
 		//查询月份取得
 		String wdate = request.getParameter("wdate");
 
+		HttpSession session = request.getSession();
+		// 用户信息
+		User userif = (User) session.getAttribute("userinfo");
 		String sql = "select * from mstr_user where userid=? and delflg=?";
 		Object[] params = new Object[2];
-		params[0] = userid;
+		params[0] = userif.getUserId();
 		params[1] = "0";
 		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 		Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
