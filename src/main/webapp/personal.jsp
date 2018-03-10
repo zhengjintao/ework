@@ -100,8 +100,8 @@ footer {
 						<img class="ui avatar image" src="<%=(String)request.getAttribute("sex") %>">
 						<div class="content">
 							<!-- <div class="description">00001</div> -->
-							<div class="header"><%=(String)request.getAttribute("userid") %></div>
-							<div class="description"><a href="userInfoEdit.do?userid=<%=(String)request.getAttribute("userid") %>"><%=(String)request.getAttribute("username") %></a></div>
+							<div class="header" style='color:gray;margin-left:1px'><%=(String)request.getAttribute("userid") %></div>
+							<div class="description"><a style='color:gray' href="userInfoEdit.do?userid=<%=(String)request.getAttribute("userid") %>"><%=(String)request.getAttribute("username") %></a></div>
 						</div>
 					</div>
 				</div>
