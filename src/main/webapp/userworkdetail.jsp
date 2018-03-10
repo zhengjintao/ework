@@ -141,17 +141,19 @@ footer {
 							<div class="ui inverted form">
 								
 
-								<div class="two fields">
-
+								<div class="inline fields">
 									<div class="field">
 										<input type="text" id="mailname" name="mailname"
 											placeholder="邮件名" value="当月出勤统计">
 									</div>
 								</div>
-								<div class="field">
+								<div class="inline fields">
+									<div class="field">
 								<input type="text" id="mail" name="mail" placeholder="收件邮箱地址(必须)"
-										value="">
+										value="<%=request.getAttribute("email") %>">
 								</div>
+								</div>
+								
 								<div class="inline field" >
 									<div class="ui custom button" onclick="sendmail()">
 										<i class="envelope icon"></i>送信

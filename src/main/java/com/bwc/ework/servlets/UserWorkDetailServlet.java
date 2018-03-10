@@ -41,7 +41,15 @@ public class UserWorkDetailServlet extends HttpServlet {
 		}
 		//查询月份取得
 		String wdate = request.getParameter("wdate");
-	
+
+		String sql = "select * from mstr_user where userid=? and delflg=?";
+		Object[] params = new Object[2];
+		params[0] = userid;
+		params[1] = "0";
+		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
+		Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
+		String mail = info.get("mail") == null ? "" : (String)info.get("mail");
+		request.setAttribute("email", mail);
 		
 		// 系统当前时间取得
 		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
