@@ -58,6 +58,21 @@
 			}
 			errmsg = errmsg + "姓名长度不正确（20位以内）";
 		}
+		
+		var textmail = $('#email').val();
+		if (textmail.length > 50) {
+			if (errmsg.length > 0) {
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "邮箱长度不正确（50位以内）";
+		}
+		var Regex = /^(?:\w+\.?)*\w+@(?:\w+\.).*\w+$/;
+		if (!Regex.test(textmail)){
+			if (errmsg.length > 0) {
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "邮箱格式不正确";
+		}
 
 		if (errmsg.length > 0) {
 			$("#errmsg").html(errmsg);
@@ -147,8 +162,8 @@ footer {
 						<div class="item">
 							<div class="ui labeled input">
 								<div class="ui label">邮箱</div>
-								<input name="email" type="text" value=<%=(String) request.getAttribute("mail")%>
-									placeholder="必须（5～30位）">
+								<input id='email' name="email" type="text" value='<%=(String) request.getAttribute("mail")%>'
+									placeholder="50字符以内">
 							</div>
 						</div>
 					</div>

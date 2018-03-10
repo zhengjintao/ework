@@ -40,8 +40,8 @@ public class UserInfoEditServlet extends HttpServlet {
 
 		String username = (String)info.get("username");
 		String sex = (String)info.get("sex");
-		String mail = (String)info.get("mail");
-		String birthday = info.get("birthday").toString();
+		String mail = info.get("mail") == null ? "" : (String)info.get("mail");
+		String birthday = info.get("birthday") == null ? "" : String.valueOf(info.get("birthday"));
 		String authflg = (String)info.get("authflg");
 		
 		//初期化
@@ -56,12 +56,19 @@ public class UserInfoEditServlet extends HttpServlet {
 			request.getRequestDispatcher("userInfoEdit.jsp").forward(request, response);
 		}else{
 			// 更新数据
-			String updatesql = "update mstr_user set mail=?,birthday= ? where userid=?";
-			Object[] updateparams = new Object[3];
+			String updatesql = "update mstr_user set mail=? where userid=?";
+			Object[] updateparams = new Object[2];
 			updateparams[0] = request.getParameter("email");
-			updateparams[1] = request.getParameter("ebirthday");
-			updateparams[2] = request.getParameter("euserid");
+			updateparams[1] = request.getParameter("euserid");
 			JdbcUtil.getInstance().executeUpdate(updatesql, updateparams);
+			
+			if(request.getParameter("ebirthday") != null){
+				updateparams = new Object[2];
+				updateparams[0] = request.getParameter("ebirthday");
+				updateparams[1] = request.getParameter("euserid");
+				updatesql = "update mstr_user set birthday= ? where userid=?";
+				JdbcUtil.getInstance().executeUpdate(updatesql, updateparams);
+			}
 			
 			request.getRequestDispatcher("personal.do").forward(request, response);
 			return;
