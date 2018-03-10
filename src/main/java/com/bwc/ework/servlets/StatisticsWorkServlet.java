@@ -66,7 +66,7 @@ public class StatisticsWorkServlet extends HttpServlet {
 		params[1] = month;
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 
-		Map<String, String[]> leaveinfo = getLeaveTime(year,month);
+		Map<String, String[]> leaveinfo = getLeaveTime(year,month,userinfo);
 		
 		// 系统当前时间取得
 		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
@@ -129,12 +129,13 @@ public class StatisticsWorkServlet extends HttpServlet {
 	}
 	
 	
-	private Map<String, String[]> getLeaveTime(String year,String month){
+	private Map<String, String[]> getLeaveTime(String year,String month, User userinfo){
 		DecimalFormat df2=new DecimalFormat("0.0");
-		
+		String selectuser = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "and user.userid ='" +userinfo.getUserId() +"' " ;
 		String sql = "select  user.userid, user.username, count(*) as lcount from cdata_leave cl "
 				+ "join mstr_user user on user.userid = cl.userid "
 				+ "where cl.year = ? and cl.month= ? and user.delflg = '0' "
+				+ selectuser
 				+ "group by user.userid, user.username";
 		Object[] params = new Object[2];
 		params[0] = year;
