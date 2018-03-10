@@ -66,12 +66,14 @@
 			}
 			errmsg = errmsg + "邮箱长度不正确（50位以内）";
 		}
-		var Regex = /^(?:\w+\.?)*\w+@(?:\w+\.).*\w+$/;
-		if (!Regex.test(textmail)){
-			if (errmsg.length > 0) {
-				errmsg = errmsg + "<br>";
+		if (textmail.length > 0){
+			var Regex = /^(?:\w+\.?)*\w+@(?:\w+\.).*\w+$/;
+			if (!Regex.test(textmail)){
+				if (errmsg.length > 0) {
+					errmsg = errmsg + "<br>";
+				}
+				errmsg = errmsg + "邮箱格式不正确";
 			}
-			errmsg = errmsg + "邮箱格式不正确";
 		}
 
 		if (errmsg.length > 0) {
