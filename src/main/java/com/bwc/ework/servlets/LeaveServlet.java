@@ -38,7 +38,7 @@ public class LeaveServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-    /**
+	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
@@ -83,9 +83,10 @@ public class LeaveServlet extends HttpServlet {
 		params[0] = userinfo.getUserId();
 		params[1] = request.getParameter("wdate");
 		JdbcUtil.getInstance().executeUpdate(sql, params);
+		
+		senddeleteMail(userinfo.getUserId(), userinfo.getUserName(), request.getParameter("wdate"));
 	}
-	
-	
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -94,13 +95,13 @@ public class LeaveServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		// 请假的开始日期
-		String wdate= request.getParameter("wdate");
+		String wdate = request.getParameter("wdate");
 		// 用户信息
 		User userinfo = (User) session.getAttribute("userinfo");
 		// 请假时间（复数可）
 		List<String> wdateList = new ArrayList();
-		if(wdate!= null){
-			wdateList =  Arrays.asList(wdate.split(","));
+		if (wdate != null) {
+			wdateList = Arrays.asList(wdate.split(","));
 		}
 
 		// 画面查询时间
@@ -111,8 +112,8 @@ public class LeaveServlet extends HttpServlet {
 		if (wdateList.size() == 0) {
 			wdateList.add(now);
 		}
-		
-		if(wdate2 == null || wdate2.length() == 0){
+
+		if (wdate2 == null || wdate2.length() == 0) {
 			wdate = now;
 			wdate2 = DateTimeUtil.GetMonth(now);
 		}
@@ -121,29 +122,26 @@ public class LeaveServlet extends HttpServlet {
 		String wcomment = request.getParameter("wcomment");
 		if (wcomment != null) {
 			wcomment = new String(wcomment.getBytes("iso-8859-1"), "utf-8");
-		}else{
-			wcomment ="";
+		} else {
+			wcomment = "";
 		}
 
 		String subkbn = request.getParameter("subKbn");
 
 		// IN条件作成
-        StringBuffer buffer = new StringBuffer();  
-        for (int i = 0; i < wdateList.size(); i++)  
-        {  
-            buffer.append("?, ");  
-        }  
-        buffer.deleteCharAt(buffer.length() - 1);  
-        buffer.deleteCharAt(buffer.length() - 1); 
-        
-        
-		Object[] params = new Object[wdateList.size()+1];
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < wdateList.size(); i++) {
+			buffer.append("?, ");
+		}
+		buffer.deleteCharAt(buffer.length() - 1);
+		buffer.deleteCharAt(buffer.length() - 1);
+
+		Object[] params = new Object[wdateList.size() + 1];
 		params[0] = userinfo.getUserId();
-        for (int i = 0; i < wdateList.size(); i++)  
-        {  
-        	params[i+1] = wdateList.get(i); 
-        }  
-        
+		for (int i = 0; i < wdateList.size(); i++) {
+			params[i + 1] = wdateList.get(i);
+		}
+
 		// 初期化
 		if (subkbn == null) {
 			wdate2 = DateTimeUtil.GetMonth(now);
@@ -157,7 +155,7 @@ public class LeaveServlet extends HttpServlet {
 			// 初期化的场合
 			if ("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("leaveinfo"))
 					&& !"1".equals(request.getParameter("deleteFlg"))) {
-				String sql = "select * from cdata_worktime where userid=? and date in ("+ buffer.toString() +")";
+				String sql = "select * from cdata_worktime where userid=? and date in (" + buffer.toString() + ")";
 
 				List<Object> listw = JdbcUtil.getInstance().excuteQuery(sql, params);
 				if (listw.size() > 0) {
@@ -169,7 +167,8 @@ public class LeaveServlet extends HttpServlet {
 					request.setAttribute("errmsg", "下面日期已签到，无法请假。<br>" + dayinfo);
 				} else {
 					// 删除
-					String deleteSql = "delete from cdata_leave where userid=? and leavedate in ("+ buffer.toString() +")";
+					String deleteSql = "delete from cdata_leave where userid=? and leavedate in (" + buffer.toString()
+							+ ")";
 					Object[] delparams = new Object[2];
 					delparams[0] = userinfo.getUserId();
 					delparams[1] = wdate;
@@ -179,8 +178,8 @@ public class LeaveServlet extends HttpServlet {
 					String insertSql = "insert into cdata_leave value(?,?,?,?,?)";
 					Object[] insertparams = new Object[5];
 					String userid = userinfo.getUserId();
-					for(int i=0;i<wdateList.size();i++){
-						com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(wdateList.get(i));			
+					for (int i = 0; i < wdateList.size(); i++) {
+						com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(wdateList.get(i));
 						insertparams[0] = userid;
 						insertparams[1] = wdateList.get(i);
 						insertparams[2] = date1.getYear();
@@ -188,8 +187,8 @@ public class LeaveServlet extends HttpServlet {
 						insertparams[4] = wcomment == null || wcomment.length() == 0 ? "未填写理由" : wcomment;
 						JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 					}
-					
-					sendMail(userinfo.getUserName(), wdate, wcomment);
+
+					sendMail(userid, userinfo.getUserName(), wdate, wcomment);
 				}
 
 				wdate2 = DateTimeUtil.GetMonth(wdateList.get(0));
@@ -201,17 +200,17 @@ public class LeaveServlet extends HttpServlet {
 		// 日期设定
 		request.setAttribute("sysDate2", wdate2);
 		request.setAttribute("wcomment", wcomment);
-		
+
 		List<String[]> monthinfo = getMonthData(userinfo.getUserId(), wdate2);
-		StringBuilder info= new StringBuilder();
-		if(monthinfo.size() == 0){
+		StringBuilder info = new StringBuilder();
+		if (monthinfo.size() == 0) {
 			info.append("<tr>");
 			info.append("<td>");
 			info.append("当月没有请假");
 			info.append("</td>");
 			info.append("</tr>");
 		}
-		for(String[] each : monthinfo){
+		for (String[] each : monthinfo) {
 			info.append("<tr>");
 			info.append("<td style='width:40%'>");
 			info.append(each[0]);
@@ -220,7 +219,7 @@ public class LeaveServlet extends HttpServlet {
 			info.append(each[1]);
 			info.append("</td>");
 			info.append("<td style='width:6%'>");
-			info.append("<i class='close icon' onclick='ondelete("+ each[0].replace("-", "") +");'></i>");
+			info.append("<i class='close icon' onclick='ondelete(" + each[0].replace("-", "") + ");'></i>");
 			info.append("</td>");
 			info.append("</tr>");
 		}
@@ -239,33 +238,21 @@ public class LeaveServlet extends HttpServlet {
 	}
 
 	// 向管理员发送请假邮件
-	private void sendMail(String username,String wdate,String wcomment) throws UnsupportedEncodingException{
-		//管理员邮箱取得
-		String sql = "select mail from mstr_user where authflg=? and delflg='0' and mail is not null";
-		Object[] params = new Object[1];
-		params[0] = "1";
-		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
-		List<String> list = new ArrayList<String>();
-		if(userlist.size() > 0){
-			for(int i=0;i<userlist.size();i++){
-				Map<String, Object> set = (Map<String, Object>)userlist.get(i);
-				if(set.get("mail")!= null){
-					list.add(set.get("mail").toString());
-				}
-			}
-		}
-		
-		if(list.size()>0){
-			String mailname = "请假通知_" + username;
-			String text = "尊敬的管理员您好：" +"<br>" +  
-			              "&emsp;&emsp;本人(" + username + ")由于" + wcomment+"<br>" +
-					      "因此,计划于" +wdate + "请假" +"<br>" + 
-			              "望批准";
+	private void senddeleteMail(String userid, String username, String wdate)
+			throws UnsupportedEncodingException {
+
+		List<String> list = getadmminusermailadd();
+
+		if (list.size() > 0) {
+			String mailname = "取消请假通知_" + username;
+			String text = "尊敬的管理员您好：" + "<br>" + "&emsp;&emsp;本人(" + username + ")取消"
+					+ wdate + "的请假。" + "<br>" + "请留意";
+			text = text + leaveinfoText(userid, username);
 			final List<String> ulist = list;
 			final String umailname = mailname;
 			final String utext = text;
-			Thread t = new Thread(new Runnable(){
-				public void run(){
+			Thread t = new Thread(new Runnable() {
+				public void run() {
 					try {
 						try {
 							SendMailFactory.getInstance().getMailSender().sendMessage(ulist, umailname, utext);
@@ -278,7 +265,93 @@ public class LeaveServlet extends HttpServlet {
 				}
 			});
 			t.start();
-			
+
 		}
+	}
+
+	// 向管理员发送请假邮件
+	private void sendMail(String userid, String username, String wdate, String wcomment)
+			throws UnsupportedEncodingException {
+		// 管理员邮箱取得
+		List<String> list = getadmminusermailadd();
+
+		if (list.size() > 0) {
+			String mailname = "请假通知_" + username;
+			String text = "尊敬的管理员您好：" + "<br>" + "&emsp;&emsp;本人(" + username + ")由于" + wcomment + "<br>" + "因此,计划于"
+					+ wdate + "请假。" + "<br>" + "望批准";
+			text = text + leaveinfoText(userid, username);
+			final List<String> ulist = list;
+			final String umailname = mailname;
+			final String utext = text;
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					try {
+						try {
+							SendMailFactory.getInstance().getMailSender().sendMessage(ulist, umailname, utext);
+						} catch (MessagingException e) {
+						}
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			t.start();
+
+		}
+	}
+
+	private List<String> getadmminusermailadd() {
+		// 管理员邮箱取得
+		String sql = "select mail from mstr_user where authflg=? and delflg='0' and mail is not null";
+		Object[] params = new Object[1];
+		params[0] = "1";
+		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
+		List<String> list = new ArrayList<String>();
+		if (userlist.size() > 0) {
+			for (int i = 0; i < userlist.size(); i++) {
+				Map<String, Object> set = (Map<String, Object>) userlist.get(i);
+				if (set.get("mail") != null) {
+					list.add(set.get("mail").toString());
+				}
+			}
+		}
+
+		return list;
+	}
+
+	private String leaveinfoText(String userid, String username) {
+		SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd");
+		String now = formattime.format(new Date());
+		List<String[]> info = leaveinfoAfterToday(userid, now);
+		StringBuilder sb = new StringBuilder();
+		if (info.size() > 0) {
+			sb.append("<br>");
+			sb.append("-----------------------备考------------------------<br>");
+			sb.append("[" + username + "]最终请假安排一览<br>");
+			for (String[] each : info) {
+				sb.append(each[0]).append("&emsp;&emsp;").append(each[1]).append("<br>");
+			}
+		}
+		return sb.toString();
+	}
+
+	private List<String[]> leaveinfoAfterToday(String userid, String date) {
+		List<String[]> info = new ArrayList<String[]>();
+		String sql2 = "SELECT * FROM cdata_leave where userid=? and leavedate > ? order by leavedate;";
+		Object[] params2 = new Object[2];
+		params2[0] = userid;
+		params2[1] = date;
+		List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+
+		for (int i = 0; i < infolist.size(); i++) {
+			Map<String, Object> set = (Map<String, Object>) infolist.get(i);
+			String[] each = new String[2];
+			each[0] = String.valueOf(set.get("leavedate"));
+			each[1] = String.valueOf(set.get("content"));
+			info.add(each);
+		}
+
+		return info;
 	}
 }
