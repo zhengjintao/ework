@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.JdbcUtil;
-import com.bwc.ework.common.weixin.AuthUtil;
+import com.bwc.ework.common.wechat.URLProducer;
 import com.bwc.ework.common.HashEncoder;
 import com.bwc.ework.form.User;
 
@@ -35,10 +35,12 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 来自微信公众号
-		if(request.getParameter("from") != null ){
-			String backUrl="http://freetokyo/ework/callBack.do";
-	        response.sendRedirect(AuthUtil.createUrl(backUrl));
+		if(request.getParameter("from") == null ){
+			String callbackUrl="http://www.freertokyo.com/eworkdemo/callback.do";
+	        response.sendRedirect(URLProducer.GetAuthUrl(callbackUrl));
+	        return;
 		}
+		
 		String user = request.getParameter("userid");
 		String pwd = HashEncoder.getResult(request.getParameter("password"));
 		String rembpwd = request.getParameter("rembpwd");

@@ -181,7 +181,7 @@
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>CallBackServlet</servlet-name>
-    	<url-pattern>/weixincallback.do</url-pattern>
+    	<url-pattern>/callback.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>UserInfoEditServlet</servlet-name>

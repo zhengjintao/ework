@@ -1,7 +1,7 @@
-﻿<html>
+<html>
 <body>
 <div>
-Error page!
+<%=(String)request.getAttribute("errmsg") %>
 </div>
 </body>
 </html>
