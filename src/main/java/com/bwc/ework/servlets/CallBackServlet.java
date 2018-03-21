@@ -89,9 +89,14 @@ public class CallBackServlet extends HttpServlet {
 
 			if(userinfo != null && userinfo.size() >0){
 				Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
-				String ueserid = (String)info.get("userid");
-				String password = (String)info.get("password");
-				response.sendRedirect("login.do?rembpwd=1&userid="+ ueserid + "&password=" + password);
+				if("0".equals((String)info.get("delflg"))){
+					String ueserid = (String)info.get("userid");
+					String password = (String)info.get("password");
+					request.getRequestDispatcher("login.do?rembpwd=1&userid="+ ueserid + "&password=" + password);
+				}else{
+					response.sendRedirect("login.do");
+				}
+				
 				return;
 			}else{
 				String accessToken = jsonObject.getString("access_token");
@@ -138,7 +143,7 @@ public class CallBackServlet extends HttpServlet {
 					public void run() {
 						try {
 							try {
-								SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(),"新用户注册提醒", utext);
+								SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(),"新用户加入提醒", utext);
 							} catch (MessagingException e) {
 							}
 						} catch (UnsupportedEncodingException e) {
@@ -150,7 +155,7 @@ public class CallBackServlet extends HttpServlet {
 				t.start();
 				
 				errmsg = errmsg + "－－新用户自动登录－－<br>";
-				response.sendRedirect("login.do?rembpwd=1&userid="+ euserid + "&password=" + password);
+				request.getRequestDispatcher("login.do?rembpwd=1&userid="+ euserid + "&password=" + password);
 				return;
 			}
 
@@ -222,9 +227,6 @@ public class CallBackServlet extends HttpServlet {
 				}
 			}
 		}
-		
-		list.clear();
-		list.add("xiaonei0912@qq.com");
 
 		return list;
 	}
