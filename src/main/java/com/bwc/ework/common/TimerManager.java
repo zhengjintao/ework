@@ -12,10 +12,6 @@ public class TimerManager {
 	//时间间隔  
     private static final long PERIOD_DAY = 24 * 60 * 60 * 1000;  
     public TimerManager() { 
-    	SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd");
-		String now = formattime.format(new Date());
-    	
-		//String msg = TemplateMessageUtil.sendTemplateMessage("ofXqDwsbmAUZrHh85BuJkBwSpfaA", Consts.templetid, "郑锦涛", now + " 8:30");
     	scheduleNoticeToUser();
     	scheduleNoticeToAdmin();
     }  
@@ -25,7 +21,7 @@ public class TimerManager {
         
         /*** 定制每日20:30执行方法 ***/  
         calendar.set(Calendar.HOUR_OF_DAY, 20);  
-        calendar.set(Calendar.MINUTE, 00);  
+        calendar.set(Calendar.MINUTE, 30);  
         calendar.set(Calendar.SECOND, 0);  
            
         Date date=calendar.getTime(); //第一次执行定时任务的时间  

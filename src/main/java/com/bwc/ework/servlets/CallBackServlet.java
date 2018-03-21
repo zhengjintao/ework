@@ -80,14 +80,14 @@ public class CallBackServlet extends HttpServlet {
 				String infoUrl = URLProducer.GetUserInfoUrl(accessToken, openid);
 				JSONObject userInfo = HttpRequestor.httpGetProc(infoUrl);
 				
-				if(!jsonObject.has("openid")){
+				if(!userInfo.has("openid")){
 					request.getRequestDispatcher("login.jsp").forward(request, response);
 					return;
 				}
 				
 				String euserid = openid;
-				String username = jsonObject.getString("nickname");
-				String sex = "1".equals(jsonObject.getString("sex")) ? "M" : "F";
+				String username = userInfo.getString("nickname");
+				String sex = "1".equals(userInfo.getString("sex")) ? "M" : "F";
 				String password = "111111";
 				String sql2 = "insert into mstr_user values(?,?,?,?,?,?,?,?,?,?,?)";
 				Object[] params2 = new Object[11];
