@@ -35,8 +35,8 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 来自微信公众号
-		if(request.getParameter("from") == null ){
-			String callbackUrl="http://www.freertokyo.com/eworkdemo/callback.do";
+		if(request.getParameter("from") != null ){
+			String callbackUrl="http://www.freertokyo.com"+ request.getContextPath()+"/callback.do";
 	        response.sendRedirect(URLProducer.GetAuthUrl(callbackUrl));
 	        return;
 		}

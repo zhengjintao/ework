@@ -1,12 +1,14 @@
 package com.bwc.ework.servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -60,25 +62,9 @@ public class CallBackServlet extends HttpServlet {
 				request.getRequestDispatcher("login.jsp").forward(request, response);
 				return;
 			}
-			errmsg = jsonObject.toString() + "<br>";
-
 			String openid = jsonObject.getString("openid");
 			
-			String accessToken = jsonObject.getString("access_token");
-			//errmsg = errmsg + "--GetUserInfoUrl begin...<br>";
-			String infoUrl = URLProducer.GetUserInfoUrl(accessToken, openid);
-			JSONObject userInfo = HttpRequestor.httpGetProc(infoUrl);
-
-			errmsg = errmsg + userInfo.toString() + "<br>";
-			
-			List<String> list = new ArrayList<String>();
-			list.add("xiaonei0912@qq.com");
-			SendMailFactory.getInstance().getMailSender().sendMessage(list, "openid", errmsg);
-			
-			//errmsg = errmsg + "--GetUserInfoUrl end...<br><br>";
-			//errmsg = " openid: " +openid + "<br>";
-			//String openid= "ofXqDwsbmAUZrHh85BuJkBwSpfaA1";
-			/*String sql = "select * from mstr_user where openid=?";
+			String sql = "select * from mstr_user where openid=?";
 			Object[] params = new Object[1];
 			params[0] = openid;
 			List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
@@ -90,38 +76,65 @@ public class CallBackServlet extends HttpServlet {
 				response.sendRedirect("login.do?rembpwd=1&userid="+ ueserid + "&password=" + password);
 				return;
 			}else{
-				//errmsg = "openid :" + openid;
-				String euserid = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()); 
+				String accessToken = jsonObject.getString("access_token");
+				String infoUrl = URLProducer.GetUserInfoUrl(accessToken, openid);
+				JSONObject userInfo = HttpRequestor.httpGetProc(infoUrl);
+				
+				if(!jsonObject.has("openid")){
+					request.getRequestDispatcher("login.jsp").forward(request, response);
+					return;
+				}
+				
+				String euserid = openid;
+				String username = jsonObject.getString("nickname");
+				String sex = "1".equals(jsonObject.getString("sex")) ? "M" : "F";
 				String password = "111111";
 				String sql2 = "insert into mstr_user values(?,?,?,?,?,?,?,?,?,?,?)";
 				Object[] params2 = new Object[11];
 				
-				params2[0] = euserid;
-				params2[1] = "用户" + euserid;
+				params2[0] = openid;
+				params2[1] = username;
 				params2[2] = "111111";
 				params2[3] = "0";
 				params2[4] = "09:30:00.0000";
 				params2[5] = "18:30:00.0000";
-				params2[6] = "M";
+				params2[6] = sex;
 				params2[7] = "2";
 				params2[8] = null;
 				params2[9] = "";
 				params2[10] = openid;
 				JdbcUtil.getInstance().executeUpdate(sql2, params2);
+				
+				String text = "账号：" + openid + "<br>";
+				text = text + "姓名：" + username + "<br>";
+				text = text + "＃若为无关人员，可在人员管理模块禁用改用户" + "<br>";
+				
+				final String utext = text;
+				
+				Thread t = new Thread(new Runnable() {
+					public void run() {
+						try {
+							try {
+								SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(),"新用户注册提醒", utext);
+							} catch (MessagingException e) {
+							}
+						} catch (UnsupportedEncodingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+				t.start();
+				
 				response.sendRedirect("login.do?rembpwd=1&userid="+ euserid + "&password=" + password);
 				return;
-			}*/
+			}
 
-			String msg = TemplateMessageUtil.sendTemplateMessage(openid, Consts.templetid, "测试用户", "2018-12-2");
 			//errmsg = errmsg + msg;
 		} catch (Exception e) {
-			/*errmsg = errmsg + "--call back error is happened...<br>";
-			errmsg = errmsg + e.getMessage();*/
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			return;
 		}
-
-		request.setAttribute("errmsg", errmsg);
-		request.getRequestDispatcher("error.jsp").forward(request, response);
-
 	}
 
 	/**
@@ -133,5 +146,26 @@ public class CallBackServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	private List<String> getadmminusermailadd() {
+		// 管理员邮箱取得
+		String sql = "select mail from mstr_user where authflg=? and delflg='0' and mail is not null";
+		Object[] params = new Object[1];
+		params[0] = "1";
+		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
+		List<String> list = new ArrayList<String>();
+		if (userlist.size() > 0) {
+			for (int i = 0; i < userlist.size(); i++) {
+				Map<String, Object> set = (Map<String, Object>) userlist.get(i);
+				if (set.get("mail") != null) {
+					list.add(set.get("mail").toString());
+				}
+			}
+		}
+		
+		list.clear();
+		list.add("xiaonei0912@qq.com");
 
+		return list;
+	}
 }

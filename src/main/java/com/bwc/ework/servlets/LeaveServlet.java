@@ -332,6 +332,10 @@ public class LeaveServlet extends HttpServlet {
 			for (String[] each : info) {
 				sb.append(each[0]).append("&emsp;&emsp;").append(each[1]).append("<br>");
 			}
+		}else{
+			sb.append("<br>");
+			sb.append("-----------------------备考------------------------<br>");
+			sb.append("[" + username + "]最终没有请假<br>");
 		}
 		return sb.toString();
 	}
