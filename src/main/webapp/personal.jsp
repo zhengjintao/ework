@@ -196,7 +196,7 @@ footer {
 				<div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui violet button">
-							<i class="marker alternate icon"></i><a class="header" style="color:white" href="location.jsp">定位签到</a>
+							<i class="marker alternate icon"></i><a class="header" style="color:white" href="jsdemo.html">定位签到</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
 					</div>
