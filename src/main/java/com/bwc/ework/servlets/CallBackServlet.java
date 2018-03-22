@@ -92,7 +92,7 @@ public class CallBackServlet extends HttpServlet {
 				if("0".equals((String)info.get("delflg"))){
 					String ueserid = (String)info.get("userid");
 					String password = (String)info.get("password");
-					request.getRequestDispatcher("login.do?rembpwd=1&userid="+ ueserid + "&password=" + password);
+					request.getRequestDispatcher("login.do?rembpwd=1&userid="+ ueserid + "&password=" + password).forward(request, response);
 				}else{
 					response.sendRedirect("login.do");
 				}
@@ -155,7 +155,7 @@ public class CallBackServlet extends HttpServlet {
 				t.start();
 				
 				errmsg = errmsg + "－－新用户自动登录－－<br>";
-				request.getRequestDispatcher("login.do?rembpwd=1&userid="+ euserid + "&password=" + password);
+				request.getRequestDispatcher("login.do?rembpwd=1&userid="+ euserid + "&password=" + password).forward(request, response);
 				return;
 			}
 

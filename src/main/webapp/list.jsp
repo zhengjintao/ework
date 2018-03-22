@@ -18,6 +18,40 @@
 
 <script type="text/javascript">
 function checkdate(){
+	var wdate = $("#wdate").val();
+    var now = new Date(); 
+    var dB = new Date(wdate);//获取当前选择日期  
+     
+    if (dB > now) {//时间戳对比 
+    	$("#errmsg").html("不允许提前签到");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;  
+    }
+    
+    var t1 = now.getFullYear() * 12 + now.getMonth();
+    var t2 = dB.getFullYear() * 12 + dB.getMonth();
+    
+    if (t1 - t2 > 1) {//时间戳对比 
+    	$("#errmsg").html("只允许修改当月和前一月的数据");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;  
+    }
+    
+    if(oDate1.getTime() > oDate2.getTime()){
+    	$("#errmsg").html("退勤时间必须大于出勤时间！");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;
+    }
+    
 	var date1="1999-01-01 " + $("#wbegin").val();
 	var date2="1999-01-01 " + $("#wend").val();
 	var oDate1 = new Date(date1);
@@ -136,7 +170,7 @@ footer {
 					<div class="ui inverted form">
 						<div class="inline field">
 							<div class="field">
-								<label>日期</label> <input type="date" name="wdate" onchange="getSettedtime()"
+								<label>日期</label> <input type="date" id="wdate" name="wdate" onchange="getSettedtime()"
 									value=<%=(String) request.getAttribute("sysDate")%>>
 							</div>
 						</div>
