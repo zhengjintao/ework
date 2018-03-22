@@ -80,4 +80,13 @@ public class URLProducer {
 		
 		return url;
 	}
+	
+	public static String GetJsTicketUrl(String accessToken){
+		if(accessToken == null || accessToken.length() ==0){
+			accessToken = AccessTokenGeter.getStrAccessToken();
+		}
+		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+ accessToken +"&type=jsapi";
+		
+		return url;
+	}
 }
