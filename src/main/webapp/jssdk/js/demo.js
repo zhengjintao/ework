@@ -363,10 +363,10 @@ wx.ready(function () {
     wx.openLocation({
       latitude: 23.099994,
       longitude: 113.324520,
-      name: 'TIT 创意园',
-      address: '广州市海珠区新港中路 397 号',
+      name: 'WBC测试',
+      address: '日本 东京',
       scale: 14,
-      infoUrl: 'http://weixin.qq.com'
+      infoUrl: 'http://freertokyo.com/eworktest'
     });
   };
 
@@ -374,7 +374,24 @@ wx.ready(function () {
   document.querySelector('#getLocation').onclick = function () {
     wx.getLocation({
       success: function (res) {
-        alert(JSON.stringify(res));
+    	  wx.openLocation(res); 
+    	  document.querySelector('#locationtext').innerHTML="经度："+ res.latitude+"纬度："+res.longitude + "<br>地址："+res.address;
+    	  
+    	  var lurl = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAP42AskYza1DwaysKIXhoxKq3cvD8VS0Y&language=ja";
+  		lurl = lurl + "&latlng=" + res.latitude + "," + res.longitude;
+  		$.getJSON(lurl,function(result) {
+  							var inx = 0;
+  							$.each(
+  											result,
+  											function(i, field) {
+  												if (inx == 0) {
+  													inx = 1;
+  													document.querySelector('#locationtext').innerHTML="经度："+ res.latitude+"纬度："+res.longitude + "<br>地址："+field[0].formatted_address;
+
+  												}
+  											});
+  						});
+
       },
       cancel: function (res) {
         alert('用户拒绝授权获取地理位置');

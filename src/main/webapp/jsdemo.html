@@ -8,8 +8,15 @@
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 </head>
 <body ontouchstart="">
-<div class="wxapi_container">
-    <div class="wxapi_index_container">
+<div class="wxapi_container" style="margin-top:50px;">
+ <div class="wxapi_index_container">
+<!-- <span class="desc">获取地理位置</span> -->
+<button class="btn btn_primary" id="configwx" onClick="configWx();">先点配置</button>
+      <button class="btn btn_primary" id="getLocation">定位</button>
+      <div id="locationtext"></div>
+         </div>
+         
+    <div class="wxapi_index_container" hidden>
       <ul class="label_box lbox_close wxapi_index_list">
         <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-basic">基础接口</a></li>
         <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-share">分享接口</a></li>
@@ -25,7 +32,7 @@
         <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-pay">微信支付接口</a></li>
       </ul>
     </div>
-    <div class="lbox_close wxapi_form">
+    <div class="lbox_close wxapi_form" hidden>
       <h3 id="menu-basic">基础接口</h3>
       <span class="desc">判断当前客户端是否支持指定JS接口</span>
       <button class="btn btn_primary" id="checkJsApi">checkJsApi</button>
@@ -79,9 +86,7 @@
       <h3 id="menu-location">地理位置接口</h3>
       <span class="desc">使用微信内置地图查看位置接口</span>
       <button class="btn btn_primary" id="openLocation">openLocation</button>
-      <span class="desc">获取地理位置接口</span>
-      <button class="btn btn_primary" id="getLocation">getLocation</button>
-
+      
       <h3 id="menu-webview">界面操作接口</h3>
       <span class="desc">隐藏右上角菜单接口</span>
       <button class="btn btn_primary" id="hideOptionMenu">hideOptionMenu</button>
@@ -119,14 +124,14 @@
       <span class="desc">发起一个微信支付请求</span>
       <button class="btn btn_primary" id="chooseWXPay">chooseWXPay</button>
       
-      <button class="btn btn_primary" id="configwx" onClick="configWx();">configWx</button>
+   
     </div>
   </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	configWx();
+	//configWx();
 });
    function configWx() {
 		var thisPageUrl = location.href.split('#')[0];
@@ -195,18 +200,18 @@ $(document).ready(function() {
 		      ]
 		});
 		
-		wx.getLocation({  
-		    type:'wgs84',//默认为wgs84的gps坐标，  
-		    //如果要返回直接给openLocation用的火星坐标，可传入'gcj02'  
-		    success:function(res){  
-		        var latitude=res.latitude;  
-		        var longitude=res.longitude;  
-		        var speed=res.speed;  
-		        var accuracy=res.accuracy;  
-		        //appendText('经度：'+latitude+'，纬度：'+longitude); 
-		        wx.openLocation(res); 
-		    }  
-		}); 
+// 		wx.getLocation({  
+// 		    type:'wgs84',//默认为wgs84的gps坐标，  
+// 		    //如果要返回直接给openLocation用的火星坐标，可传入'gcj02'  
+// 		    success:function(res){  
+// 		        var latitude=res.latitude;  
+// 		        var longitude=res.longitude;  
+// 		        var speed=res.speed;  
+// 		        var accuracy=res.accuracy;  
+// 		        //appendText('经度：'+latitude+'，纬度：'+longitude); 
+// 		        wx.openLocation(res); 
+// 		    }  
+// 		}); 
 	}
 </script>
 
