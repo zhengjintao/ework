@@ -225,6 +225,13 @@ footer {
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
+					<div style="height:10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
+							<i class="marker alternate icon"></i><a class="header" style="color:white" href="recordworktime.do">出退定位</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
+					</div>
 				</div>
 			</form>
 		</div>
