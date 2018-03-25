@@ -200,6 +200,12 @@ footer {
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
 					</div>
+				<div style="height:10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui violet button">
+							<i class="yen sign icon"></i><a class="header" style="color:white" href="moneysubmit.do?userid=<%=(String)request.getAttribute("userid") %>">经费报销</a>
+						</div>
+					</div>
 				</div>
 				<div class="ui brown segment" style="<%=(String)request.getAttribute("display") %>">
 				<a class="ui orange right ribbon label">管理模块</a>
