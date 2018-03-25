@@ -24,7 +24,14 @@
 				closable : false
 			}).modal('show');
 		}
+		
+		$('#envelope').popup({
+			popup : $('.custom.popup'),
+			on : 'click'
+		});
 	});
+   
+   
 
 	function check() {
 		var errmsg = "";
@@ -95,6 +102,36 @@ function ondelete(dtlno)
 	            alert("网络异常，请稍后重试");
 	    } 
 	});
+}
+
+function sendmail() {
+	$('#envelope').popup('hide all');
+	var mail = $("#mail").val();
+	if (mail.length == 0) {
+		$("#errmsg").html("邮件地址必须输入");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+		return false;
+	}
+
+	$.ajax({
+		type : "post",
+		url : "./sendbill.do?" + $("form").serialize(),
+		dataType : "json",
+		success : function(data) {
+			$("#errmsg").html(data.message);
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
+		},
+		error : function() {
+			alert("网络异常，请稍后重试");
+		}
+	});
+
 }
 </script>
 <style>
@@ -199,7 +236,35 @@ footer {
 						id="wdate2" name="wdate2"
 						value=<%=(String) request.getAttribute("sysDate2")%>
 						onchange="getexpinfomonth()">
-
+						
+					<div class="some-wrapping-div" style="float: right;">
+						<i id='envelope' class="envelope outline  icon"></i>
+					</div>
+					<div class="ui custom popup top left transition hidden">
+						<div class="ui yellow inverted segment">
+							<div class="ui inverted form">
+							
+								<div class="inline fields">
+									<div class="field">
+										<input type="text" id="mailname" name="mailname"
+											placeholder="邮件名" value="当月出勤统计">
+									</div>
+								</div>
+								<div class="inline fields">
+									<div class="field">
+								<input type="text" id="mail" name="mail" placeholder="收件邮箱地址(必须)"
+										value="<%=request.getAttribute("email") %>">
+								</div>
+								</div>
+								
+								<div class="inline field" >
+									<div class="ui custom button" onclick="sendmail()">
+										<i class="envelope icon"></i>送信
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					<table class="ui unstackable celled table">
 						<tbody id="infobody">
 							<%=(String) request.getAttribute("info")%>
