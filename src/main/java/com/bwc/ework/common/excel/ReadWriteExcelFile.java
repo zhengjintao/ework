@@ -12,7 +12,7 @@ import com.bwc.ework.form.BillDetail;
 import com.bwc.ework.form.BillInfo;
 
 public class ReadWriteExcelFile {
-	public static void readXLSFile(BillDetail bd) throws IOException  
+	public static String readXLSFile(BillDetail bd) throws IOException  
 	  {  
 		String path = Thread.currentThread().getContextClassLoader().getResource("billtmp.xls").getPath(); 
 	    InputStream ExcelFileToRead = new FileInputStream(path);  
@@ -46,6 +46,7 @@ public class ReadWriteExcelFile {
 	    wb.write(fileOut);  
 	    fileOut.flush();  
 	    fileOut.close();  
-	  
+	 
+	    return outpath;
 	  } 
 }

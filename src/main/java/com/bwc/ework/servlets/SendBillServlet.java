@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bwc.ework.common.excel.ReadWriteExcelFile;
+import com.bwc.ework.common.mail.SendMailFactory;
 import com.bwc.ework.form.BillDetail;
 import com.bwc.ework.form.BillInfo;
 
@@ -24,7 +26,6 @@ public class SendBillServlet extends HttpServlet {
      */
     public SendBillServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -45,14 +46,27 @@ public class SendBillServlet extends HttpServlet {
 		bi.setComment("定期券");
 		bilist.add(bi);
 		bd.setBilist(bilist);
-		ReadWriteExcelFile.readXLSFile(bd);
+		
+		// 根据模版生成交通费精算文件
+		String outfilePath = ReadWriteExcelFile.readXLSFile(bd);
+		
+		// 通过邮箱发送
+		try {
+			List<String> list = new ArrayList<String>();
+			// list.add("92@sina.cn"); // 收件人地址 可多人
+			list.add("xiaonei0912@qq.com");  // 管理邮箱抄送
+			
+			List<String> files = new ArrayList<String>();
+			files.add(outfilePath);  // 文件路径，可多个
+			SendMailFactory.getInstance().getMailSender().sendMessage(list, "test", "郑2月车费精算",files);
+		} catch (MessagingException e) {
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

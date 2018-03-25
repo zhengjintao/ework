@@ -178,7 +178,7 @@ public class QQMailSender {
         mimeMessage.setFrom(new InternetAddress(username,from));
     }
     
-    public String sendMessage(List<String> toaddressList, String title, String content) throws MessagingException{
+    public String sendMessage(List<String> toaddressList, String title, String content, List<String>files) throws MessagingException{
     	try {
     		this.setRecipients(toaddressList);
 			this.setSubject(title);
@@ -186,6 +186,14 @@ public class QQMailSender {
 	    	this.setDate(new Date());
 	    	this.setFrom("BWC管理员");
 //	      mail.setMultipart("D:你你你.txt");
+	    	if(files != null && files.size() > 0){
+	    		try {
+					this.setMultiparts(files);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
 	    	this.setContent(content, "text/html; charset=UTF-8");
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
@@ -228,9 +236,9 @@ public class QQMailSender {
             multipart = new MimeMultipart();
         }
         for(String s:fileList){
-            multipart.addBodyPart(writeFiles(s));
-                }
-                      mimeMessage.setContent(multipart);
+        	multipart.addBodyPart(writeFiles(s));
+        }
+        mimeMessage.setContent(multipart);
     }
     /**
      * 发送文本内容，设置编码方式

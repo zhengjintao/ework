@@ -90,7 +90,7 @@ public class SendMailServlet extends HttpServlet {
 		}else{
 			try {
 				message = "发送成功";
-				SendMailFactory.getInstance().getMailSender().sendMessage(list, mailname, text);
+				SendMailFactory.getInstance().getMailSender().sendMessage(list, mailname, text, null);
 			} catch (MessagingException e) {
 				message = "发送失败";
 			}
