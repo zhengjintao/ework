@@ -43,15 +43,6 @@ function checkdate(){
         return false;  
     }
     
-    if(oDate1.getTime() > oDate2.getTime()){
-    	$("#errmsg").html("退勤时间必须大于出勤时间！");
-		$('#cmodal').modal({
-			closable : false
-
-		}).modal('show');
-        return false;
-    }
-    
 	var date1="1999-01-01 " + $("#wbegin").val();
 	var date2="1999-01-01 " + $("#wend").val();
 	var oDate1 = new Date(date1);
@@ -174,7 +165,7 @@ footer {
 									value=<%=(String) request.getAttribute("sysDate")%>>
 							</div>
 						</div>
-						<div class="two fields">
+						<div class="two field">
 							<div class="one fields">
 								<div class="field">
 									<label>出勤时间</label> <input type="time" name="wbegin" id="wbegin"
@@ -192,6 +183,18 @@ footer {
 							</div>
 						</div>
 						<div class="field">
+						   <div class="ui accordion" id="postionacc" style="display:none">
+								<div class="active title" style="color:white;padding-top:0px;padding-bottom:0px">
+									<i class="dropdown icon"></i> 地点
+								</div>
+								<div class="active content">
+									<p class="transition visible"
+										style="display: block !important;">
+										<input type="text" id='latitude' name='latitude'></input>
+			                            <input type="text" id='longitude' name='longitude'></input>
+										<textarea id="dtladdress" readonly="readonly" name="dtladdress" rows="2" cols="0" placeholder="未获取到位置情報" onClick="openmap();"></textarea>
+								</div>
+						   </div>
 							<div class="ui accordion" >
 								<div class="title" style="color:white">
 									<i class="dropdown icon"></i> 备注
@@ -260,4 +263,196 @@ footer {
 		</div>
 	</footer>
 </body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	configWx();
+	
+	var a = navigator.userAgent.toLowerCase().match(/micromessenger\/(\d+\.\d+\.\d+)/) || navigator.userAgent.toLowerCase().match(/micromessenger\/(\d+\.\d+)/);
+
+	if(!a && document.getElementById('dtladdress').textContent.length==0){
+		getlocationUseNav();
+	}
+
+});
+   function configWx() {
+		var thisPageUrl = location.href.split('#')[0];
+		$.ajax({ 
+		    type: "post", 
+		    url: "./getJsTicket.do?url="+ thisPageUrl, 
+		    dataType: "json", 
+		    success: function (data) {
+		    	if (data != null) {
+					configWeiXin(data.appId, data.timestamp, data.nonceStr,
+							data.signature);
+					
+					wx.error(function (res) {
+		                 $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR); 
+		             });
+		              wx.ready(function(){
+		            	  getLocationWx();
+		            });
+					
+				} else {
+					getlocationUseNav();
+				}
+		    }, 
+		    error: function() {
+		    	getlocationUseNav();
+		    } 
+		});
+	}
+
+	function configWeiXin(appId, timestamp, nonceStr, signature) {
+		wx.config({
+			debug : false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			appId : appId,
+			timestamp : timestamp,
+			nonceStr : nonceStr,
+			signature : signature,
+			jsApiList: [
+		        'checkJsApi',
+		        'onMenuShareTimeline',
+		        'onMenuShareAppMessage',
+		        'onMenuShareQQ',
+		        'onMenuShareWeibo',
+		        'onMenuShareQZone',
+		        'hideMenuItems',
+		        'showMenuItems',
+		        'hideAllNonBaseMenuItem',
+		        'showAllNonBaseMenuItem',
+		        'translateVoice',
+		        'startRecord',
+		        'stopRecord',
+		        'onVoiceRecordEnd',
+		        'playVoice',
+		        'onVoicePlayEnd',
+		        'pauseVoice',
+		        'stopVoice',
+		        'uploadVoice',
+		        'downloadVoice',
+		        'chooseImage',
+		        'previewImage',
+		        'uploadImage',
+		        'downloadImage',
+		        'getNetworkType',
+		        'openLocation',
+		        'getLocation',
+		        'hideOptionMenu',
+		        'showOptionMenu',
+		        'closeWindow',
+		        'scanQRCode',
+		        'chooseWXPay',
+		        'openProductSpecificView',
+		        'addCard',
+		        'chooseCard',
+		        'openCard'
+		      ],
+		      success: function (res) {
+		    	  getLocationWx();
+		      },
+		      fail: function(res) {
+		    	  getlocationUseNav();
+		        }
+		});
+	}
+	
+	function getLocationWx() {
+	    wx.getLocation({
+	      success: function (res) {
+	    	  window.locationcache = res;
+	    	  $('#latitude').val(res.latitude);
+			$('#longitude').val(res.longitude);
+	    	  var lurl = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAP42AskYza1DwaysKIXhoxKq3cvD8VS0Y&language=ja";
+	  		lurl = lurl + "&latlng=" + res.latitude + "," + res.longitude;
+	  		$.getJSON(lurl,function(result) {
+	  							var inx = 0;
+	  							$.each(
+	  											result,
+	  											function(i, field) {
+	  												if (inx == 0) {
+	  													inx = 1;
+	  													document
+														.getElementById('dtladdress').textContent = field[0].formatted_address;
+
+	  												}
+	  											});
+	  						});
+
+	      },
+	      cancel: function (res) {
+	        alert('用户拒绝授权获取地理位置');
+	      },
+	      fail: function(res) {
+	    	  getlocationUseNav();
+	        }
+	    });
+	  };
+
+	  function getlocationUseNav(){
+		  if (navigator.geolocation) {
+				// Geolocationに関する処理を記述
+				navigator.geolocation.getCurrentPosition(success, failure);
+			} else {
+				window.alert("本ブラウザではGeolocationが使えません");
+			}
+	  }
+		// 成功時コールバック
+		function success(pos) {
+			// 緯度
+			var lat = pos.coords.latitude;
+			// 経度
+			var lng = pos.coords.longitude;
+
+			// htmlに描画
+			$('#latitude').val(lat);
+			$('#longitude').val(lng);
+			var lurl = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAP42AskYza1DwaysKIXhoxKq3cvD8VS0Y&language=ja";
+			lurl = lurl + "&latlng=" + lat + "," + lng;
+			$.getJSON(
+					lurl,
+					function(result) {
+						var inx = 0;
+						$.each(
+								result,
+								function(i, field) {
+									if (inx == 0) {
+										inx = 1;
+										document
+												.getElementById('dtladdress').textContent = field[0].formatted_address;
+									}
+								});
+								
+					});
+					
+		}
+
+		// 失敗時コールバック
+		function failure(error) {
+			var message = "位置情報取失敗";
+
+			switch (error.code) {
+			// 位置情報が取得できない場合
+			case error.POSITION_UNAVAILABLE:
+				message = "位置情報の取得ができませんでした。";
+				break;
+			// Geolocationの使用が許可されない場合
+			case error.PERMISSION_DENIED:
+				message = "位置情報取得の使用許可がされませんでした。";
+				break;
+			// タイムアウトした場合
+			case error.PERMISSION_DENIED_TIMEOUT:
+				message = "位置情報取得中にタイムアウトしました。";
+				break;
+			default:
+			}
+			alert(message);
+		}
+		
+		function openmap(){
+			if(window.locationcache){
+				wx.openLocation(window.locationcache); 
+			}
+		}
+</script>
 </html>

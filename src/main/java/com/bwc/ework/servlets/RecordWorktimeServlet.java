@@ -42,11 +42,20 @@ public class RecordWorktimeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String paramwdate =request.getParameter("wdate");
 		String comment =request.getParameter("wcomment");
+		String latitude =request.getParameter("latitude");
+		String longitude =request.getParameter("latitude");
+		String dtladdress =request.getParameter("dtladdress");
 		
 		if (comment != null) {
 			comment = new String(comment.getBytes("iso-8859-1"), "utf-8");
 		}else{
 			comment = "";
+		}
+		
+		if (dtladdress != null) {
+			dtladdress = new String(dtladdress.getBytes("iso-8859-1"), "utf-8");
+		}else{
+			dtladdress = "";
 		}
 		
 		HttpSession session = request.getSession();
@@ -103,8 +112,8 @@ public class RecordWorktimeServlet extends HttpServlet {
 					updateparams[9] = date;
 					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
 				}else{
-					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?)";
-					Object[] insertparams = new Object[9];
+					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					Object[] insertparams = new Object[15];
 					insertparams[0] = userid;
 					insertparams[1] = year;
 					insertparams[2] = month;
@@ -132,6 +141,7 @@ public class RecordWorktimeServlet extends HttpServlet {
 			// 默认结束时间
 			request.setAttribute("defaultEndTime", end);
 			request.setAttribute("comment", comment);
+			request.setAttribute("dtladdress", "");
 			try {
 				getWeekData(request);
 			} catch (ParseException e) {
@@ -194,6 +204,7 @@ public class RecordWorktimeServlet extends HttpServlet {
 					request.setAttribute("defaultEndTime", set.get("endtime").toString());
 					
 					request.setAttribute("comment", set.get("comment").toString());
+					request.setAttribute("dtladdress", "");
 					
 					request.setAttribute("beginlbl", "已签");
 					request.setAttribute("endlbl", "已签");
@@ -210,6 +221,7 @@ public class RecordWorktimeServlet extends HttpServlet {
 					request.setAttribute("defaultEndTime", userinfo.getEndTime().toString());
 					
 					request.setAttribute("comment", "");
+					request.setAttribute("dtladdress", "");
 					request.setAttribute("beginlbl", "出勤");
 					request.setAttribute("endlbl", "退勤");
 					
