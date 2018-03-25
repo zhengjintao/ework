@@ -29,12 +29,14 @@
 	function check() {
 		var errmsg = "";
 		var subkbn=document.getElementById("subKbnselect").selectedIndex;
-		var station = $("#station").val();
-		if (subkbn== "0" && (station == null || station == "undefine" || station.length == 0)) {
+		var stationf = $("#stationf").val();
+		var stationt = $("#stationt").val();
+		if (subkbn== "0" && ((stationf == null || stationf == "undefine" || stationf.length == 0) 
+				|| (stationt == null || stationt == "undefine" || stationt.length == 0))) {
 			if (errmsg.length > 0) {
 				errmsg = errmsg + "<br>";
 			}
-			errmsg = errmsg + "区间必须输入。";
+			errmsg = errmsg + "起始车站必须输入。";
 		}
 		var money = $("#money").val();
 		if (money == null || money == "undefine" || money.length == 0) {
@@ -158,14 +160,20 @@ footer {
 					</div>
 
 					<!-- 交通费选择的情况 -->
-					<div id="dstation" class="ui middle aligned divided list">
-						<div class="item">
+                    <div class="ui form" id= dstation>
+                      <div class="inline fields">
+                        <div class="field">
 							<div class="ui labeled input">
 								<div class="ui label">区间</div>
-								<input id="station" name="station" type="text" value="" placeholder="必填项目">
+								<input style="width:85px" id="stationf" name="stationf" type="text" value="" placeholder="起始站">
 							</div>
-						</div>
-					</div>
+                        </div>
+                        <div class="field">
+                         <input style="width:86px" id="stationt" name="stationt" type="text" value="" placeholder="终点站">
+                        </div>
+                      </div>
+                    </div>
+					
 					<div id="dsubmoney" class="ui middle aligned divided list">
 						<div class="item">
 							<div class="ui labeled input">

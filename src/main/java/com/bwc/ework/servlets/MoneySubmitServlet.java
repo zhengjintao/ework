@@ -59,23 +59,26 @@ public class MoneySubmitServlet extends HttpServlet {
 			String year = date1.getYear();
 			String month = date1.getMonth();
 			String subKbn = new String(request.getParameter("subKbn").getBytes("iso-8859-1"), "utf-8");
-			String station = request.getParameter("station") != null ? 
-					new String(request.getParameter("station").getBytes("iso-8859-1"), "utf-8") :"";
+			String stationf = request.getParameter("stationf") != null ? 
+					new String(request.getParameter("stationf").getBytes("iso-8859-1"), "utf-8") :"";
+			String stationt = request.getParameter("stationt") != null ? 
+					new String(request.getParameter("stationt").getBytes("iso-8859-1"), "utf-8") :"";		
 			String notes = request.getParameter("notes") != null ? 
 					new String(request.getParameter("notes").getBytes("iso-8859-1"), "utf-8") :"";
 			// 数据新规
-			String insertsql = "insert into cdate_expenses values(?,?,?,?,?,?,?,?,?,?)";
-			Object[] insertparams = new Object[10];
+			String insertsql = "insert into cdate_expenses values(?,?,?,?,?,?,?,?,?,?,?)";
+			Object[] insertparams = new Object[11];
 			insertparams[0] = userid;
 			insertparams[1] = getDetailNo(userid);
 			insertparams[2] = subKbn;
 			insertparams[3] = request.getParameter("subdate");
 			insertparams[4] = year;
 			insertparams[5] = month;
-			insertparams[6] = station;
-			insertparams[7] = request.getParameter("money");
-			insertparams[8] = notes;
-			insertparams[9] = "0";
+			insertparams[6] = stationf;
+			insertparams[7] = stationt;
+			insertparams[8] = request.getParameter("money");
+			insertparams[9] = notes;
+			insertparams[10] = "0";
 			JdbcUtil.getInstance().executeUpdate(insertsql, insertparams);
 			
 			request.setAttribute("userid", userid);
@@ -123,13 +126,14 @@ public class MoneySubmitServlet extends HttpServlet {
 		List<String[]> monthinfo = new ArrayList<String[]>();
 		for (int i = 0; i < infolist.size(); i++) {
 			Map<String, Object> set = (Map<String, Object>) infolist.get(i);
-			String[] each = new String[6];
+			String[] each = new String[7];
 			each[0] = String.valueOf(set.get("expdate"));
 			each[1] = String.valueOf(set.get("expkbn"));
-			each[2] = String.valueOf(set.get("station"));
-			each[3] = String.valueOf(set.get("money"));
-			each[4] = String.valueOf(set.get("notes"));
-			each[5] = String.valueOf(set.get("expdetailno"));
+			each[2] = String.valueOf(set.get("stationf"));
+			each[3] = String.valueOf(set.get("stationt"));
+			each[4] = String.valueOf(set.get("money"));
+			each[5] = String.valueOf(set.get("notes"));
+			each[6] = String.valueOf(set.get("expdetailno"));
 			monthinfo.add(each);
 		}
 		
@@ -140,10 +144,20 @@ public class MoneySubmitServlet extends HttpServlet {
 			info.append("当月没有报销");
 			info.append("</td>");
 			info.append("</tr>");
+		}else{
+			info.append("<tr bgcolor='#00B5AB'>");
+			info.append("<th style='text-align:center; color:white; width:20%'>日期</th>");
+			info.append("<th style='text-align:center; color:white; width:20%'>区分</th>");
+			info.append("<th style='text-align:center; color:white; width:15%'>起始</th>");
+			info.append("<th style='text-align:center; color:white; width:15%'>终点</th>");
+			info.append("<th style='text-align:center; color:white; width:10%'>金额</th>");
+			info.append("<th style='text-align:center; color:white; width:15%'>备注</th>");
+			info.append("<th style='text-align:center; color:white; width:5%'></th>");
+			info.append("</tr>");
 		}
 		for (String[] each : monthinfo) {
 			info.append("<tr>");
-			info.append("<td  style='width:20%'>");
+			info.append("<td>");
 			info.append(each[0]);
 			info.append("</td>");
 			info.append("<td >");
@@ -159,7 +173,10 @@ public class MoneySubmitServlet extends HttpServlet {
 			info.append(each[4]);
 			info.append("</td>");
 			info.append("<td>");
-			info.append("<i class='close icon' onclick='ondelete(" + each[5] + ");'></i>");
+			info.append(each[5]);
+			info.append("</td>");
+			info.append("<td>");
+			info.append("<i class='close icon' onclick='ondelete(" + each[6] + ");'></i>");
 			info.append("</td>");
 			info.append("</tr>");
 		}
