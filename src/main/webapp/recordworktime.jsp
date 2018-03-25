@@ -76,6 +76,17 @@ function checkdate(){
 }
 function getSettedtime()
 {
+	var wdate = $("#wdate").val();
+    var now = new Date(); 
+    var dB = new Date(wdate);//获取当前选择日期  
+	if(dB.getFullYear() != now.getFullYear()
+			|| dB.getMonth() != now.getMonth()
+			|| dB.getDay() != now.getDay()){
+		$('#postionacc').hide();
+	}else{
+		$('#postionacc').show();
+	}
+			
 	$.ajax({ 
 	    type: "post", 
 	    url: "./recordworktime.do?" + $("form").serialize() + "&selectChg=1", 
@@ -178,19 +189,19 @@ footer {
 							</div>
 						</div>
 						<div class="field">
-							<div class="ui accordion">
-								<div class="title" style="color:white;padding-top:0px;padding-bottom:0px">
+							<div class="ui accordion" id="postionacc">
+								<div class="active title" style="color:white;padding-top:0px;padding-bottom:0px">
 									<i class="dropdown icon"></i> 地点
 								</div>
-								<div class="content">
+								<div class="active content">
 									<p class="transition visible"
 										style="display: block !important;">
-										<input type="hidden" id='latitude'></input>
-			                            <input type="hidden" id='longitude'></input>
-										<textarea id="map_canvas" readonly="readonly" name="map_canvas" rows="2" cols="0" placeholder="未获取到位置情報"><%=(String) request.getAttribute("comment")%></textarea>
+										<input type="hidden" id='latitude' name='latitude'></input>
+			                            <input type="hidden" id='longitude' name='longitude'></input>
+										<textarea id="dtladdress" readonly="readonly" name="dtladdress" rows="2" cols="0" placeholder="未获取到位置情報" onClick="openmap();"><%=(String) request.getAttribute("dtladdress")%></textarea>
 								</div>
 						   </div>
-							<div class="ui accordion" >
+							<div class="ui accordion">
 								<div class="title" style="color:white;padding-bottom:0px">
 									<i class="dropdown icon"></i> 备注
 								</div>
@@ -288,6 +299,13 @@ footer {
 
 $(document).ready(function() {
 	configWx();
+	
+	var a = navigator.userAgent.toLowerCase().match(/micromessenger\/(\d+\.\d+\.\d+)/) || navigator.userAgent.toLowerCase().match(/micromessenger\/(\d+\.\d+)/);
+
+	if(!a && document.getElementById('dtladdress').textContent.length==0){
+		getlocationUseNav();
+	}
+
 });
    function configWx() {
 		var thisPageUrl = location.href.split('#')[0];
@@ -374,6 +392,7 @@ $(document).ready(function() {
 	function getLocationWx() {
 	    wx.getLocation({
 	      success: function (res) {
+	    	  window.locationcache = res;
 	    	  $('#latitude').val(res.latitude);
 			$('#longitude').val(res.longitude);
 	    	  var lurl = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAP42AskYza1DwaysKIXhoxKq3cvD8VS0Y&language=ja";
@@ -386,7 +405,7 @@ $(document).ready(function() {
 	  												if (inx == 0) {
 	  													inx = 1;
 	  													document
-														.getElementById('map_canvas').textContent = field[0].formatted_address;
+														.getElementById('dtladdress').textContent = field[0].formatted_address;
 
 	  												}
 	  											});
@@ -422,26 +441,50 @@ $(document).ready(function() {
 			$('#longitude').val(lng);
 			var lurl = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAP42AskYza1DwaysKIXhoxKq3cvD8VS0Y&language=ja";
 			lurl = lurl + "&latlng=" + lat + "," + lng;
-			$
-					.getJSON(
-							lurl,
-							function(result) {
-								var inx = 0;
-								$
-										.each(
-												result,
-												function(i, field) {
-													if (inx == 0) {
-														inx = 1;
-														document
-																.getElementById('map_canvas').textContent = field[0].formatted_address;
-													}
-												});
-							});
+			$.getJSON(
+					lurl,
+					function(result) {
+						var inx = 0;
+						$.each(
+								result,
+								function(i, field) {
+									if (inx == 0) {
+										inx = 1;
+										document
+												.getElementById('dtladdress').textContent = field[0].formatted_address;
+									}
+								});
+								
+					});
+					
 		}
 
 		// 失敗時コールバック
 		function failure(error) {
+			var message = "位置情報取失敗";
+
+			switch (error.code) {
+			// 位置情報が取得できない場合
+			case error.POSITION_UNAVAILABLE:
+				message = "位置情報の取得ができませんでした。";
+				break;
+			// Geolocationの使用が許可されない場合
+			case error.PERMISSION_DENIED:
+				message = "位置情報取得の使用許可がされませんでした。";
+				break;
+			// タイムアウトした場合
+			case error.PERMISSION_DENIED_TIMEOUT:
+				message = "位置情報取得中にタイムアウトしました。";
+				break;
+			default:
+			}
+			alert(message);
+		}
+		
+		function openmap(){
+			if(window.locationcache){
+				wx.openLocation(window.locationcache); 
+			}
 		}
 </script>
 </html>

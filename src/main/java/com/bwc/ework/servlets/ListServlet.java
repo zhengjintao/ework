@@ -50,6 +50,16 @@ public class ListServlet extends HttpServlet {
 			comment = "";
 		}
 		
+		String latitude =request.getParameter("latitude");
+		String longitude =request.getParameter("longitude");
+        String dtladdress =request.getParameter("dtladdress");
+		
+		if (dtladdress != null) {
+			dtladdress = new String(dtladdress.getBytes("iso-8859-1"), "utf-8");
+		}else{
+			dtladdress = "";
+		}
+		
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
 		request.setAttribute("qiandao", "签到");
@@ -103,8 +113,8 @@ public class ListServlet extends HttpServlet {
 					updateparams[9] = date;
 					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
 				}else{
-					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?)";
-					Object[] insertparams = new Object[9];
+					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					Object[] insertparams = new Object[15];
 					insertparams[0] = userid;
 					insertparams[1] = year;
 					insertparams[2] = month;
@@ -113,6 +123,12 @@ public class ListServlet extends HttpServlet {
 					insertparams[5] = begin;
 					insertparams[6] = end;
 					insertparams[8] = comment;
+					insertparams[9] = latitude;
+					insertparams[10] = longitude;
+					insertparams[11] = dtladdress;
+					insertparams[12] = latitude;
+					insertparams[13] = longitude;
+					insertparams[14] = dtladdress;
 					try {
 						insertparams[7] = DateTimeUtil.getHours(begin,end);
 					} catch (ParseException e) {
