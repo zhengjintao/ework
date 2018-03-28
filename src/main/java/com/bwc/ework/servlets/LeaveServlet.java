@@ -255,7 +255,7 @@ public class LeaveServlet extends HttpServlet {
 				public void run() {
 					try {
 						try {
-							SendMailFactory.getInstance().getMailSender().sendMessage(ulist, umailname, utext);
+							SendMailFactory.getInstance().getMailSender().sendMessage(ulist, umailname, utext, null);
 						} catch (MessagingException e) {
 						}
 					} catch (UnsupportedEncodingException e) {
@@ -287,7 +287,7 @@ public class LeaveServlet extends HttpServlet {
 				public void run() {
 					try {
 						try {
-							SendMailFactory.getInstance().getMailSender().sendMessage(ulist, umailname, utext);
+							SendMailFactory.getInstance().getMailSender().sendMessage(ulist, umailname, utext, null);
 						} catch (MessagingException e) {
 						}
 					} catch (UnsupportedEncodingException e) {

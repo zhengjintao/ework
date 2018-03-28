@@ -41,8 +41,23 @@
 	function sendmail() {
 		$('#envelope').popup('hide all');
 		var mail = $("#mail").val();
+		var errmsg="";
 		if (mail.length == 0) {
-			$("#errmsg").html("邮件地址必须输入");
+			errmsg ="收件地址必须输入";
+		}
+		
+		if (mail.length > 0){
+			var Regex = /^(?:\w+\.?)*\w+@(?:\w+\.).*\w+$/;
+			if (!Regex.test(mail)){
+				if (errmsg.length > 0) {
+					errmsg = errmsg + "<br>";
+				}
+				errmsg = errmsg + "邮箱格式不正确";
+			}
+		}
+		
+		if (errmsg.length > 0) {
+			$("#errmsg").html(errmsg);
 			$('#cmodal').modal({
 				closable : false
 

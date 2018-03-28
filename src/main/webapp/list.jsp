@@ -446,7 +446,7 @@ $(document).ready(function() {
 				break;
 			default:
 			}
-			alert(message);
+			//alert(message);
 		}
 		
 		function openmap(){

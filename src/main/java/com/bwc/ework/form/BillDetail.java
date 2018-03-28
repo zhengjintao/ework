@@ -1,11 +1,12 @@
 package com.bwc.ework.form;
 
 import java.util.List;
+import java.util.Date;
 
 public class BillDetail {
 	private String name;
-	private String begindate;
-	private String enddate;
+	private Date begindate;
+	private Date enddate;
 	private String createdate;
 	private List<BillInfo> bilist;
 	public String getName() {
@@ -14,16 +15,16 @@ public class BillDetail {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getBegindate() {
+	public Date getBegindate() {
 		return begindate;
 	}
-	public void setBegindate(String begindate) {
+	public void setBegindate(Date begindate) {
 		this.begindate = begindate;
 	}
-	public String getEnddate() {
+	public Date getEnddate() {
 		return enddate;
 	}
-	public void setEnddate(String enddate) {
+	public void setEnddate(Date enddate) {
 		this.enddate = enddate;
 	}
 	public String getCreatedate() {

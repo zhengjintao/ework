@@ -11,12 +11,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.HashEncoder;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.form.User;
 
 /**
  * Servlet implementation class UserEditServlet
@@ -37,6 +39,17 @@ public class MoneySubmitServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userid = request.getParameter("userid");
+		HttpSession session = request.getSession();
+		// 用户信息
+		User userif = (User) session.getAttribute("userinfo");
+		String sql = "select * from mstr_user where userid=? and delflg=?";
+		Object[] params = new Object[2];
+		params[0] = userif.getUserId();
+		params[1] = "0";
+		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
+		Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
+		String mail = info.get("mail") == null ? "" : (String)info.get("mail");
+		request.setAttribute("email", mail);
 
 		// 系统当前时间取得
 		SimpleDateFormat formattime = new SimpleDateFormat("yyyy-MM-dd");
@@ -147,34 +160,30 @@ public class MoneySubmitServlet extends HttpServlet {
 		}else{
 			info.append("<tr bgcolor='#00B5AB'>");
 			info.append("<th style='text-align:center; color:white; width:20%'>日期</th>");
-			info.append("<th style='text-align:center; color:white; width:20%'>区分</th>");
-			info.append("<th style='text-align:center; color:white; width:15%'>起始</th>");
-			info.append("<th style='text-align:center; color:white; width:15%'>终点</th>");
-			info.append("<th style='text-align:center; color:white; width:10%'>金额</th>");
-			info.append("<th style='text-align:center; color:white; width:15%'>备注</th>");
-			info.append("<th style='text-align:center; color:white; width:5%'></th>");
+			info.append("<th style='text-align:center; color:white; width:30%'>区分</th>");
+			//info.append("<th style='text-align:center; color:white; width:50%'>区间</th>");
+			info.append("<th style='text-align:center; color:white; width:30%'>金额</th>");
+			//info.append("<th style='text-align:center; color:white; width:20%'>备注</th>");
+			info.append("<th style='text-align:center; color:white; width:10%'></th>");
 			info.append("</tr>");
 		}
 		for (String[] each : monthinfo) {
 			info.append("<tr>");
-			info.append("<td>");
-			info.append(each[0]);
+			info.append("<td style='text-align:center'>");
+			info.append(each[0].substring(5, 10));
 			info.append("</td>");
-			info.append("<td >");
+			info.append("<td style='text-align:center'>");
 			info.append(each[1]);
-			info.append("<td>");
-			info.append(each[2]);
 			info.append("</td>");
-			info.append("</td>");
-			info.append("<td> ");
-			info.append(each[3]);
-			info.append("</td>");
-			info.append("<td>");
+			/*info.append("<td>");
+			info.append(each[2] + " - " + each[3]);
+			info.append("</td>");*/
+			info.append("<td style='text-align:right'>");
 			info.append(each[4]);
 			info.append("</td>");
-			info.append("<td>");
+			/*info.append("<td>");
 			info.append(each[5]);
-			info.append("</td>");
+			info.append("</td>");*/
 			info.append("<td>");
 			info.append("<i class='close icon' onclick='ondelete(" + each[6] + ");'></i>");
 			info.append("</td>");

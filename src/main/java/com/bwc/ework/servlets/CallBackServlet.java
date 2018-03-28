@@ -49,22 +49,6 @@ public class CallBackServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String code = request.getParameter("code");
 		if (code == null) {
-			String sql2 = "insert into mstr_user values(?,?,?,?,?,?,?,?,?,?,?)";
-			Object[] params2 = new Object[11];
-			String openid = "ofXqDwuWaJ-C9emIdcqXZnquKHWo";
-			params2[0] = openid;
-			params2[1] = "11";
-			params2[2] = "111111";
-			params2[3] = "0";
-			params2[4] = "09:30:00.0000";
-			params2[5] = "18:30:00.0000";
-			params2[6] = "M";
-			params2[7] = "2";
-			params2[8] = null;
-			params2[9] = "";
-			params2[10] = openid;
-			
-			JdbcUtil.getInstance().executeUpdate(sql2, params2);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 			return;
 		}
@@ -143,7 +127,7 @@ public class CallBackServlet extends HttpServlet {
 					public void run() {
 						try {
 							try {
-								SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(),"新用户加入提醒", utext);
+								SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(),"新用户加入提醒", utext, null);
 							} catch (MessagingException e) {
 							}
 						} catch (UnsupportedEncodingException e) {

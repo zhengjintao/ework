@@ -31,7 +31,7 @@ public class EmailTester {
         //list.add("92@sina.cn");
         list.add("xiaonei0912@gmail.com");
         try {
-			SendMailFactory.getInstance().getMailSender().sendMessage(list, "test", "testconten");
+			SendMailFactory.getInstance().getMailSender().sendMessage(list, "test", "testconten", null);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

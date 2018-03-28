@@ -38,12 +38,17 @@
 		var subkbn=document.getElementById("subKbnselect").selectedIndex;
 		var stationf = $("#stationf").val();
 		var stationt = $("#stationt").val();
-		if (subkbn== "0" && ((stationf == null || stationf == "undefine" || stationf.length == 0) 
-				|| (stationt == null || stationt == "undefine" || stationt.length == 0))) {
+		if (subkbn== "0" && (stationf == null || stationf == "undefine" || stationf.length == 0)) {
 			if (errmsg.length > 0) {
 				errmsg = errmsg + "<br>";
 			}
-			errmsg = errmsg + "起始车站必须输入。";
+			errmsg = errmsg + "起始站必须输入。";
+		}
+		if (subkbn== "0" && (stationt == null || stationt == "undefine" || stationt.length == 0)) {
+			if (errmsg.length > 0) {
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "终点站必须输入。";
 		}
 		var money = $("#money").val();
 		if (money == null || money == "undefine" || money.length == 0) {
@@ -51,6 +56,14 @@
 				errmsg = errmsg + "<br>";
 			}
 			errmsg = errmsg + "费用必须输入。";
+		}
+		
+		var money = $("#notes").val();
+		if (money == null || money == "undefine" || money.length == 0) {
+			if (errmsg.length > 0) {
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "备注必须输入。";
 		}
 
 		if (errmsg.length > 0) {
@@ -107,8 +120,23 @@ function ondelete(dtlno)
 function sendmail() {
 	$('#envelope').popup('hide all');
 	var mail = $("#mail").val();
+	var errmsg="";
 	if (mail.length == 0) {
-		$("#errmsg").html("邮件地址必须输入");
+		errmsg ="收件地址必须输入";
+	}
+	
+	if (mail.length > 0){
+		var Regex = /^(?:\w+\.?)*\w+@(?:\w+\.).*\w+$/;
+		if (!Regex.test(mail)){
+			if (errmsg.length > 0) {
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "邮箱格式不正确";
+		}
+	}
+	
+	if (errmsg.length > 0) {
+		$("#errmsg").html(errmsg);
 		$('#cmodal').modal({
 			closable : false
 
@@ -215,7 +243,7 @@ footer {
 						<div class="item">
 							<div class="ui labeled input">
 								<div class="ui label">费用</div>
-								<input id="money" name="money" type="text" value="" placeholder="必填项目	">
+								<input id="money" name="money" type="text" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  value="" placeholder="必填项目	">
 							</div>
 						</div>
 					</div>
@@ -223,7 +251,7 @@ footer {
 						<div class="item">
 							<div class="ui labeled input">
 								<div class="ui label">备注</div>
-								<input id="notes" name="notes" type="text" value="">
+								<input id="notes" name="notes" type="text" value="" placeholder="必填项目	">
 							</div>
 						</div>
 					</div>
@@ -247,7 +275,7 @@ footer {
 								<div class="inline fields">
 									<div class="field">
 										<input type="text" id="mailname" name="mailname"
-											placeholder="邮件名" value="当月出勤统计">
+											placeholder="邮件名" value="车费报销">
 									</div>
 								</div>
 								<div class="inline fields">

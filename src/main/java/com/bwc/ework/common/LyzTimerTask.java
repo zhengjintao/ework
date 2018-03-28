@@ -49,7 +49,7 @@ public class LyzTimerTask extends TimerTask {
 			if (sb.length() > 0) {
 				String mailname = "未签到提醒(休息日请忽略)";
 				String text = "下列人员今日未签到<br>" + sb.toString();
-				SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(), mailname, text);
+				SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(), mailname, text, null);
 			}
 
 		} catch (Exception e) {
