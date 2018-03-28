@@ -15,7 +15,7 @@ public class TemplateMessageUtil {
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
 		 msg = msg+ "--url" + sendUrl +"<br>";
 		// post请求数据
-		String url = "http://www.freertokyo.com/ework";
+		String url = "http://www.freertokyo.com/ework/list.do";
 		// data
 		JSONObject dataJson = new JSONObject();
 		// first
