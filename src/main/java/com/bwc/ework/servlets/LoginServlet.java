@@ -69,13 +69,11 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		
-		String sql = "select * from mstr_user where userid=? and delflg=?";
-		Object[] params = new Object[2];
+		String sql = "select u.userid as uuserid, u.*, c.*, mc.* from mstr_user u left join mstr_user_comp c on u.userid=c.userid and c.delflg='0' and c.defaultflg='1' left join mstr_company mc on c.companyid = mc.companyid where u.userid=? and u.delflg='0'";
+		Object[] params = new Object[1];
 		params[0] = user;
-		params[1] = "0";
 		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 		
-		Boolean correctflg = true;
 		if(userinfo == null || userinfo.size() != 1){
 			request.setAttribute("errmsg", "用户名不正确！");
 			request.setAttribute("userid", user);
@@ -94,7 +92,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		User userdata = new User();
-		userdata.setUserId((String)info.get("userid"));
+		userdata.setUserId((String)info.get("uuserid"));
 		userdata.setUserName((String)info.get("username"));
 		userdata.setDelflg((String)info.get("delflg"));
 		userdata.setBeginTime((Time)info.get("begintime"));
@@ -102,6 +100,8 @@ public class LoginServlet extends HttpServlet {
 		userdata.setSex((String)info.get("sex"));
 		userdata.setUserPwd(enpwd);
 		userdata.setAuthflg((String)info.get("authflg"));
+		userdata.setMaincompanyid((String)info.get("companyid"));
+		userdata.setMaincompanyname((String)info.get("companynm"));
 	    
 		HttpSession session = request.getSession();
 		session.setAttribute("userinfo", userdata);
@@ -115,7 +115,8 @@ public class LoginServlet extends HttpServlet {
 			response.addCookie(pcookies);
 		}
 		
-		response.sendRedirect("list.do");
+		String rurl = userdata.getMaincompanyid() == null ? "personal.do" : "list.do";
+		response.sendRedirect(rurl);
 	}
 
 	/**

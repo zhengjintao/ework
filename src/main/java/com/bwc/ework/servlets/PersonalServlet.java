@@ -41,23 +41,34 @@ public class PersonalServlet extends HttpServlet {
 		if("setting".equals(request.getParameter("subKbn"))){
 			String begintime = request.getParameter("wbegin");
 			String endtime = request.getParameter("wend");
+			String rest = request.getParameter("rest");
 			
-			String sql = "update mstr_user set begintime=? , endtime=? where userid=?";
-			Object[] params = new Object[3];
+			String sql = "update mstr_user set begintime=? , endtime=?, rest=? where userid=?";
+			Object[] params = new Object[4];
 			params[0] = begintime;
 			params[1] = endtime;
-			params[2] = userinfo.getUserId();
+			params[2] = rest;
+			params[3] = userinfo.getUserId();
 			JdbcUtil.getInstance().executeUpdate(sql, params);
 			
 			userinfo.setBeginTime(DateTimeUtil.stringToTime(begintime));
 			userinfo.setEndTime(DateTimeUtil.stringToTime(endtime));
+			userinfo.setRest(rest);
 			session.setAttribute("userinfo", userinfo);
 		}
 		
+		String wrest ="1";
 		request.setAttribute("userid", userinfo.getUserId());
 		request.setAttribute("username", userinfo.getUserName());
+		
+		String companyname = userinfo.getMaincompanyid() == null ? "未加入公司，点击加入或创建" : userinfo.getMaincompanyname();
+		String companyurl = userinfo.getMaincompanyid() == null ? "companysetting.do" : "companydetail.do?companyid=" + userinfo.getMaincompanyid();
+		request.setAttribute("companyname", companyname);
+		request.setAttribute("companyurl", companyurl);
+		
 		request.setAttribute("begintime", userinfo.getBeginTime().toString());
 		request.setAttribute("endtime", userinfo.getEndTime().toString());
+		request.setAttribute("wrest", wrest);
 		
 		String personalImg = "assets/images/christian.jpg";
 		String nickname = "帅锅";
@@ -75,11 +86,12 @@ public class PersonalServlet extends HttpServlet {
 		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(DateTimeUtil.GetMonth(now));
 		String year = date1.getYear();
 		String month = date1.getMonth();
-		String sql = "select count(*) leaveday from cdata_leave where userid=? and year=? and month=?";
-		Object[] params = new Object[3];
-		params[0] = userinfo.getUserId();
-		params[1] = year;
-		params[2] = month;
+		String sql = "select count(*) leaveday from cdata_leave where companyid=? and userid=? and year=? and month=?";
+		Object[] params = new Object[4];
+		params[0] = userinfo.getMaincompanyid();
+		params[1] = userinfo.getUserId();
+		params[2] = year;
+		params[3] = month;
 		List<Object> leaveinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 		
 		if(leaveinfo == null || leaveinfo.size() > 0){
@@ -100,12 +112,14 @@ public class PersonalServlet extends HttpServlet {
                      "where wk.year= ? " + 
                            "and wk.month = ? " + 
                            "and user.delflg ='0' "+
+                           "and user.companyid =? "+
                            "and user.userid =? " +
                      "group by user.userid";
-		Object[] params2 = new Object[3];
+		Object[] params2 = new Object[4];
 		params2[0] = year;
 		params2[1] = month;
-		params2[2] = userinfo.getUserId();
+		params2[2] = userinfo.getMaincompanyid();
+		params2[3] = userinfo.getUserId();
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 
 		String hours = "0";

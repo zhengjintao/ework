@@ -62,7 +62,7 @@ public class SendBillServlet extends HttpServlet {
 		bd.setBegindate(dates[0]);
 		bd.setEnddate(dates[1]);
 		
-		List<String[]> info = this.getExpinfoByMonth(userid, request.getParameter("wdate2"));
+		List<String[]> info = this.getExpinfoByMonth(userid, userif.getMaincompanyid(), request.getParameter("wdate2"));
 		List<BillInfo> bilist = new ArrayList<BillInfo>();
 		for(String[] each : info){
 			BillInfo bi = new BillInfo();
@@ -127,16 +127,17 @@ public class SendBillServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private List<String[]> getExpinfoByMonth(String userid,String monthDate){
+	private List<String[]> getExpinfoByMonth(String userid, String companyid, String monthDate){
 		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(monthDate);
 		String year = date1.getYear();
 		String month = date1.getMonth();
-		String sql2 = "SELECT * FROM cdate_expenses where userid=? and year=? and month=? and expkbn='交通费' and delflg = ? order by expdetailno;";
-		Object[] params2 = new Object[4];
+		String sql2 = "SELECT * FROM cdate_expenses where userid=? and companyid=? and year=? and month=? and expkbn='交通费' and delflg = ? order by expdetailno;";
+		Object[] params2 = new Object[5];
 		params2[0] = userid;
-		params2[1] = year;
-		params2[2] = month;
-		params2[3] = "0";
+		params2[1] = companyid;
+		params2[2] = year;
+		params2[3] = month;
+		params2[4] = "0";
 		List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 		List<String[]> monthinfo = new ArrayList<String[]>();
 		for (int i = 0; i < infolist.size(); i++) {

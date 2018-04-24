@@ -1,7 +1,6 @@
 ﻿package com.bwc.ework.servlets;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,23 +61,31 @@ public class ListServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
+		if(userinfo.getMaincompanyid() == null){
+			request.setAttribute("errmsg", "请先加入公司");
+		}
+		
 		request.setAttribute("qiandao", "签到");
-		if("1".equals(request.getParameter("deleteFlg"))){
+		if("1".equals(request.getParameter("deleteFlg")) && userinfo.getMaincompanyid() != null){
 			delete(request,response);
 			return;
 		}
 		// 初期化的场合
-		if("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg"))){
-			String sqll = "select * from cdata_leave where userid=? and leavedate=?";
-			Object[] paramsl = new Object[2];
+		if("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg")) && userinfo.getMaincompanyid() != null){
+			
+			
+			String sqll = "select * from cdata_leave where userid=? and companyid=? and leavedate=?";
+			Object[] paramsl = new Object[3];
 			paramsl[0] = userinfo.getUserId();
-			paramsl[1] = request.getParameter("wdate");
+			paramsl[1] = userinfo.getMaincompanyid();
+			paramsl[2] = request.getParameter("wdate");
 			List<Object> listl = JdbcUtil.getInstance().excuteQuery(sqll, paramsl);
 			
-			String sql = "select * from cdata_worktime where userid=? and date=?";
-			Object[] params = new Object[2];
+			String sql = "select * from cdata_worktime where userid=? and companyid=? and date=?";
+			Object[] params = new Object[3];
 			params[0] = userinfo.getUserId();
-			params[1] = paramwdate;
+			params[1] = userinfo.getMaincompanyid();
+			params[2] = paramwdate;
 			List<Object> list = JdbcUtil.getInstance().excuteQuery(sql, params);
 			
 			com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(paramwdate);
@@ -95,8 +102,8 @@ public class ListServlet extends HttpServlet {
 				// 数据存在更新操作
 				if(list.size()>0){
 					String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?,comment=?"
-							+ " where userid=? and date=?";
-					Object[] updateparams = new Object[10];
+							+ " where userid=? and companyid=? and date=?";
+					Object[] updateparams = new Object[11];
 					updateparams[0] = year;
 					updateparams[1] = month;
 					updateparams[2] = day;
@@ -110,30 +117,33 @@ public class ListServlet extends HttpServlet {
 						e.printStackTrace();
 					}
 					updateparams[8] = userid;
-					updateparams[9] = date;
+					updateparams[9] = userinfo.getMaincompanyid();
+					updateparams[10] = date;
 					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
 				}else{
-					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-					Object[] insertparams = new Object[15];
+					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					Object[] insertparams = new Object[16];
 					insertparams[0] = userid;
-					insertparams[1] = year;
-					insertparams[2] = month;
-					insertparams[3] = day;
-					insertparams[4] = date;
-					insertparams[5] = begin;
-					insertparams[6] = end;
-					insertparams[8] = comment;
-					insertparams[9] = latitude;
-					insertparams[10] = longitude;
-					insertparams[11] = dtladdress;
-					insertparams[12] = latitude;
-					insertparams[13] = longitude;
-					insertparams[14] = dtladdress;
+					insertparams[1] = userinfo.getMaincompanyid();
+					insertparams[2] = year;
+					insertparams[3] = month;
+					insertparams[4] = day;
+					insertparams[5] = date;
+					insertparams[6] = begin;
+					insertparams[7] = end;
 					try {
-						insertparams[7] = DateTimeUtil.getHours(begin,end);
+						insertparams[8] = DateTimeUtil.getHours(begin,end);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
+					insertparams[9] = comment;
+					insertparams[10] = latitude;
+					insertparams[11] = longitude;
+					insertparams[12] = dtladdress;
+					insertparams[13] = latitude;
+					insertparams[14] = longitude;
+					insertparams[15] = dtladdress;
+					
 					JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 				}
 				
@@ -161,10 +171,11 @@ public class ListServlet extends HttpServlet {
 			request.setAttribute("sysDate", "1".equals(request.getParameter("selectChg")) ? paramwdate : formattime.format(new Date()));
 			String dateTime = "1".equals(request.getParameter("selectChg")) ? paramwdate: formattime.format(new Date());
 			
-			String sql = "select * from cdata_worktime where userid=? and date=?";
-			Object[] params = new Object[2];
+			String sql = "select * from cdata_worktime where userid=? and companyid= ? and date=?";
+			Object[] params = new Object[3];
 			params[0] = userinfo.getUserId();
-			params[1] = dateTime;
+			params[1] = userinfo.getMaincompanyid();
+			params[2] = dateTime;
 			List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 			
 			if("1".equals(request.getParameter("selectChg"))){
@@ -259,10 +270,11 @@ public class ListServlet extends HttpServlet {
 		String dispStr;
 		for(int i= 0; i<7;i++){
 			dispStr = weekDate.get(i);
-			String sql = "select * from cdata_worktime where userid=? and date = ?";
-			Object[] params = new Object[2];
+			String sql = "select * from cdata_worktime where userid=? and companyid=? and date = ?";
+			Object[] params = new Object[3];
 			params[0] = userinfo.getUserId();
-			params[1] = weekDate.get(i);
+			params[1] = userinfo.getMaincompanyid();
+			params[2] = weekDate.get(i).substring(0, 10);
 			List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 			if(list1.size() > 0){
 				Map<String, Object> set = (Map<String, Object>)list1.get(0);
@@ -341,10 +353,11 @@ public class ListServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
 		
-		String sql = "delete from cdata_worktime where userid=? and date=?";
-		Object[] params = new Object[2];
+		String sql = "delete from cdata_worktime where userid=? and companyid=? and date=?";
+		Object[] params = new Object[3];
 		params[0] = userinfo.getUserId();
-		params[1] = request.getParameter("wdate");
+		params[1] = userinfo.getMaincompanyid();
+		params[2] = request.getParameter("wdate");
 		JdbcUtil.getInstance().executeUpdate(sql, params);
 		
 		JSONObject jsonObject = new JSONObject();

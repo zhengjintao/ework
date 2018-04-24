@@ -63,7 +63,7 @@ public class MoneySubmitServlet extends HttpServlet {
 			request.setAttribute("nowmonth", DateTimeUtil.GetMonth(now));
 			request.setAttribute("nowdate", now);
 			request.setAttribute("sysDate2", DateTimeUtil.GetMonth(now));
-			request.setAttribute("info", getExpinfoByMonth(userid,DateTimeUtil.GetMonth(now)));
+			request.setAttribute("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(now)));
 			request.getRequestDispatcher("moneysubmit.jsp").forward(request, response);
 		}else if(!"1".equals(request.getParameter("expinfo")) 
 				&& "1".equals(request.getParameter("saveFlg"))
@@ -79,38 +79,39 @@ public class MoneySubmitServlet extends HttpServlet {
 			String notes = request.getParameter("notes") != null ? 
 					new String(request.getParameter("notes").getBytes("iso-8859-1"), "utf-8") :"";
 			// 数据新规
-			String insertsql = "insert into cdate_expenses values(?,?,?,?,?,?,?,?,?,?,?)";
-			Object[] insertparams = new Object[11];
+			String insertsql = "insert into cdate_expenses values(?,?,?,?,?,?,?,?,?,?,?,?)";
+			Object[] insertparams = new Object[12];
 			insertparams[0] = userid;
-			insertparams[1] = getDetailNo(userid);
-			insertparams[2] = subKbn;
-			insertparams[3] = request.getParameter("subdate");
-			insertparams[4] = year;
-			insertparams[5] = month;
-			insertparams[6] = stationf;
-			insertparams[7] = stationt;
-			insertparams[8] = request.getParameter("money");
-			insertparams[9] = notes;
-			insertparams[10] = "0";
+			insertparams[1] = userif.getMaincompanyid();
+			insertparams[2] = getDetailNo(userid);
+			insertparams[3] = subKbn;
+			insertparams[4] = request.getParameter("subdate");
+			insertparams[5] = year;
+			insertparams[6] = month;
+			insertparams[7] = stationf;
+			insertparams[8] = stationt;
+			insertparams[9] = request.getParameter("money");
+			insertparams[10] = notes;
+			insertparams[11] = "0";
 			JdbcUtil.getInstance().executeUpdate(insertsql, insertparams);
 			
 			request.setAttribute("userid", userid);
 			request.setAttribute("nowmonth", DateTimeUtil.GetMonth(now));
 			request.setAttribute("nowdate", now);
 			request.setAttribute("sysDate2", DateTimeUtil.GetMonth(now));
-			request.setAttribute("info", getExpinfoByMonth(userid,DateTimeUtil.GetMonth(now)));
+			request.setAttribute("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(now)));
 			request.getRequestDispatcher("moneysubmit.jsp").forward(request, response);
 		}
 		else if("1".equals(request.getParameter("expinfo")) && !"1".equals(request.getParameter("delflg"))){
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("info", getExpinfoByMonth(userid,request.getParameter("wdate2")));
+			jsonObject.put("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), request.getParameter("wdate2")));
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write(jsonObject.toString());
 		}
 		else if("1".equals(request.getParameter("delflg"))){
 			delete(request.getParameter("dtlno"));
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("info", getExpinfoByMonth(userid,request.getParameter("wdate2")));
+			jsonObject.put("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), request.getParameter("wdate2")));
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write(jsonObject.toString());
 		}
@@ -125,16 +126,17 @@ public class MoneySubmitServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private String getExpinfoByMonth(String userid,String monthDate){
+	private String getExpinfoByMonth(String userid,String companyid, String monthDate){
 		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(monthDate);
 		String year = date1.getYear();
 		String month = date1.getMonth();
-		String sql2 = "SELECT * FROM cdate_expenses where userid=? and year=? and month=? and delflg = ? order by expdetailno;";
-		Object[] params2 = new Object[4];
+		String sql2 = "SELECT * FROM cdate_expenses where userid=? and companyid=? and year=? and month=? and delflg = ? order by expdetailno;";
+		Object[] params2 = new Object[5];
 		params2[0] = userid;
-		params2[1] = year;
-		params2[2] = month;
-		params2[3] = "0";
+		params2[1] = companyid;
+		params2[2] = year;
+		params2[3] = month;
+		params2[4] = "0";
 		List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 		List<String[]> monthinfo = new ArrayList<String[]>();
 		for (int i = 0; i < infolist.size(); i++) {

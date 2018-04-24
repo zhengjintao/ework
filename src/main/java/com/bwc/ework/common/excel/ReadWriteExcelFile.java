@@ -8,6 +8,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.bwc.ework.common.StringUtil;
 import com.bwc.ework.form.BillDetail;
 import com.bwc.ework.form.BillInfo;
 
@@ -39,7 +40,7 @@ public class ReadWriteExcelFile {
 	    	rowinx++;
 	    }  
 	    
-	    String date = String.valueOf(bd.getBegindate().getYear()+ 1900) + padLeft(String.valueOf(bd.getEnddate().getMonth() + 1), 2, '0');
+	    String date = String.valueOf(bd.getBegindate().getYear()+ 1900) + StringUtil.padLeft(String.valueOf(bd.getEnddate().getMonth() + 1), 2, '0');
 	    
 	    String outpath = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "车费报销(" + bd.getName()+ date +").xls"; 
 	    FileOutputStream fileOut = new FileOutputStream(outpath);  
@@ -52,17 +53,4 @@ public class ReadWriteExcelFile {
 	    return outpath;
 	  } 
 	
-	 public static String padLeft(String src, int len, char ch) {
-		    int diff = len - src.length();
-	        if (diff <= 0) {
-	            return src;
-	        }
-
-	        char[] charr = new char[len];
-	        System.arraycopy(src.toCharArray(), 0, charr, diff, src.length());
-	        for (int i = 0; i < diff; i++) {
-	            charr[i] = ch;
-	        }
-	        return new String(charr);
-	    }
 }

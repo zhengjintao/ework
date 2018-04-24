@@ -142,8 +142,11 @@ footer {
 						window.location.href = "userInfoEdit.do";
 					}
 				</script>
+				<div class="ui inverted divider"></div>
+				 
+				<a href=<%=(String)request.getAttribute("companyurl") %>><i class="home icon"></i><%=(String)request.getAttribute("companyname") %></a>
+					
 			</div>
-
 			<form action="./personal.do" method="post" onsubmit="return check();">
 				<div class="ui teal inverted segment">
 				    <a class="ui orange right ribbon label">默认时间</a>
@@ -156,6 +159,9 @@ footer {
 							</div>
 							<div class="field">
 								<label>退勤</label> <input id="wend" type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
+							</div>
+							<div class="field">
+								<label>休息(h)</label> <input id="wrest" type="number" style="width:50px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
 							</div>
 						</div>
 						</div>
@@ -227,7 +233,25 @@ footer {
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui green button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="employeemanage.do">员工管理</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
+				</div>
+				
+				<div class="ui brown segment" style="<%=(String)request.getAttribute("display") %>">
+				<a class="ui orange right ribbon label">系统管理</a>
+					<div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
 							<i class="edit icon"></i> <a class="header" style="color:white" href="usermanagement.do">用户管理</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
+					<div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="usermanagement.do">公司管理</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>

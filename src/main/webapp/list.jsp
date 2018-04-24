@@ -173,12 +173,13 @@ footer {
 								</div>
 
 								<div class="field">
-									<div style="width: 20px; vertical-align: middle;"></div>
+									<label>退勤时间</label> <input type="time" name="wend" id="wend"
+										value=<%=(String) request.getAttribute("defaultEndTime")%>><br>
 								</div>
 
 								<div class="field">
-									<label>退勤时间</label> <input type="time" name="wend" id="wend"
-										value=<%=(String) request.getAttribute("defaultEndTime")%>><br>
+									<label>休息(h)</label> <input type="number" name="wrest" id="wrest" style="width:50px"
+										value=<%=(String) request.getAttribute("defaultRestTime")%>><br>
 								</div>
 							</div>
 						</div>

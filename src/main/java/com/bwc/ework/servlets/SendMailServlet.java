@@ -44,10 +44,10 @@ public class SendMailServlet extends HttpServlet {
 		String prockbn = request.getParameter("prockbn");
 		String userid = request.getParameter("userid");
 		String username = request.getParameter("username");
-
+		HttpSession session = request.getSession();
+		User userinfo = (User) session.getAttribute("userinfo");
 		if (userid == null || userid.length() == 0) {
-			HttpSession session = request.getSession();
-			User userinfo = (User) session.getAttribute("userinfo");
+			
 			userid = userinfo.getUserId();
 			username = userinfo.getUserName();
 		}
@@ -77,7 +77,7 @@ public class SendMailServlet extends HttpServlet {
 		
 		String text = "姓名：" + username + "&emsp;月份："+ year + "年" + month+"月" + "<br>" + "<br>";
 		String leaveinfo = getMonthData(userid, yearandmonth);
-		String workinfo = getworktime(userid, yearandmonth);
+		String workinfo = getworktime(userinfo.getMaincompanyid(), userid, yearandmonth);
 		
 		List<String> list = new ArrayList<String>();
 		list.add(mail);
@@ -115,16 +115,17 @@ public class SendMailServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
-	private String getworktime(String userid, String dateStr) {
+	private String getworktime(String companyid, String userid, String dateStr) {
 
 		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(dateStr);
 		String year = date1.getYear();
 		String month = date1.getMonth();
-		String sql = "select * from cdata_worktime where userid= ? and year = ? and month= ?";
-		Object[] params = new Object[3];
-		params[0] = userid;
-		params[1] = year;
-		params[2] = month;
+		String sql = "select * from cdata_worktime where companyid=? and userid= ? and year = ? and month= ?";
+		Object[] params = new Object[4];
+		params[0] = companyid;
+		params[1] = userid;
+		params[2] = year;
+		params[3] = month;
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 
 		StringBuilder sb = new StringBuilder();

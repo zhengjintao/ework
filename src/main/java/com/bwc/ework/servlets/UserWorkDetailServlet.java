@@ -63,8 +63,8 @@ public class UserWorkDetailServlet extends HttpServlet {
 		request.setAttribute("userid", userid);
 		request.setAttribute("username", username);
 		
-		request.setAttribute("monthdata", getMonthData(userid, DateTimeUtil.GetMonth(dateStr)));
-		request.setAttribute("workdata", getworktime(userid, DateTimeUtil.GetMonth(dateStr)));
+		request.setAttribute("monthdata", getMonthData(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(dateStr)));
+		request.setAttribute("workdata", getworktime(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(dateStr)));
 		request.getRequestDispatcher("userworkdetail.jsp").forward(request, response);
 	}
 
@@ -76,16 +76,17 @@ public class UserWorkDetailServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private List<String[]> getworktime(String userid,String dateStr){
+	private List<String[]> getworktime(String userid, String companyid, String dateStr){
 		List<String[]> monthData = new ArrayList<String[]>();
 		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(dateStr);
 		String year = date1.getYear();
 		String month = date1.getMonth();
-		String sql = "select * from cdata_worktime where userid= ? and year = ? and month= ?";
-		Object[] params = new Object[3];
-		params[0] = userid;
-		params[1] = year;
-		params[2] = month;
+		String sql = "select * from cdata_worktime where companyid=? userid= ? and year = ? and month= ?";
+		Object[] params = new Object[4];
+		params[0] = companyid;
+		params[1] = userid;
+		params[2] = year;
+		params[3] = month;
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 		for (Object data : resultList) {
 			Map<String, Object> row = (Map<String, Object>) data;
@@ -100,7 +101,7 @@ public class UserWorkDetailServlet extends HttpServlet {
 		return monthData;
 	}
 	
-	private List<String[]> getMonthData(String userId, String dateStr) {
+	private List<String[]> getMonthData(String userId, String companyid, String dateStr) {
 		List<String[]> monthData = new ArrayList<String[]>();
 		if (dateStr == null) {
 			return monthData;
@@ -109,11 +110,12 @@ public class UserWorkDetailServlet extends HttpServlet {
 		String year = date1.getYear();
 		String month = date1.getMonth();
 
-		String sql = "select * from cdata_leave where userid=? and year = ? and month = ?";
-		Object[] params = new Object[3];
-		params[0] = userId;
-		params[1] = year;
-		params[2] = month;
+		String sql = "select * from cdata_leave where companyid=? and userid=? and year = ? and month = ?";
+		Object[] params = new Object[4];
+		params[0] = companyid;
+		params[1] = userId;
+		params[2] = year;
+		params[3] = month;
 		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 
 		for (Object data : list1) {

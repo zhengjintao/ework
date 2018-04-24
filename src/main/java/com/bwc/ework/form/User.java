@@ -13,6 +13,9 @@ public class User {
 	private String authflg;
 	private String mail;
 	private Date birthday;
+	private String maincompanyid;
+	private String maincompanyname;
+	private String rest;
 	
 	public String getUserId() {
 		return userId;
@@ -73,6 +76,24 @@ public class User {
 	}
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+	public String getMaincompanyid() {
+		return maincompanyid;
+	}
+	public void setMaincompanyid(String maincompanyid) {
+		this.maincompanyid = maincompanyid;
+	}
+	public String getMaincompanyname() {
+		return maincompanyname;
+	}
+	public void setMaincompanyname(String maincompanyname) {
+		this.maincompanyname = maincompanyname;
+	}
+	public String getRest() {
+		return rest;
+	}
+	public void setRest(String rest) {
+		this.rest = rest;
 	}
 	
 }
