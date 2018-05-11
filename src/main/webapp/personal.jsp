@@ -161,7 +161,7 @@ footer {
 								<label>退勤</label> <input id="wend" type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
 							</div>
 							<div class="field">
-								<label>休息(h)</label> <input id="wrest" type="number" style="width:50px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
+								<label>休息(h)</label> <input id="wrest" type="text" style="width:50px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
 							</div>
 						</div>
 						</div>
@@ -199,13 +199,15 @@ footer {
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
+					<!--
 				<div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui violet button">
 							<i class="marker alternate icon"></i><a class="header" style="color:white" href="jsdemo.html">定位签到</a>
 						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
+						 <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a>
 					</div>
+					 -->
 				<div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui violet button">
@@ -251,17 +253,19 @@ footer {
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui green button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="usermanagement.do">公司管理</a>
+							<i class="edit icon"></i> <a class="header" style="color:white" href="companymanagement.do">公司管理</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
+					<!-- 
 					<div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui green button">
 							<i class="marker alternate icon"></i><a class="header" style="color:white" href="recordworktime.do">出退定位</a>
 						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
+						<a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a>
 					</div>
+					 -->
 				</div>
 			</form>
 		</div>

@@ -82,10 +82,10 @@ public class CompanyEditServlet extends HttpServlet {
 			}
 			if(companyid!=null && companyid.length()>0 ){
 				btnname="已申请";
-				request.setAttribute("errmsg", "申请失败，每人最多只允许申请创建一个公司<br>"  + "下列公司等待审核中"+ "<br>" + "编号：" + companyid+ "<br>" + "名称：" + companynm+ "<br>"+"（最快5分钟内审核，最长24小时内审核）");
+				request.setAttribute("errmsg", "申请失败，每人最多只允许申请创建一个公司<br>"  + "已申请下列公司等待审核中"+ "<br>" + "编号：" + companyid+ "<br>" + "名称：" + companynm+ "<br>"+"（最快5分钟内审核，最长24小时内审核）");
 			}
 		}
-		String maxnum ="";
+		String maxnum ="0";
 		if("1".equals(mode) && (companyid==null || companyid.length()==0)){
 			String selsql = "SELECT max(companyid) as maxnum FROM cdata_companyapply";
 			List<Object> result = JdbcUtil.getInstance().excuteQuery(selsql, null);
@@ -93,7 +93,9 @@ public class CompanyEditServlet extends HttpServlet {
 			for (Object data : result) {
 				Map<String, Object> row = (Map<String, Object>) data;
 				
-				maxnum = row.get("maxnum").toString();
+				if(row.get("maxnum") != null){
+					maxnum = row.get("maxnum").toString();
+				}
 				
 				break;
 			}
