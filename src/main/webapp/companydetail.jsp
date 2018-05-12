@@ -49,8 +49,6 @@ footer {
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a>
 					 <i class="right chevron icon divider"></i>
-					<a class="section" href="companysetting.do">公司</a>
-					 <i class="right chevron icon divider"></i>
 					<div class="active section">公司信息</div>
 				</div>
 			</div>

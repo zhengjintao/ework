@@ -90,6 +90,14 @@ public class CompanyDetailServlet extends HttpServlet {
 			btnname = "永久退出";
 		}*/
 		request.setAttribute("btnname", btnname);
+		sql = "select * from cdata_companyuser where companyid = ? and userid=? and delflg ='0' and rolekbn in ('0','1')";
+		params = new Object[2];
+		params[0] = companyid;
+		params[1] = userinfo.getUserId();
+		list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
+
+		String diplay = list1.size() > 0 ? "" : "display: none";
+		request.setAttribute("display", diplay);
 		
 		request.getRequestDispatcher("companydetail.jsp").forward(request, response);
 	}
