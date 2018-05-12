@@ -178,7 +178,7 @@ footer {
 								</div>
 
 								<div class="field">
-									<label>休息(h)</label> <input type="number" name="wrest" id="wrest" style="width:50px"
+									<label>休息时间</label> <input type="text" name="wrest" id="wrest" style="width:50px;height:42px"
 										value=<%=(String) request.getAttribute("defaultRestTime")%>><br>
 								</div>
 							</div>

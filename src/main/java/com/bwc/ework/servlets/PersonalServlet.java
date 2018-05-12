@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.bwc.ework.common.Consts;
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -41,7 +43,7 @@ public class PersonalServlet extends HttpServlet {
 		if("setting".equals(request.getParameter("subKbn"))){
 			String begintime = request.getParameter("wbegin");
 			String endtime = request.getParameter("wend");
-			String rest = request.getParameter("rest");
+			String rest = request.getParameter("wrest");
 			
 			String sql = "update mstr_user set begintime=? , endtime=?, rest=? where userid=?";
 			Object[] params = new Object[4];
@@ -57,11 +59,10 @@ public class PersonalServlet extends HttpServlet {
 			session.setAttribute("userinfo", userinfo);
 		}
 		
-		String wrest ="1";
 		request.setAttribute("userid", userinfo.getUserId());
 		request.setAttribute("username", userinfo.getUserName());
-		String maincompanyid = userinfo.getMaincompanyid();
-		if(maincompanyid == null){
+		String maincompanyid = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
+		if(maincompanyid != Consts.DefaultCompanyId){
 			String sql = "select * from mstr_user_comp usr left join mstr_company com on usr.companyid= com.companyid where usr.userid=? and usr.defaultflg ='1' and usr.delflg='0'";
 			Object[] params = new Object[1];
 			params[0] = userinfo.getUserId();
@@ -71,19 +72,19 @@ public class PersonalServlet extends HttpServlet {
 				Map<String, Object> row = (Map<String, Object>) data;
 				maincompanyid = row.get("companyid").toString();
 				
-				userinfo.setMaincompanyname("ddd");
+				userinfo.setMaincompanyname(row.get("companynm").toString());
 				session.setAttribute("userinfo", userinfo);
 				break;
 			}
 		}
-		String companyname = maincompanyid == null ? "未加入公司，点击加入或创建" : userinfo.getMaincompanyname();
-		String companyurl = maincompanyid == null ? "companysetting.do" : "companydetail.do?companyid=" + maincompanyid;
+		String companyname = maincompanyid == Consts.DefaultCompanyId ? "未加入公司，点击加入或创建" : userinfo.getMaincompanyname();
+		String companyurl = maincompanyid == Consts.DefaultCompanyId ? "companysetting.do" : "companydetail.do?companyid=" + maincompanyid;
 		request.setAttribute("companyname", companyname);
 		request.setAttribute("companyurl", companyurl);
 		
 		request.setAttribute("begintime", userinfo.getBeginTime().toString());
 		request.setAttribute("endtime", userinfo.getEndTime().toString());
-		request.setAttribute("wrest", wrest);
+		request.setAttribute("wrest", userinfo.getRest().toString());
 		
 		String personalImg = "assets/images/christian.jpg";
 		String nickname = "帅锅";
@@ -127,7 +128,7 @@ public class PersonalServlet extends HttpServlet {
                      "where wk.year= ? " + 
                            "and wk.month = ? " + 
                            "and user.delflg ='0' "+
-                           "and user.companyid =? "+
+                           "and wk.companyid =? "+
                            "and user.userid =? " +
                      "group by user.userid";
 		Object[] params2 = new Object[4];

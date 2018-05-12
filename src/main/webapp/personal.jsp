@@ -33,6 +33,14 @@
 			}
 			errmsg = errmsg + "默认退勤时间必须输入。";
 		}
+		
+		var wrest = $("#wrest").val();
+		if (wrest == null || wrest == "undefine" || wrest.length == 0) {
+			if(errmsg.length > 0){
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "请输入0.5的倍数";
+		}
 
 		if (errmsg.length > 0) {
 			$("#errmsg").html(errmsg);
@@ -161,7 +169,8 @@ footer {
 								<label>退勤</label> <input id="wend" type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
 							</div>
 							<div class="field">
-								<label>休息(h)</label> <input id="wrest" type="text" style="width:50px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
+								<label>休息(h)</label> 
+								<input id="wrest" type="text" style="width:50px;height:42px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
 							</div>
 						</div>
 						</div>

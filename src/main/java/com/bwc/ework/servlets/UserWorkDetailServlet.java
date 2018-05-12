@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -39,17 +40,10 @@ public class UserWorkDetailServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		//查询月份取得
 		String wdate = request.getParameter("wdate");
-
 		HttpSession session = request.getSession();
-		// 用户信息
-		User userif = (User) session.getAttribute("userinfo");
-		String sql = "select * from mstr_user where userid=? and delflg=?";
-		Object[] params = new Object[2];
-		params[0] = userif.getUserId();
-		params[1] = "0";
-		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
-		Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
-		String mail = info.get("mail") == null ? "" : (String)info.get("mail");
+		User userinfo = (User)session.getAttribute("userinfo");
+		String mail = userinfo.getMail();
+		String companyCd =Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		request.setAttribute("email", mail);
 		
 		// 系统当前时间取得
@@ -60,8 +54,8 @@ public class UserWorkDetailServlet extends HttpServlet {
 		request.setAttribute("userid", userid);
 		request.setAttribute("username", username);
 		
-		request.setAttribute("monthdata", getMonthData(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(dateStr)));
-		request.setAttribute("workdata", getworktime(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(dateStr)));
+		request.setAttribute("monthdata", getMonthData(userid, companyCd, DateTimeUtil.GetMonth(dateStr)));
+		request.setAttribute("workdata", getworktime(userid, companyCd, DateTimeUtil.GetMonth(dateStr)));
 		request.getRequestDispatcher("userworkdetail.jsp").forward(request, response);
 	}
 
@@ -78,7 +72,7 @@ public class UserWorkDetailServlet extends HttpServlet {
 		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(dateStr);
 		String year = date1.getYear();
 		String month = date1.getMonth();
-		String sql = "select * from cdata_worktime where companyid=? userid= ? and year = ? and month= ?";
+		String sql = "select * from cdata_worktime where companyid= ? and userid= ? and year = ? and month= ?";
 		Object[] params = new Object[4];
 		params[0] = companyid;
 		params[1] = userid;

@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -56,9 +57,6 @@ public class ListServlet extends HttpServlet {
 		}
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
-		if(userinfo.getMaincompanyid() == null){
-			//request.setAttribute("errmsg", "请先加入公司");
-		}
 		
 		request.setAttribute("qiandao", "签到");
 		if("1".equals(request.getParameter("deleteFlg")) && userinfo.getMaincompanyid() != null){
@@ -66,20 +64,18 @@ public class ListServlet extends HttpServlet {
 			return;
 		}
 		// 初期化的场合
-		if("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg")) && userinfo.getMaincompanyid() != null){
-			
-			
+		if("true".equals(request.getParameter("subKbn")) && !"1".equals(request.getParameter("selectChg"))){
 			String sqll = "select * from cdata_leave where userid=? and companyid=? and leavedate=?";
 			Object[] paramsl = new Object[3];
 			paramsl[0] = userinfo.getUserId();
-			paramsl[1] = userinfo.getMaincompanyid();
+			paramsl[1] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			paramsl[2] = request.getParameter("wdate");
 			List<Object> listl = JdbcUtil.getInstance().excuteQuery(sqll, paramsl);
 			
 			String sql = "select * from cdata_worktime where userid=? and companyid=? and date=?";
 			Object[] params = new Object[3];
 			params[0] = userinfo.getUserId();
-			params[1] = userinfo.getMaincompanyid();
+			params[1] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			params[2] = paramwdate;
 			List<Object> list = JdbcUtil.getInstance().excuteQuery(sql, params);
 			
@@ -91,6 +87,7 @@ public class ListServlet extends HttpServlet {
 			String date = paramwdate;
 			String begin = request.getParameter("wbegin");
 			String end = request.getParameter("wend");
+			String rest =request.getParameter("wrest");
 			if(listl.size() > 0){
 				request.setAttribute("errmsg", "当天已请假，无法签到！");
 			}else{
@@ -107,19 +104,19 @@ public class ListServlet extends HttpServlet {
 					updateparams[5] = end;
 					updateparams[7] = comment;
 					try {
-						updateparams[6] = DateTimeUtil.getHours(begin,end);
+						updateparams[6] = DateTimeUtil.getHours(begin,end,rest);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
 					updateparams[8] = userid;
-					updateparams[9] = userinfo.getMaincompanyid();
+					updateparams[9] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 					updateparams[10] = date;
 					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
 				}else{
 					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					Object[] insertparams = new Object[16];
 					insertparams[0] = userid;
-					insertparams[1] = userinfo.getMaincompanyid();
+					insertparams[1] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 					insertparams[2] = year;
 					insertparams[3] = month;
 					insertparams[4] = day;
@@ -127,7 +124,7 @@ public class ListServlet extends HttpServlet {
 					insertparams[6] = begin;
 					insertparams[7] = end;
 					try {
-						insertparams[8] = DateTimeUtil.getHours(begin,end);
+						insertparams[8] = DateTimeUtil.getHours(begin,end,rest);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
@@ -151,7 +148,10 @@ public class ListServlet extends HttpServlet {
 			request.setAttribute("defaultBeginTime",begin);
 			// 默认结束时间
 			request.setAttribute("defaultEndTime", end);
+			// 默认休息时间
+			request.setAttribute("defaultRestTime", userinfo.getRest().toString());
 			request.setAttribute("comment", comment);
+			
 			try {
 				getWeekData(request);
 			} catch (ParseException e) {
@@ -169,7 +169,7 @@ public class ListServlet extends HttpServlet {
 			String sql = "select * from cdata_worktime where userid=? and companyid= ? and date=?";
 			Object[] params = new Object[3];
 			params[0] = userinfo.getUserId();
-			params[1] = userinfo.getMaincompanyid();
+			params[1] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			params[2] = dateTime;
 			List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 			
@@ -213,7 +213,8 @@ public class ListServlet extends HttpServlet {
 					request.setAttribute("defaultBeginTime",set.get("begintime").toString());
 					// 默认结束时间
 					request.setAttribute("defaultEndTime", set.get("endtime").toString());
-					
+					// 默认休息时间
+					request.setAttribute("defaultRestTime", userinfo.getRest().toString());
 					request.setAttribute("comment", set.get("comment").toString());
 					
 					request.setAttribute("qiandao", "已签");
@@ -228,7 +229,8 @@ public class ListServlet extends HttpServlet {
 					request.setAttribute("defaultBeginTime",userinfo.getBeginTime().toString());
 					// 默认结束时间
 					request.setAttribute("defaultEndTime", userinfo.getEndTime().toString());
-					
+					// 默认休息时间
+					request.setAttribute("defaultRestTime", userinfo.getRest().toString());
 					request.setAttribute("comment", "");
 					request.setAttribute("qiandao", "签到");
 					
@@ -268,7 +270,7 @@ public class ListServlet extends HttpServlet {
 			String sql = "select * from cdata_worktime where userid=? and companyid=? and date = ?";
 			Object[] params = new Object[3];
 			params[0] = userinfo.getUserId();
-			params[1] = userinfo.getMaincompanyid();
+			params[1] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			params[2] = weekDate.get(i).substring(0, 10);
 			List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 			if(list1.size() > 0){
@@ -351,7 +353,7 @@ public class ListServlet extends HttpServlet {
 		String sql = "delete from cdata_worktime where userid=? and companyid=? and date=?";
 		Object[] params = new Object[3];
 		params[0] = userinfo.getUserId();
-		params[1] = userinfo.getMaincompanyid();
+		params[1] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		params[2] = request.getParameter("wdate");
 		JdbcUtil.getInstance().executeUpdate(sql, params);
 		

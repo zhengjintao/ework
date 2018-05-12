@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -35,25 +36,27 @@ public class HomeServlet extends HttpServlet {
 		String event = "近期没活动，自己high，自己浪！";
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
-		String sql = "select * from cdata_notice where companyid=? and type=? and delflg=? and createdate =(select max(createdate) from cdata_notice where type=? and delflg=? group by type ) limit 1";
-		Object[] paramsnotice = new Object[5];
-		paramsnotice[0] = userinfo.getMaincompanyid();
+		String sql = "select * from cdata_notice where companyid=? and type=? and delflg=? and createdate =(select max(createdate) from cdata_notice where companyid=? and type=? and delflg=? group by type ) limit 1";
+		Object[] paramsnotice = new Object[6];
+		paramsnotice[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		paramsnotice[1] = "1";  // notice kbn
 		paramsnotice[2] = "0";
-		paramsnotice[3] = "1";  // notice kbn
-		paramsnotice[4] = "0";
+		paramsnotice[3] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
+		paramsnotice[4] = "1";  // notice kbn
+		paramsnotice[5] = "0";
 		List<Object> notices = JdbcUtil.getInstance().excuteQuery(sql, paramsnotice);
 	   if(notices != null && notices.size() > 0){
 		   String temp = (String)((Map<String, Object>)notices.get(0)).get("content");
 		   notice = temp.length() > 0 ? temp : notice;
 	   }
 		
-		Object[] paramsevent = new Object[5];
-		paramsevent[0] = userinfo.getMaincompanyid();
+		Object[] paramsevent = new Object[6];
+		paramsevent[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		paramsevent[1] = "2";  // event kbn
 		paramsevent[2] = "0";
-		paramsevent[3] = "2";  // event kbn
-		paramsevent[4] = "0";
+		paramsevent[3] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
+		paramsevent[4] = "2";  // event kbn
+		paramsevent[5] = "0";
 		List<Object> events = JdbcUtil.getInstance().excuteQuery(sql, paramsevent);
 		if(events != null && events.size() > 0){
 			String temp = (String)((Map<String, Object>)events.get(0)).get("content");

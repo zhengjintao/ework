@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.common.mail.SendMailFactory;
 import com.bwc.ework.form.User;
 
@@ -82,11 +83,11 @@ public class LeaveServlet extends HttpServlet {
 		String sql = "delete from cdata_leave where userid=? and companyid = ? and leavedate=?";
 		Object[] params = new Object[3];
 		params[0] = userinfo.getUserId();
-		params[1] = userinfo.getMaincompanyid();
+		params[1] =  Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		params[2] = request.getParameter("wdate");
 		JdbcUtil.getInstance().executeUpdate(sql, params);
 		
-		senddeleteMail(userinfo.getUserId(), userinfo.getMaincompanyid(), userinfo.getUserName(), request.getParameter("wdate"));
+		senddeleteMail(userinfo.getUserId(),  Utils.getStoreCompanyid(userinfo.getMaincompanyid()), userinfo.getUserName(), request.getParameter("wdate"));
 	}
 
 	/**
@@ -137,7 +138,7 @@ public class LeaveServlet extends HttpServlet {
 
 		Object[] params = new Object[wdateList.size() + 2];
 		params[0] = userinfo.getUserId();
-		params[1] = userinfo.getMaincompanyid();
+		params[1] =  Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		for (int i = 0; i < wdateList.size(); i++) {
 			params[i + 2] = wdateList.get(i);
 		}
@@ -171,7 +172,7 @@ public class LeaveServlet extends HttpServlet {
 							+ ")";
 					Object[] delparams = new Object[3];
 					delparams[0] = userinfo.getUserId();
-					delparams[1] = userinfo.getMaincompanyid();
+					delparams[1] =  Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 					delparams[2] = wdate;
 					JdbcUtil.getInstance().executeUpdate(deleteSql, params);
 
@@ -182,7 +183,7 @@ public class LeaveServlet extends HttpServlet {
 					for (int i = 0; i < wdateList.size(); i++) {
 						com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(wdateList.get(i));
 						insertparams[0] = userid;
-						insertparams[1] = userinfo.getMaincompanyid();
+						insertparams[1] =  Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 						insertparams[2] = wdateList.get(i);
 						insertparams[3] = date1.getYear();
 						insertparams[4] = date1.getMonth();
@@ -190,7 +191,7 @@ public class LeaveServlet extends HttpServlet {
 						JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 					}
 
-					sendMail(userid, userinfo.getMaincompanyid(), userinfo.getUserName(), wdate, wcomment);
+					//sendMail(userid,  Utils.getStoreCompanyid(userinfo.getMaincompanyid()), userinfo.getUserName(), wdate, wcomment);
 				}
 
 				wdate2 = DateTimeUtil.GetMonth(wdateList.get(0));
@@ -203,7 +204,7 @@ public class LeaveServlet extends HttpServlet {
 		request.setAttribute("sysDate2", wdate2);
 		request.setAttribute("wcomment", wcomment);
 
-		List<String[]> monthinfo = getMonthData(userinfo.getUserId(), userinfo.getMaincompanyid(), wdate2);
+		List<String[]> monthinfo = getMonthData(userinfo.getUserId(),  Utils.getStoreCompanyid(userinfo.getMaincompanyid()), wdate2);
 		StringBuilder info = new StringBuilder();
 		if (monthinfo.size() == 0) {
 			info.append("<tr>");

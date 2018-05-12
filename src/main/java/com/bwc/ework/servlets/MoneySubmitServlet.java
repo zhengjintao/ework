@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.HashEncoder;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -41,14 +42,9 @@ public class MoneySubmitServlet extends HttpServlet {
 		String userid = request.getParameter("userid");
 		HttpSession session = request.getSession();
 		// 用户信息
-		User userif = (User) session.getAttribute("userinfo");
-		String sql = "select * from mstr_user where userid=? and delflg=?";
-		Object[] params = new Object[2];
-		params[0] = userif.getUserId();
-		params[1] = "0";
-		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
-		Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
-		String mail = info.get("mail") == null ? "" : (String)info.get("mail");
+		User userinfo = (User)session.getAttribute("userinfo");
+		String mail = userinfo.getMail();
+		String companyCd =Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		request.setAttribute("email", mail);
 
 		// 系统当前时间取得
@@ -63,7 +59,7 @@ public class MoneySubmitServlet extends HttpServlet {
 			request.setAttribute("nowmonth", DateTimeUtil.GetMonth(now));
 			request.setAttribute("nowdate", now);
 			request.setAttribute("sysDate2", DateTimeUtil.GetMonth(now));
-			request.setAttribute("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(now)));
+			request.setAttribute("info", getExpinfoByMonth(userid, companyCd, DateTimeUtil.GetMonth(now)));
 			request.getRequestDispatcher("moneysubmit.jsp").forward(request, response);
 		}else if(!"1".equals(request.getParameter("expinfo")) 
 				&& "1".equals(request.getParameter("saveFlg"))
@@ -82,7 +78,7 @@ public class MoneySubmitServlet extends HttpServlet {
 			String insertsql = "insert into cdate_expenses values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			Object[] insertparams = new Object[12];
 			insertparams[0] = userid;
-			insertparams[1] = userif.getMaincompanyid();
+			insertparams[1] = companyCd;
 			insertparams[2] = getDetailNo(userid);
 			insertparams[3] = subKbn;
 			insertparams[4] = request.getParameter("subdate");
@@ -99,19 +95,19 @@ public class MoneySubmitServlet extends HttpServlet {
 			request.setAttribute("nowmonth", DateTimeUtil.GetMonth(now));
 			request.setAttribute("nowdate", now);
 			request.setAttribute("sysDate2", DateTimeUtil.GetMonth(now));
-			request.setAttribute("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), DateTimeUtil.GetMonth(now)));
+			request.setAttribute("info", getExpinfoByMonth(userid, companyCd, DateTimeUtil.GetMonth(now)));
 			request.getRequestDispatcher("moneysubmit.jsp").forward(request, response);
 		}
 		else if("1".equals(request.getParameter("expinfo")) && !"1".equals(request.getParameter("delflg"))){
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), request.getParameter("wdate2")));
+			jsonObject.put("info", getExpinfoByMonth(userid, companyCd, request.getParameter("wdate2")));
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write(jsonObject.toString());
 		}
 		else if("1".equals(request.getParameter("delflg"))){
 			delete(request.getParameter("dtlno"));
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("info", getExpinfoByMonth(userid, userif.getMaincompanyid(), request.getParameter("wdate2")));
+			jsonObject.put("info", getExpinfoByMonth(userid, companyCd, request.getParameter("wdate2")));
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().write(jsonObject.toString());
 		}

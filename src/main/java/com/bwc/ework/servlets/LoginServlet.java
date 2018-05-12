@@ -99,6 +99,7 @@ public class LoginServlet extends HttpServlet {
 		userdata.setAuthflg((String)info.get("authflg"));
 		userdata.setMaincompanyid((String)info.get("companyid"));
 		userdata.setMaincompanyname((String)info.get("companynm"));
+		userdata.setRest((String)info.get("rest"));
 	    
 		HttpSession session = request.getSession();
 		session.setAttribute("userinfo", userdata);
