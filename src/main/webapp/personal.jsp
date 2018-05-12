@@ -170,7 +170,7 @@ footer {
 							</div>
 							<div class="field">
 								<label>休息(h)</label> 
-								<input id="wrest" type="text" style="width:50px;height:42px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
+								<input id="wrest" type="text" style="width:50px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
 							</div>
 						</div>
 						</div>
