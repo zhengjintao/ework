@@ -39,27 +39,18 @@ public class CompanyEditServlet extends HttpServlet {
 			companyid = "";
 		}
 		String companynm = request.getParameter("companynm");
-		if (companynm != null) {
-			companynm = new String(companynm.getBytes("iso-8859-1"), "utf-8");
-		} else {
+		if (companynm == null) {
 			companynm = "";
 		}
-		
 		String btnname = "申请开通";
 		String companyexp = request.getParameter("companyexp");
-		if (companyexp != null) {
-			companyexp = new String(companyexp.getBytes("iso-8859-1"), "utf-8");
-		} else {
+		if (companyexp == null) {
 			companyexp = "";
 		}
-		
 		String reason = request.getParameter("reason");
-		if (reason != null) {
-			reason = new String(reason.getBytes("iso-8859-1"), "utf-8");
-		} else {
+		if (reason == null) {
 			reason = "";
 		}
-		
 		String mode = request.getParameter("mode");
 		
 		if("1".equals(mode)){

@@ -71,13 +71,13 @@ public class MoneySubmitServlet extends HttpServlet {
 			com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(request.getParameter("subdate"));
 			String year = date1.getYear();
 			String month = date1.getMonth();
-			String subKbn = new String(request.getParameter("subKbn").getBytes("iso-8859-1"), "utf-8");
+			String subKbn = new String(request.getParameter("subKbn"));
 			String stationf = request.getParameter("stationf") != null ? 
-					new String(request.getParameter("stationf").getBytes("iso-8859-1"), "utf-8") :"";
+					new String(request.getParameter("stationf")) :"";
 			String stationt = request.getParameter("stationt") != null ? 
-					new String(request.getParameter("stationt").getBytes("iso-8859-1"), "utf-8") :"";		
+					new String(request.getParameter("stationt")) :"";		
 			String notes = request.getParameter("notes") != null ? 
-					new String(request.getParameter("notes").getBytes("iso-8859-1"), "utf-8") :"";
+					new String(request.getParameter("notes")) :"";
 			// 数据新规
 			String insertsql = "insert into cdate_expenses values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			Object[] insertparams = new Object[12];

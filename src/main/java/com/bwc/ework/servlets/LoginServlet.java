@@ -44,9 +44,6 @@ public class LoginServlet extends HttpServlet {
 		String user = request.getParameter("userid");
 		String pwd = HashEncoder.getResult(request.getParameter("password"));
 		String rembpwd = request.getParameter("rembpwd");
-		if (user != null) {
-			user = new String(user.getBytes("iso-8859-1"), "utf-8");
-		}
 		
 		Cookie[] cookies = request.getCookies();
 		

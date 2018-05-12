@@ -73,14 +73,45 @@ footer {
 					</div>
 				</div>
 			
-				<button class="ui basic button" onclick="logout()">
-					<i class="icon remove user"></i><%=(String)request.getAttribute("btnname") %>
-				</button>
+				<a class="ui basic button" href="companydetail.do?mode=add&companyid=<%=(String)request.getAttribute("companyid") %>">
+					<i class="icon add user"></i><%=(String)request.getAttribute("btnname") %>
+				</a>
+				</div>
+				
+				<div class="ui brown segment" style="<%=(String)request.getAttribute("display") %>">
+				<a class="ui orange right ribbon label">管理模块</a>
+				  <div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="statisticsWork.do">出勤统计</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
+				    <div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="editnotice.do?type=1">通知发布</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
+					<div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
+							<i class="edit icon"></i><a class="header" style="color:white" href="editnotice.do?type=2">活动发布</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
+					</div>
+				    
+					<div style="height: 10px"></div>
+					<div class="ui labeled button" tabindex="0">
+						<div class="ui green button">
+							<i class="edit icon"></i> <a class="header" style="color:white" href="employeemanage.do">人员管理</a>
+						</div>
+						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
+					</div>
 				</div>
   </div>
 
-
-		</div>
 
 	</div>
 

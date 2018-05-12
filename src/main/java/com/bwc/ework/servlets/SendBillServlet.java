@@ -46,13 +46,6 @@ public class SendBillServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mail = request.getParameter("mail");
 		String mailname = request.getParameter("mailname");
-		if (mail != null) {
-			mail = new String(mail.getBytes("iso-8859-1"), "utf-8");
-		}
-		
-		if (mailname != null) {
-			mailname = new String(mailname.getBytes("iso-8859-1"), "utf-8");
-		}
 		String userid = request.getParameter("userid");
 		HttpSession session = request.getSession();
 		User userif = (User) session.getAttribute("userinfo");

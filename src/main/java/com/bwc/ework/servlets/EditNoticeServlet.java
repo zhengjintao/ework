@@ -47,7 +47,7 @@ public class EditNoticeServlet extends HttpServlet {
 			String sqlcount = "select count(*) as count from cdata_notice";
 			Long count = (Long)JdbcUtil.getInstance().executeQuerySingle(sqlcount, null);
 			count++;
-			String content = new String(request.getParameter("content").getBytes("iso-8859-1"), "utf-8");
+			String content = new String(request.getParameter("content"));
 			String typekbn = "notice".equals(subKbn) ? "1" : "2";
 			
 			SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

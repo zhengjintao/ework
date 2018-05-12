@@ -1,83 +1,176 @@
-﻿
-<%@ page import="java.util.List"%>
-<html>
+﻿<html ng-app="listApp">
 <head>
 <!-- Standard Meta -->
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
 <!-- Site Properties -->
 <title>BWC考勤系统</title>
 <link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="dist/components/form.min.js"></script>
-<script src="dist/components/transition.min.js"></script>
-<style>
+<style type="text/css">
 body {
-    margin-top: 10px;
-	font: 12px sans-serif;
-}
-
-.map {
-	height: 400px;
-}
-
-footer {
-	display: block;
-	position: fixed;
-	bottom: 0;
-	width: 100%;
+	-webkit-text-size-adjust: 100%;
+	background-color: #FFFFFF;
 }
 </style>
 
-</head>
-<body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="dist/semantic.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+	  $('.menu .item')
+	  .tab()
+	;
+  });
+  
+  var app = angular.module('listApp',[]);
+  
+  app.config(function($provide){
+          
+      $provide.factory("transFormFactory",function(){
+          return {
+              transForm : function(obj){
+                  var str = [];  
+                  for(var p in obj){  
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));  
+                  } 
+                  return str.join("&");  
+              }
+          };
+      });
+  });
+  
+app.controller('ListController', function($scope,$http,transFormFactory) {
+  var list = this;
+  list.currentPage = 1;
+  list.totalPages=3;
+  list.unsalegoods =  [
+      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
+      {id:'00002', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
+      {id:'00003', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'199'}
+      ];
+  list.onsalegoods =  [
+      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
+      {id:'00002', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
+      {id:'00003', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'299'}
+      ];
+  
+  (function(){
+  	
+  	$scope.url =  "employeemanage.do";
+  	var postdata = {'mode':'list'};
+      $http(
+  		{
+  			method:"POST",
+  			url:$scope.url,
+  			data:postdata,
+  			transformRequest:transFormFactory.transForm,
+  			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+  		}).then(function (result) {
+  			list.onsalegoods = result.data.onsalegoods;
+  			list.unsalegoods = result.data.unsalegoods;
+          }).catch(function (result) {
+          	list.message = "SORRY!エラーが発生しました。";
+          	$('.ui.basic.modal') .modal('show');
+          });
+      
+  })();
+  
+  list.unsale = function(id) {
+  	$scope.url =  "employeemanage.do";
+  	var postdata = {'mode':'apply', 'id': id};
+      $http(
+  		{
+  			method:"POST",
+  			url:$scope.url,
+  			data:postdata,
+  			transformRequest:transFormFactory.transForm,
+  			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+  		}).then(function (result) {
+  			list.onsalegoods = result.data.onsalegoods;
+  			list.unsalegoods = result.data.unsalegoods;
+          }).catch(function (result) {
+          	orderList.message = "SORRY!エラーが発生しました。";
+          	$('.ui.basic.modal') .modal('show');
+          });
+  }
+  
+  list.onsale = function(id) {
+  	$scope.url =  "employeemanage.do";
+  	var postdata = {'mode':'refuse', 'id': id};
+      $http(
+  		{
+  			method:"POST",
+  			url:$scope.url,
+  			data:postdata,
+  			transformRequest:transFormFactory.transForm,
+  			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+  		}).then(function (result) {
+  			list.onsalegoods = result.data.onsalegoods;
+  			list.unsalegoods = result.data.unsalegoods;
+          }).catch(function (result) {
+          	orderList.message = "SORRY!エラーが発生しました。";
+          	$('.ui.basic.modal') .modal('show');
+          });
+  }
+});
+</script>
 
-	<div class="ui one column grid container">
-		<div class="column">
-		   <div class="ui teal segment">
-				<div class="ui  breadcrumb">
-					<a class="section" href="personal.do">个人</a> <i
-						class="right chevron icon divider"></i>
-					<div class="active section">员工管理</div>
+</head>
+<body ng-controller="ListController as list" >
+	<div class="ui container">
+		<div class="row"></div>
+		<div class="ui divider"></div>
+		<div class="ui basic buttons">
+		<a class="ui left attached button" href="personal.do">返回</a>
+<!-- <a class="right attached ui button" href="service.do?mode=detail">新規追加</a> -->
+</div>
+		
+		<div class="ui divider"></div>
+		<div class="row">
+			<div class="ui top attached tabular menu">
+				<a class="item active" data-tab="first">待审核</a> <a class="item"
+					data-tab="second">已批准</a>
+			</div>
+			<div class="ui bottom attached tab segment active" data-tab="first">
+				<div class="ui relaxed divided list">
+					<div class="item"  ng-repeat="good in list.onsalegoods">
+						<img class="ui avatar image" src={{good.img}}>
+						<div class="content">
+							<div class="header">申请人：{{good.username}}</div>
+							<div class="header">公司名称：{{good.text}}</div>
+							<div class="header">理由：{{good.reason}}</div>
+						</div>
+						<div class="right floated content">
+						    <div class="ui button" ng-click="list.onsale(good.id)">拒绝</div>
+							<div class="ui button" ng-click="list.unsale(good.id)">同意</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<form action="./useredit.do" method="post">
-				<!-- <div class="ui teal inverted segment">
-
-					<button class="ui basic button">
-						<i class="icon user"></i> 追加
-					</button>
-				</div> -->
-				<div class="ui teal inverted segment">
-
-					<div class="ui middle aligned divided list">
-						<%
-						List<String[]> userinfo = (List<String[]>) request.getAttribute("userinfo");
-						for (String[] each : userinfo) {
-							out.print("<div class='item'>");
-							out.print("<div class='right floated content'>");
-							out.print("<div class='ui basic button'>");
-							out.print("<a href='" + "useredit.do?userid="+ each[0] + "&sex="+ each[3] +"&username="+ each[1] + "&authflg="+ each[4] + "' style='color:white'>编辑</a></div>");
-							out.print("</div>");
-							out.print("<img class='ui avatar image' src='" + each[5] + "'>");
-							out.print("<div class='content'>");
-							out.print(each[1]);  // 姓名
-							out.print("</div>");
-							out.print("</div>");
-						}
-					%>
+			<div class="ui bottom attached tab segment" data-tab="second">
+				<div class="ui relaxed divided list">
+					<div class="item"  ng-repeat="unsalegood in list.unsalegoods">
+						<img class="ui avatar image" src={{unsalegood.img}}>
+						<div class="content">
+							<div class="header">申请人：{{unsalegood.text}} 名称：{{unsalegood.text}}</div>
+							<div class="header">理由：{{unsalegood.reason}}</div>
+						</div>
+						<!-- <div class="right floated content">
+						   <div class="ui button" ng-click="list.onsale(unsalegood.id)">上架</div>
+							<a class="ui button" href="service.do?mode=detail&id={{unsalegood.id}}">编辑</a>
+						</div>
+						 -->
 					</div>
-
-					<div class="column"></div>
-
 				</div>
-			</form>
-		</div>
+			</div>
 
+		</div>
 	</div>
 </body>
+</html>

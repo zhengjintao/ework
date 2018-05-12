@@ -33,6 +33,33 @@ public class CompanyDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String mode = request.getParameter("mode");
+		if("add".equals(mode)){
+			this.add(request, response);
+		}
+		else{
+			this.init(request, response);
+		}
+		
+		
+	}
+	
+	private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String companyid = request.getParameter("companyid");
+		HttpSession session = request.getSession();
+		User userinfo = (User)session.getAttribute("userinfo");
+		String sql = "insert into cdata_userapply values(?,?,?)";
+		Object[] params = new Object[3];
+		params[0] = companyid;
+		params[1] = userinfo.getUserId();
+		params[2] = "0";
+		JdbcUtil.getInstance().executeUpdate(sql, params);
+		
+		
+		init(request, response);
+	}
+	
+	private void init(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String companyid = request.getParameter("companyid");
 		String sql = "select * from mstr_company where companyid = ? and delflg =?";
 		Object[] params = new Object[2];
@@ -53,9 +80,9 @@ public class CompanyDetailServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
 		String btnname = "申请加入";
-		if(companyid.equals(userinfo.getMaincompanyid())){
+		/*if(companyid.equals(userinfo.getMaincompanyid())){
 			btnname = "永久退出";
-		}
+		}*/
 		request.setAttribute("btnname", btnname);
 		
 		request.getRequestDispatcher("companydetail.jsp").forward(request, response);

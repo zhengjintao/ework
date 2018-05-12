@@ -46,15 +46,11 @@ public class RecordWorktimeServlet extends HttpServlet {
 		String longitude =request.getParameter("latitude");
 		String dtladdress =request.getParameter("dtladdress");
 		
-		if (comment != null) {
-			comment = new String(comment.getBytes("iso-8859-1"), "utf-8");
-		}else{
+		if (comment == null) {
 			comment = "";
 		}
 		
-		if (dtladdress != null) {
-			dtladdress = new String(dtladdress.getBytes("iso-8859-1"), "utf-8");
-		}else{
+		if (dtladdress == null) {
 			dtladdress = "";
 		}
 		

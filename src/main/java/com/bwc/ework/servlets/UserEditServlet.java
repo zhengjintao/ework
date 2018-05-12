@@ -40,9 +40,6 @@ public class UserEditServlet extends HttpServlet {
 		}
 		String userid = request.getParameter("userid");
 		String username = request.getParameter("username");
-		if(username != null){
-			username = new String(username.getBytes("iso-8859-1"), "utf-8");
-		}
 		String sex = request.getParameter("sex");
 		String authflg = request.getParameter("authflg");
 		String edit = request.getParameter("edit");
@@ -55,9 +52,6 @@ public class UserEditServlet extends HttpServlet {
 				params1[0] = request.getParameter("euserid");
 				List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql1, params1);
 				String eusername = request.getParameter("eusername");
-				if (eusername != null) {
-					eusername = new String(eusername.getBytes("iso-8859-1"), "utf-8");
-				}
 				
 				if(list1.size() > 0){
 					request.setAttribute("errmsg", "该账号已存在");
@@ -92,10 +86,6 @@ public class UserEditServlet extends HttpServlet {
 				Object[] params = new Object[4];
 				
 				String eusername = request.getParameter("eusername");
-				if(eusername != null){
-					eusername = new String(eusername.getBytes("iso-8859-1"), "utf-8");
-				}
-				
 				params[0] = eusername;
 				params[1] = request.getParameter("esex");
 				params[2] = request.getParameter("eauthflg");

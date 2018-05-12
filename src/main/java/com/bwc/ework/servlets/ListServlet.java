@@ -43,9 +43,7 @@ public class ListServlet extends HttpServlet {
 		String paramwdate =request.getParameter("wdate");
 		String comment =request.getParameter("wcomment");
 		
-		if (comment != null) {
-			comment = new String(comment.getBytes("iso-8859-1"), "utf-8");
-		}else{
+		if (comment == null) {
 			comment = "";
 		}
 		
@@ -53,16 +51,13 @@ public class ListServlet extends HttpServlet {
 		String longitude =request.getParameter("longitude");
         String dtladdress =request.getParameter("dtladdress");
 		
-		if (dtladdress != null) {
-			dtladdress = new String(dtladdress.getBytes("iso-8859-1"), "utf-8");
-		}else{
+		if (dtladdress == null) {
 			dtladdress = "";
 		}
-		
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
 		if(userinfo.getMaincompanyid() == null){
-			request.setAttribute("errmsg", "请先加入公司");
+			//request.setAttribute("errmsg", "请先加入公司");
 		}
 		
 		request.setAttribute("qiandao", "签到");

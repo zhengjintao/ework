@@ -176,14 +176,14 @@ footer {
 				<a class="ui orange right ribbon label">统计信息</a>
 				   <div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<a class="ui red button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>&username=<%=(String)request.getAttribute("username") %>">
+						<a class="ui red button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>&username=<%=java.net.URLEncoder.encode((String)request.getAttribute("username"), "UTF-8") %>">
 							<i class="checked calendar icon"></i> 本月出勤时间
 						</a>
 						<a class="ui basic red left pointing label"> <%=(String)request.getAttribute("hours") %>小时(<%=(String)request.getAttribute("days") %>天) </a>
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
-						<a class="ui blue button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>&username=<%=(String)request.getAttribute("username") %>">
+						<a class="ui blue button" href="userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>&username=<%=java.net.URLEncoder.encode((String)request.getAttribute("username"), "UTF-8") %>">
 							<i class="delete calendar icon"></i> 本月请假天数
 						</a>
 						<a class="ui basic left pointing blue label"> <%=(String)request.getAttribute("leavedays") %>天 </a>
@@ -215,31 +215,6 @@ footer {
 						</div>
 					</div>
 				</div>
-				<div class="ui brown segment" style="<%=(String)request.getAttribute("display") %>">
-				<a class="ui orange right ribbon label">管理模块</a>
-				    <div style="height: 10px"></div>
-					<div class="ui labeled button" tabindex="0">
-						<div class="ui green button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="editnotice.do?type=1">通知发布</a>
-						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
-					</div>
-					<div style="height: 10px"></div>
-					<div class="ui labeled button" tabindex="0">
-						<div class="ui green button">
-							<i class="edit icon"></i><a class="header" style="color:white" href="editnotice.do?type=2">活动发布</a>
-						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a> -->
-					</div>
-				    
-					<div style="height: 10px"></div>
-					<div class="ui labeled button" tabindex="0">
-						<div class="ui green button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="employeemanage.do">员工管理</a>
-						</div>
-						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
-					</div>
-				</div>
 				
 				<div class="ui brown segment" style="<%=(String)request.getAttribute("display") %>">
 				<a class="ui orange right ribbon label">系统管理</a>
@@ -253,7 +228,7 @@ footer {
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui green button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="companymanagement.do">公司管理</a>
+							<i class="edit icon"></i> <a class="header" style="color:white" href="companymanagement.do">公司审核</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>

@@ -70,12 +70,9 @@ public class CompanySettingServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String companynm = request.getParameter("companynm");
-		if (companynm != null) {
-			companynm = new String(companynm.getBytes("iso-8859-1"), "utf-8");
-		} else {
+		if (companynm == null) {
 			companynm = "";
 		}
-		
 		request.setAttribute("companynm", companynm);
 		
 		StringBuilder info = new StringBuilder();

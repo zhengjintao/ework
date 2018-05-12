@@ -34,6 +34,11 @@ public class LoginFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		HttpServletRequest httprequest = (HttpServletRequest)request;
+		HttpServletResponse httpresponse = (HttpServletResponse)response;
+		//httprequest.setCharacterEncoding("UTF-8");
+		httpresponse.setHeader("Content-Type","text/html;charset=UTF-8");
+		
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse rep = (HttpServletResponse)response;
 		String uri = req.getRequestURI();

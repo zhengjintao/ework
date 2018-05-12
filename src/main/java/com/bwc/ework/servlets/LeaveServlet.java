@@ -122,12 +122,9 @@ public class LeaveServlet extends HttpServlet {
 
 		// 请假理由转码
 		String wcomment = request.getParameter("wcomment");
-		if (wcomment != null) {
-			wcomment = new String(wcomment.getBytes("iso-8859-1"), "utf-8");
-		} else {
+		if (wcomment == null) {
 			wcomment = "";
 		}
-
 		String subkbn = request.getParameter("subKbn");
 
 		// IN条件作成

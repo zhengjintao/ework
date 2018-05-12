@@ -51,18 +51,12 @@ public class SendMailServlet extends HttpServlet {
 			userid = userinfo.getUserId();
 			username = userinfo.getUserName();
 		}
-		
-		if (username != null) {
-			username = new String(username.getBytes("iso-8859-1"), "utf-8");
-		} 
 
 		// 查询月份取得
 		String wdate = request.getParameter("wdate");
 		String mail = request.getParameter("mail");
 		String mailname = request.getParameter("mailname");
-		if (mailname != null) {
-			mailname = new String(mailname.getBytes("iso-8859-1"), "utf-8");
-		} else {
+		if (mailname == null) {
 			mailname = "当月出勤统计一览";
 		}
 

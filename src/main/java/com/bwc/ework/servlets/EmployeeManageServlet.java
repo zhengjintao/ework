@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.form.User;
 
@@ -32,6 +35,55 @@ public class EmployeeManageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String mode = request.getParameter("mode");
+		if("list".equals(mode)){
+			this.list(request, response);
+		}
+		else{
+			this.init(request, response);
+		}
+		
+	}
+	
+	private void apply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		
+	}
+	
+    private void refuse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		
+	}
+	
+	private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String sql = "select * from cdata_userapply";
+		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, null);
+
+		JSONArray onsalearray = new JSONArray();
+		JSONArray unsalearray = new JSONArray();
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		int i = 0;
+		for (Object data : userinfo) {
+			Map<String, Object> row = (Map<String, Object>) data;
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("id", row.get("companyid"));
+			jsonObject.put("username", row.get("userid"));
+			jsonObject.put("text", row.get("userid"));
+			jsonObject.put("img", "assets/images/companypic.jpg");
+			jsonObject.put("reason", row.get("userid"));
+			list.add(jsonObject);
+
+			onsalearray.put(i, jsonObject);
+			i++;
+		}
+
+		// 最終結果
+		JSONObject result = new JSONObject();
+		result.put("onsalegoods", onsalearray);
+		result.put("unsalegoods", unsalearray);
+
+		response.getWriter().write(result.toString());
+	}
+	
+	private void init(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("userinfo");
 		

@@ -60,9 +60,24 @@ public class PersonalServlet extends HttpServlet {
 		String wrest ="1";
 		request.setAttribute("userid", userinfo.getUserId());
 		request.setAttribute("username", userinfo.getUserName());
-		
-		String companyname = userinfo.getMaincompanyid() == null ? "未加入公司，点击加入或创建" : userinfo.getMaincompanyname();
-		String companyurl = userinfo.getMaincompanyid() == null ? "companysetting.do" : "companydetail.do?companyid=" + userinfo.getMaincompanyid();
+		String maincompanyid = userinfo.getMaincompanyid();
+		if(maincompanyid == null){
+			String sql = "select * from mstr_user_comp usr left join mstr_company com on usr.companyid= com.companyid where usr.userid=? and usr.defaultflg ='1' and usr.delflg='0'";
+			Object[] params = new Object[1];
+			params[0] = userinfo.getUserId();
+			List<Object> companyinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
+			
+			for (Object data : companyinfo) {
+				Map<String, Object> row = (Map<String, Object>) data;
+				maincompanyid = row.get("companyid").toString();
+				
+				userinfo.setMaincompanyname("ddd");
+				session.setAttribute("userinfo", userinfo);
+				break;
+			}
+		}
+		String companyname = maincompanyid == null ? "未加入公司，点击加入或创建" : userinfo.getMaincompanyname();
+		String companyurl = maincompanyid == null ? "companysetting.do" : "companydetail.do?companyid=" + maincompanyid;
 		request.setAttribute("companyname", companyname);
 		request.setAttribute("companyurl", companyurl);
 		
@@ -88,7 +103,7 @@ public class PersonalServlet extends HttpServlet {
 		String month = date1.getMonth();
 		String sql = "select count(*) leaveday from cdata_leave where companyid=? and userid=? and year=? and month=?";
 		Object[] params = new Object[4];
-		params[0] = userinfo.getMaincompanyid();
+		params[0] = maincompanyid;
 		params[1] = userinfo.getUserId();
 		params[2] = year;
 		params[3] = month;
@@ -118,7 +133,7 @@ public class PersonalServlet extends HttpServlet {
 		Object[] params2 = new Object[4];
 		params2[0] = year;
 		params2[1] = month;
-		params2[2] = userinfo.getMaincompanyid();
+		params2[2] = maincompanyid;
 		params2[3] = userinfo.getUserId();
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 
