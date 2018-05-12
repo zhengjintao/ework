@@ -21,9 +21,9 @@ body {
 initdata=<%=request.getAttribute("initdata") %>;
 </script>
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="jquery/jquery-3.1.1.min.js"></script>
 <script src="dist/semantic.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="angularjs/angular.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
 	  $('.menu .item')
