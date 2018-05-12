@@ -84,6 +84,7 @@ public class RecordWorktimeServlet extends HttpServlet {
 			String date = paramwdate;
 			String begin = request.getParameter("wbegin");
 			String end = request.getParameter("wend");
+			String rest = userinfo.getRest();
 			if(listl.size() > 0){
 				request.setAttribute("errmsg", "当天已请假，无法签到！");
 			}else{
@@ -100,7 +101,7 @@ public class RecordWorktimeServlet extends HttpServlet {
 					updateparams[5] = end;
 					updateparams[7] = comment;
 					try {
-						updateparams[6] = DateTimeUtil.getHours(begin,end);
+						updateparams[6] = DateTimeUtil.getHours(begin,end,rest);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
@@ -119,7 +120,7 @@ public class RecordWorktimeServlet extends HttpServlet {
 					insertparams[6] = end;
 					insertparams[8] = comment;
 					try {
-						insertparams[7] = DateTimeUtil.getHours(begin,end);
+						insertparams[7] = DateTimeUtil.getHours(begin,end,rest);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
