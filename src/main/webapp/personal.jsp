@@ -166,12 +166,12 @@ footer {
 					
 			</div>
 			<form action="./personal.do" method="post" onsubmit="return check();">
-			<div class="ui yellow inverted segment" style="<%=(String)request.getAttribute("display") %>">
+			<div class="ui yellow inverted segment" style="margin-top:-10px;<%=(String)request.getAttribute("display") %>">
 				<a class="ui orange right ribbon label">系统管理</a>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui basic button">
-							<i class="edit icon"></i> <a class="header" style="color:gray" href="usermanagement.do">用户管理</a>
+							<i class="user icon"></i> <a class="header" style="color:gray" href="usermanagement.do">用户管理</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
