@@ -31,6 +31,26 @@ function checkdate(){
         return false;  
     }
     
+    var wrest = $("#wrest").val();
+	if (wrest == null || wrest == "undefine" || wrest.length == 0) {
+    	$("#errmsg").html("休息时间必须输入");
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+        return false;  
+	}
+
+	var arr = wrest.split(".");
+	var re = /^[0-9]+(.[0-9]{1})?$/;
+	if (!re.test(wrest) || (arr.length > 1 && "5" != arr[1])) {
+	    $("#errmsg").html("默认休息时间必须为0.5的倍数的数值");
+		$('#cmodal').modal({
+			closable : false
+		}).modal('show');
+	    return false;  
+	}
+
     var t1 = now.getFullYear() * 12 + now.getMonth();
     var t2 = dB.getFullYear() * 12 + dB.getMonth();
     
@@ -178,7 +198,7 @@ footer {
 								</div>
 
 								<div class="field">
-									<label>休息时间</label> <input type="text" name="wrest" id="wrest" style="width:50px"
+									<label>休息时间</label> <input type="text" name="wrest" id="wrest" style="width:60px"
 										value=<%=(String) request.getAttribute("defaultRestTime")%>><br>
 								</div>
 							</div>

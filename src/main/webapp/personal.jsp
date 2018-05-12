@@ -22,7 +22,7 @@
 		var wbegin = $("#wbegin").val();
 
 		if (wbegin == null || wbegin == "undefine" || wbegin.length == 0) {
-			errmsg = errmsg + "默认出勤时间必须输入。";
+			errmsg = errmsg + "默认出勤时间必须输入";
 
 		}
 
@@ -31,17 +31,27 @@
 			if(errmsg.length > 0){
 				errmsg = errmsg + "<br>";
 			}
-			errmsg = errmsg + "默认退勤时间必须输入。";
-		}
-		
-		var wrest = $("#wrest").val();
-		if (wrest == null || wrest == "undefine" || wrest.length == 0) {
-			if(errmsg.length > 0){
-				errmsg = errmsg + "<br>";
-			}
-			errmsg = errmsg + "请输入0.5的倍数";
+			errmsg = errmsg + "默认退勤时间必须输入";
 		}
 
+		var wrest = $("#wrest").val();
+		if (wrest == null || wrest == "undefine" || wrest.length == 0) {
+			if (errmsg.length > 0) {
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "默认休息时间必须输入";
+		}
+
+		if (errmsg.length == 0) {
+			var arr = wrest.split(".");
+			var re = /^[0-9]+(.[0-9]{1})?$/;
+			if (!re.test(wrest) || (arr.length > 1 && "5" != arr[1])) {
+				if (errmsg.length > 0) {
+					errmsg = errmsg + "<br>";
+				}
+				errmsg = errmsg + "默认休息时间必须为0.5的倍数的数值";
+			}
+		}
 		if (errmsg.length > 0) {
 			$("#errmsg").html(errmsg);
 			$('#cmodal').modal({
@@ -50,28 +60,28 @@
 			}).modal('show');
 			return false;
 		}
-		
-		var date1="1999-01-01 " + $("#wbegin").val();
-		var date2="1999-01-01 " + $("#wend").val();
+
+		var date1 = "1999-01-01 " + $("#wbegin").val();
+		var date2 = "1999-01-01 " + $("#wend").val();
 		var oDate1 = new Date(date1);
-	    var oDate2 = new Date(date2);
-	    if(oDate1.getTime() > oDate2.getTime()){
-	    	$("#errmsg").html("默认退勤时间必须大于默认出勤时间！");
+		var oDate2 = new Date(date2);
+		if (oDate1.getTime() > oDate2.getTime()) {
+			$("#errmsg").html("默认退勤时间必须大于默认出勤时间！");
 			$('#cmodal').modal({
 				closable : false
 
 			}).modal('show');
-	        return false;
-	    }
+			return false;
+		}
 
-	    if(date1 > date2){
-	    	$("#errmsg").html("退勤时间必须大于出勤时间！");
+		if (date1 > date2) {
+			$("#errmsg").html("退勤时间必须大于出勤时间！");
 			$('#cmodal').modal({
 				closable : false
 
 			}).modal('show');
-	        return false;
-	    }
+			return false;
+		}
 	}
 </script>
 <style type="text/css">
@@ -162,15 +172,15 @@ footer {
 						<div class="two fields">
 						<div class="one fields">
 							<div class="field">
-								<label>出勤</label> <input id="wbegin" type="time" name="wbegin"
+								<label>出勤时间</label> <input id="wbegin" type="time" name="wbegin"
 									value=<%=(String)request.getAttribute("begintime") %>><br>
 							</div>
 							<div class="field">
-								<label>退勤</label> <input id="wend" type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
+								<label>退勤时间</label> <input id="wend" type="time" name="wend" value=<%=(String)request.getAttribute("endtime") %>><br>
 							</div>
 							<div class="field">
-								<label>休息(h)</label> 
-								<input id="wrest" type="text" style="width:50px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
+								<label>休息时间</label> 
+								<input id="wrest" type="text" style="width:60px" name="wrest" value=<%=(String)request.getAttribute("wrest") %>><br>
 							</div>
 						</div>
 						</div>
