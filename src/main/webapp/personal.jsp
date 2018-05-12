@@ -123,7 +123,7 @@ footer {
 				<div id="almodal" class="ui small test modal transition hidden">
 					<div class="header">注销</div>
 					<div class="content">
-						<p><%=(String)request.getAttribute("nickname") %>，确认退出登陆吗?</p>
+						<p>确认退出登陆吗?</p>
 					</div>
 					<div class="actions">
 						<div class="ui negative button">取消</div>

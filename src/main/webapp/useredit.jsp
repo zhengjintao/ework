@@ -147,11 +147,11 @@ footer {
 									<option value="M"
 										<%if (!(Boolean) request.getAttribute("isfemale")) {
 				out.print("selected='selected'");
-			}%>>帅锅</option>
+			}%>>男</option>
 									<option value="F"
 										<%if ((Boolean) request.getAttribute("isfemale")) {
 				out.print("selected='selected'");
-			}%>>镁铝</option>
+			}%>>女</option>
 
 								</select>
 							</div>

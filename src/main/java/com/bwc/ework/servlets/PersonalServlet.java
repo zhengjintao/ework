@@ -87,10 +87,10 @@ public class PersonalServlet extends HttpServlet {
 		request.setAttribute("wrest", userinfo.getRest().toString());
 		
 		String personalImg = "assets/images/christian.jpg";
-		String nickname = "帅锅";
+		String nickname = "";
 		if("F".equals(userinfo.getSex())){
 			personalImg = "assets/images/rachel.png";
-			nickname = "镁铝";
+			nickname = "";
 		}
 		request.setAttribute("nickname", nickname);
 		request.setAttribute("sex", personalImg);
