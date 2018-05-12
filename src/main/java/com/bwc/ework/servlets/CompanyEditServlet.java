@@ -71,9 +71,12 @@ public class CompanyEditServlet extends HttpServlet {
 					break;
 				}
 			}
-			if(companyid!=null && companyid.length()>0 ){
+			if(companyid!=null){
 				btnname="已申请";
 				request.setAttribute("errmsg", "申请失败，每人最多只允许申请创建一个公司<br>"  + "已申请下列公司等待审核中"+ "<br>" + "编号：" + companyid+ "<br>" + "名称：" + companynm+ "<br>"+"（最快5分钟内审核，最长24小时内审核）");
+			}else if(companyid.length()>0 ){
+				btnname="已申请";
+				request.setAttribute("errmsg", "申请失败，每人最多只允许申请创建一个公司<br>"  + "已成功申请下列公司"+ "<br>" + "编号：" + companyid+ "<br>" + "名称：" + companynm+ "<br>"+"（返回个人页面查看）");
 			}
 		}
 		String maxnum ="0";

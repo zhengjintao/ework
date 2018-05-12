@@ -9,13 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.bwc.ework.common.JdbcUtil;
-import com.bwc.ework.form.User;
 
 /**
  * Servlet implementation class EmployeeManageServlet
@@ -89,7 +87,7 @@ public class EmployeeManageServlet extends HttpServlet {
 		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 
 		JSONArray onsalearray = new JSONArray();
-		JSONArray unsalearray = new JSONArray();
+		
 		List<JSONObject> list = new ArrayList<JSONObject>();
 		int i = 0;
 		for (Object data : userinfo) {
@@ -106,6 +104,27 @@ public class EmployeeManageServlet extends HttpServlet {
 			onsalearray.put(i, jsonObject);
 			i++;
 		}
+		
+		JSONArray unsalearray = new JSONArray();
+		sql = "select * from cdata_companyuser where companyid=? and rolekbn!='0' and delflg='0'";
+		params = new Object[1];
+		params[0] = companyid;
+		userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);		
+		i = 0;
+		for (Object data : userinfo) {
+			Map<String, Object> row = (Map<String, Object>) data;
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("id", row.get("userid"));
+			jsonObject.put("userid", row.get("userid"));
+			jsonObject.put("username", row.get("userid"));
+			jsonObject.put("text", row.get("userid"));
+			jsonObject.put("img", "assets/images/companypic.jpg");
+			jsonObject.put("reason", row.get("userid"));
+
+			unsalearray.put(i, jsonObject);
+			i++;
+		}
+		
 
 		// 最終結果
 		JSONObject result = new JSONObject();
@@ -116,31 +135,12 @@ public class EmployeeManageServlet extends HttpServlet {
 	}
 	
 	private void init(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		User user = (User)session.getAttribute("userinfo");
+		String companyid = request.getParameter("companyid");
 		
-		String sql = "select * from cdata_companyuser c left join mstr_user u on c.userid= u.userid where c.companyid=? and c.delflg=? and c.rolekbn !=?";
-		Object[] params = new Object[3];
-		params[0] = user.getMaincompanyid();
-		params[1] = "0";
-		params[2] = "1";
-		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
+		JSONObject result = new JSONObject();
+		result.put("companyid", companyid);
 		
-		List<String[]> userinfolist = new ArrayList<String[]>();
-		for (Object data : userinfo) {
-			Map<String, Object> row = (Map<String, Object>) data;
-			String[] each = new String[6];
-			each[0] = row.get("userid").toString();
-			each[1] = row.get("username").toString();
-			each[2] = row.get("password").toString();
-			each[3] = row.get("sex").toString();
-			each[4] = row.get("authflg").toString();
-			each[5] = "F".equals(each[3]) ? "assets/images/rachel.png" : "assets/images/christian.jpg";
-			
-			userinfolist.add(each);
-		}
-		
-		request.setAttribute("userinfo", userinfolist);
+		request.setAttribute("initdata", result);
 		request.getRequestDispatcher("employeemanage.jsp").forward(request, response);
 	}
 
@@ -148,7 +148,6 @@ public class EmployeeManageServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

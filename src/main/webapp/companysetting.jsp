@@ -73,7 +73,7 @@ footer {
 									<i class="search icon"></i>
 								</button>
 								<button type="button" class="ui icon button" style="margin-left:1px" onclick="addcompany();">
-									<i class="add icon"></i>
+									<i class="add icon"></i>申请开通
 								</button>
 							</div>
 							

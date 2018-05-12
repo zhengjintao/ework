@@ -17,6 +17,9 @@ body {
 	background-color: #FFFFFF;
 }
 </style>
+<script>
+initdata=<%=request.getAttribute("initdata") %>;
+</script>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/semantic.min.js"></script>
@@ -47,23 +50,20 @@ body {
   
 app.controller('ListController', function($scope,$http,transFormFactory) {
   var list = this;
+  list.companyid=initdata.companyid;
   list.currentPage = 1;
   list.totalPages=3;
   list.unsalegoods =  [
-      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
-      {id:'00002', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
-      {id:'00003', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'199'}
+      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'}
       ];
   list.onsalegoods =  [
-      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
-      {id:'00002', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'199'},
-      {id:'00003', text:'build an AngularJS', img:'assets/images/companypic.jpg', reason:'299'}
+      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'}
       ];
   
   (function(){
   	
   	$scope.url =  "employeemanage.do";
-  	var postdata = {'mode':'list'};
+  	var postdata = {'mode':'list', 'companyid':list.companyid};
       $http(
   		{
   			method:"POST",
@@ -143,8 +143,6 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
 						<img class="ui avatar image" src={{good.img}}>
 						<div class="content">
 							<div class="header">申请人：{{good.username}}</div>
-							<div class="header">公司名称：{{good.text}}</div>
-							<div class="header">理由：{{good.reason}}</div>
 						</div>
 						<div class="right floated content">
 						    <div class="ui button" ng-click="list.onsale(good.id)">拒绝</div>

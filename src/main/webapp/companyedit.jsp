@@ -22,31 +22,39 @@
 		var userid = $("#companynm").val();
 
 		if (userid == null || userid == "undefine" || userid.length == 0) {
-			errmsg = errmsg + "账号必须输入。";
+			errmsg = errmsg + "名称必须输入。";
 		}
 
-		var username = $("#eusername").val();
+		var username = $("#companyexp").val();
 		if (username == null || username == "undefine" || username.length == 0) {
 			if(errmsg.length > 0){
 				errmsg = errmsg + "<br>";
 			}
-			errmsg = errmsg + "姓名必须输入。";
+			errmsg = errmsg + "简介必须输入。";
 		}
 		
-		var userid = $("#companynm").val();
-		if (userid.length > 30 || userid.length < 5) {
+		var reason = $("#reason").val();
+		if (reason == null || reason == undefined || reason.length == 0) {
 			if(errmsg.length > 0){
 				errmsg = errmsg + "<br>";
 			}
-			errmsg = errmsg + "账号长度不正确（必须5-30位）";
+			errmsg = errmsg + "备注必须输入。";
 		}
 		
-		var username = $("#eusername").val();
-		if (username.length > 20) {
-			if(errmsg.length > 0){
-				errmsg = errmsg + "<br>";
+		if(errmsg.length ==0){
+			if (userid.length > 30 || userid.length < 5) {
+				if(errmsg.length > 0){
+					errmsg = errmsg + "<br>";
+				}
+				errmsg = errmsg + "名称长度不正确（必须5-30位）";
 			}
-			errmsg = errmsg + "姓名长度不正确（20位以内）";
+			
+			if (username.length > 20) {
+				if(errmsg.length > 0){
+					errmsg = errmsg + "<br>";
+				}
+				errmsg = errmsg + "姓名长度不正确（20位以内）";
+			}
 		}
 
 		if (errmsg.length > 0) {
@@ -109,7 +117,7 @@ footer {
 			<div class="ui teal inverted segment">
 				<form action="companyedit.do" method="post" onsubmit="return check();">
 				   <div class="ui middle aligned divided list">
-						<div class="item">
+						<div class="item" style="display:none">
 							<div class="ui labeled input">
 								<div class="ui label">编号</div>
 								<input id="companyid" name="companyid" type="text" readonly="readonly"
@@ -127,8 +135,6 @@ footer {
 							</div>
 						</div>
 					</div>
-
-
 
 					<div class="ui middle aligned divided list">
 						<div class="item">
@@ -156,33 +162,8 @@ footer {
 					<input type="hidden" name="mode"
 						value=<%=(String) request.getAttribute("mode")%>>
 					<button class="ui basic submit button">
-						<i class="icon user"></i> <%=(String) request.getAttribute("btnname")%>
+						<i class="icon add"></i> <%=(String) request.getAttribute("btnname")%>
 					</button>
-					
-
-					<div id="almodal" class="ui small test modal transition hidden">
-						<div class="header">删除用户</div>
-						<div class="content">
-							<p>确认删除该用户吗?</p>
-						</div>
-						<div class="actions">
-							<div class="ui negative button">取消</div>
-							<div class="ui positive right labeled icon button">
-								确认 <i class="checkmark icon"></i>
-							</div>
-						</div>
-					</div>
-					<script type="text/javascript">
-					function deleteuser() {
-						$('#almodal').modal({
-							closable : false,
-							onApprove : function() {
-								window.location.href = "useredit.do?delflg=true&deluserid=<%=(String) request.getAttribute("userid")%>";
-												}
-
-											}).modal('show');
-						}
-					</script>
 				</form>
 			</div>
 

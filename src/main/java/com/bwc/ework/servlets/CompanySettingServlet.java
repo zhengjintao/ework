@@ -23,47 +23,7 @@ public class CompanySettingServlet extends HttpServlet {
      */
     public CompanySettingServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-    
-    private List<String[]> gethotcompniesinfo() {
-		List<String[]> monthData = new ArrayList<String[]>();
-
-		String sql = "select * from mstr_company where delflg =? limit 10";
-		Object[] params = new Object[1];
-		params[0] = 0;
-		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
-
-		for (Object data : list1) {
-			Map<String, Object> row = (Map<String, Object>) data;
-			String[] each = new String[2];
-			each[0] = row.get("companyid").toString();
-			each[1] = (String) row.get("companynm");
-			monthData.add(each);
-		}
-
-		return monthData;
-	}
-    
-    private List<String[]> getsearchcompniesinfo(String mapname) {
-		List<String[]> monthData = new ArrayList<String[]>();
-
-		String sql = "select * from mstr_company where delflg =? and companynm like ?";
-		Object[] params = new Object[2];
-		params[0] = 0;
-		params[1] = "%" + mapname + "%";
-		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
-
-		for (Object data : list1) {
-			Map<String, Object> row = (Map<String, Object>) data;
-			String[] each = new String[2];
-			each[0] = row.get("companyid").toString();
-			each[1] = (String) row.get("companynm");
-			monthData.add(each);
-		}
-
-		return monthData;
-	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -122,6 +82,45 @@ public class CompanySettingServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private List<String[]> gethotcompniesinfo() {
+		List<String[]> monthData = new ArrayList<String[]>();
+
+		String sql = "select * from mstr_company where delflg =? limit 10";
+		Object[] params = new Object[1];
+		params[0] = 0;
+		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
+
+		for (Object data : list1) {
+			Map<String, Object> row = (Map<String, Object>) data;
+			String[] each = new String[2];
+			each[0] = row.get("companyid").toString();
+			each[1] = (String) row.get("companynm");
+			monthData.add(each);
+		}
+
+		return monthData;
+	}
+    
+    private List<String[]> getsearchcompniesinfo(String mapname) {
+		List<String[]> monthData = new ArrayList<String[]>();
+
+		String sql = "select * from mstr_company where delflg =? and companynm like ?";
+		Object[] params = new Object[2];
+		params[0] = 0;
+		params[1] = "%" + mapname + "%";
+		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
+
+		for (Object data : list1) {
+			Map<String, Object> row = (Map<String, Object>) data;
+			String[] each = new String[2];
+			each[0] = row.get("companyid").toString();
+			each[1] = (String) row.get("companynm");
+			monthData.add(each);
+		}
+
+		return monthData;
 	}
 
 }

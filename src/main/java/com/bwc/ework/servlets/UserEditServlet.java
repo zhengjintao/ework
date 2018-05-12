@@ -64,8 +64,8 @@ public class UserEditServlet extends HttpServlet {
 					return;
 				}else{
 					//更新
-					String sql = "insert into mstr_user values(?,?,?,?,?,?,?,?,?,?,?)";
-					Object[] params = new Object[11];
+					String sql = "insert into mstr_user values(?,?,?,?,?,?,?,?,?,?,?,?)";
+					Object[] params = new Object[12];
 					
 					params[0] = request.getParameter("euserid");
 					params[1] = eusername;
@@ -75,9 +75,10 @@ public class UserEditServlet extends HttpServlet {
 					params[5] = "18:30:00.0000";
 					params[6] = request.getParameter("esex");
 					params[7] = request.getParameter("eauthflg");
-					params[8] = "";
+					params[8] = "1990/1/1";
 					params[9] = "";
 					params[10] = "";
+					params[11] = "1";
 					JdbcUtil.getInstance().executeUpdate(sql, params);
 				}
 			}else{

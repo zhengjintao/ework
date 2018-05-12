@@ -105,7 +105,7 @@ footer {
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui green button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="employeemanage.do">人员管理</a>
+							<i class="edit icon"></i> <a class="header" style="color:white" href="employeemanage.do?companyid=<%=(String)request.getAttribute("companyid") %>">人员管理</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>

@@ -48,13 +48,19 @@ public class CompanyDetailServlet extends HttpServlet {
 		String companyid = request.getParameter("companyid");
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
-		String sql = "insert into cdata_userapply values(?,?,?)";
-		Object[] params = new Object[3];
-		params[0] = companyid;
-		params[1] = userinfo.getUserId();
-		params[2] = "0";
-		JdbcUtil.getInstance().executeUpdate(sql, params);
+		String sql = "SELECT * FROM ework.mstr_user_comp where userid=?";
+		Object[] params = new Object[1];
+		params[0] = userinfo.getUserId();
+		List<Object> result = JdbcUtil.getInstance().excuteQuery(sql, params);
 		
+		if(result.size() ==0){
+			sql = "insert into cdata_userapply values(?,?,?)";
+			params = new Object[3];
+			params[0] = companyid;
+			params[1] = userinfo.getUserId();
+			params[2] = "0";
+			JdbcUtil.getInstance().executeUpdate(sql, params);
+		}
 		
 		init(request, response);
 	}
