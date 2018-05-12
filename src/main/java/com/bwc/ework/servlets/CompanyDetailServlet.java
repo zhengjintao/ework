@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -98,6 +99,9 @@ public class CompanyDetailServlet extends HttpServlet {
 
 		String diplay = list1.size() > 0 ? "" : "display: none";
 		request.setAttribute("display", diplay);
+		
+		String diplaybtn = Utils.isDefaultCompany(userinfo.getMaincompanyid())? "" : "display: none";
+		request.setAttribute("displaybtn", diplaybtn);
 		
 		request.getRequestDispatcher("companydetail.jsp").forward(request, response);
 	}

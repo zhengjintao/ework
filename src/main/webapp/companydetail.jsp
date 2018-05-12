@@ -11,7 +11,7 @@
 <link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="jquery/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
 <script src="dist/semantic.min.js"></script>
@@ -71,7 +71,7 @@ footer {
 					</div>
 				</div>
 			
-				<a class="ui basic button" href="companydetail.do?mode=add&companyid=<%=(String)request.getAttribute("companyid") %>">
+				<a class="ui basic button" href="companydetail.do?mode=add&companyid=<%=(String)request.getAttribute("companyid") %>"  style="<%=(String)request.getAttribute("displaybtn") %>">
 					<i class="icon add user"></i><%=(String)request.getAttribute("btnname") %>
 				</a>
 				</div>

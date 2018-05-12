@@ -66,9 +66,10 @@ public class EditNoticeServlet extends HttpServlet {
 			params[7] = "0";
 			JdbcUtil.getInstance().executeUpdate(sql, params);
 			
-			String sql2 = "SELECT * FROM mstr_user where delflg=?";
-			Object[] params2 = new Object[1];
-			params2[0] = "0";
+			String sql2 = "SELECT * FROM cdata_companyuser com left join mstr_user com.userid=usr.userid where companyid=? and delflg=?";
+			Object[] params2 = new Object[2];
+			params2[0] = userinfo.getMaincompanyid();
+			params2[1] = "0";
 			List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 			
 			SimpleDateFormat formattime2 = new SimpleDateFormat("yyyy/MM/dd hh:mm");
@@ -97,7 +98,7 @@ public class EditNoticeServlet extends HttpServlet {
 			request.setAttribute("subKbn", subKbn);
 			request.setAttribute("title", title);
 			
-			String content = "1".equals(request.getParameter("type")) ? "最近没啥事，各自安好！" : "近期没活动，自己high，自己浪！";
+			String content = "1".equals(request.getParameter("type")) ? "公司运营正常" : "近期没活动";
 			
 			String sql = "select * from cdata_notice where companyid=? and type=? and delflg=? and createdate =(select max(createdate) from cdata_notice where companyid=? and type=? and delflg=? group by type ) limit 1";
 			Object[] paramsnotice = new Object[6];
