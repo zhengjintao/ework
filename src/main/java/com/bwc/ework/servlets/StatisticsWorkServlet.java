@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -41,7 +42,6 @@ public class StatisticsWorkServlet extends HttpServlet {
 		List<String[]> dataList = new ArrayList<String[]>();
 		//查询月份取得
 		String wdate = request.getParameter("wdate");
-		SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-dd");
 		
 		// 出勤化的时候，当前时间取得
 		String year = wdate == null ? Integer.toString(new Date().getYear() + 1900) : DateTimeUtil.stringToDate(wdate).getYear();
@@ -49,7 +49,13 @@ public class StatisticsWorkServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
-		String selectuser = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "and user.userid ='" +userinfo.getUserId() +"' " ;
+		String sql2 = "select * from cdata_companyuser where companyid = ? and userid=? and delflg ='0' and rolekbn in ('0','1')";
+
+		Object[] params2 = new Object[2];
+		params2[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
+		params2[1] = userinfo.getUserId();
+		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+		String selectuser = list1.size() > 0 ? "" : "and user.userid ='" +userinfo.getUserId() +"' " ;
 		String sql = "select user.username, " +
 		                     "user.userid, " +
 				             "sum(wk.worktime) as worktime," +
@@ -59,14 +65,16 @@ public class StatisticsWorkServlet extends HttpServlet {
                      "where wk.year= ? " + 
                            "and wk.month = ? " + 
                            "and user.delflg ='0' "+
+                           "and companyid = ?" +
                            selectuser +
                      "group by user.username,user.userid";
-		Object[] params = new Object[2];
+		Object[] params = new Object[3];
 		params[0] = year;
 		params[1] = month;
+		params[2] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 
-		Map<String, String[]> leaveinfo = getLeaveTime(year,month,userinfo);
+		Map<String, String[]> leaveinfo = getLeaveTime(year,month,userinfo,selectuser);
 		
 		// 系统当前时间取得
 		SimpleDateFormat formattime=new SimpleDateFormat("yyyy-MM-dd"); 
@@ -129,17 +137,17 @@ public class StatisticsWorkServlet extends HttpServlet {
 	}
 	
 	
-	private Map<String, String[]> getLeaveTime(String year,String month, User userinfo){
+	private Map<String, String[]> getLeaveTime(String year,String month, User userinfo,String selectuser){
 		DecimalFormat df2=new DecimalFormat("0.0");
-		String selectuser = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "and user.userid ='" +userinfo.getUserId() +"' " ;
 		String sql = "select  user.userid, user.username, count(*) as lcount from cdata_leave cl "
 				+ "join mstr_user user on user.userid = cl.userid "
-				+ "where cl.year = ? and cl.month= ? and user.delflg = '0' "
+				+ "where cl.year = ? and cl.month= ? and user.delflg = '0' and companyid = ?"
 				+ selectuser
 				+ "group by user.userid, user.username";
-		Object[] params = new Object[2];
+		Object[] params = new Object[3];
 		params[0] = year;
 		params[1] = month;
+		params[2] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 		List<Object> resultList = JdbcUtil.getInstance().excuteQuery(sql, params);
 		Map<String, String[]> linfo = new HashMap<String, String[]>();
 		for (Object result : resultList) {
