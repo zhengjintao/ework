@@ -73,8 +73,8 @@ public class CompanyManagementServlet extends HttpServlet {
 			params = new Object[8];
 			params[0] = row.get("companyid");
 			params[1] = row.get("companynm");
-			params[2] = row.get("companynm");
-			params[3] = row.get("companynm");
+			params[2] = row.get("companyexp");
+			params[3] = row.get("companyexp");
 			params[4] = "1";
 			params[5] = "";
 			params[6] = "";
@@ -85,7 +85,7 @@ public class CompanyManagementServlet extends HttpServlet {
 			params = new Object[4];
 			params[0] = row.get("userid");
 			params[1] = row.get("companyid");
-			params[2] = "2";
+			params[2] = "1";
 			params[3] = "0";
 			JdbcUtil.getInstance().executeUpdate(sql, params);
 			

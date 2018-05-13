@@ -135,7 +135,7 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
 		<div class="row">
 			<div class="ui top attached tabular menu">
 				<a class="item active" data-tab="first">待审核</a> <a class="item"
-					data-tab="second">已批准</a>
+					data-tab="second" style="display:none">已批准</a>
 			</div>
 			<div class="ui bottom attached tab segment active" data-tab="first">
 				<div class="ui relaxed divided list">

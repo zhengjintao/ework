@@ -36,7 +36,6 @@ public class LeaveServlet extends HttpServlet {
 	 */
 	public LeaveServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -191,7 +190,7 @@ public class LeaveServlet extends HttpServlet {
 						JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 					}
 
-					//sendMail(userid,  Utils.getStoreCompanyid(userinfo.getMaincompanyid()), userinfo.getUserName(), wdate, wcomment);
+					sendMail(userid,  Utils.getStoreCompanyid(userinfo.getMaincompanyid()), userinfo.getUserName(), wdate, wcomment);
 				}
 
 				wdate2 = DateTimeUtil.GetMonth(wdateList.get(0));
@@ -244,7 +243,7 @@ public class LeaveServlet extends HttpServlet {
 	private void senddeleteMail(String userid, String companyid, String username, String wdate)
 			throws UnsupportedEncodingException {
 
-		List<String> list = getadmminusermailadd();
+		List<String> list = getadmminusermailadd(companyid);
 
 		if (list.size() > 0) {
 			String mailname = "取消请假通知_" + username;
@@ -276,7 +275,7 @@ public class LeaveServlet extends HttpServlet {
 	private void sendMail(String userid, String companyid, String username, String wdate, String wcomment)
 			throws UnsupportedEncodingException {
 		// 管理员邮箱取得
-		List<String> list = getadmminusermailadd();
+		List<String> list = getadmminusermailadd(companyid);
 
 		if (list.size() > 0) {
 			String mailname = "请假通知_" + username;
@@ -304,17 +303,17 @@ public class LeaveServlet extends HttpServlet {
 		}
 	}
 
-	private List<String> getadmminusermailadd() {
+	private List<String> getadmminusermailadd(String companyid) {
 		// 管理员邮箱取得
-		String sql = "select mail from mstr_user where authflg=? and delflg='0' and mail is not null";
+		String sql = "select usr.mail as mail from cdata_companyuser com left join mstr_user usr on com.userid=usr.userid where com.companyid=? and com.rolekbn in ('0', '1') and com.delflg='0' and usr.mail is not null";
 		Object[] params = new Object[1];
-		params[0] = "1";
+		params[0] = companyid;
 		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
 		List<String> list = new ArrayList<String>();
 		if (userlist.size() > 0) {
 			for (int i = 0; i < userlist.size(); i++) {
 				Map<String, Object> set = (Map<String, Object>) userlist.get(i);
-				if (set.get("mail") != null) {
+				if (set.get("mail") != null && set.get("mail").toString().length() > 0) {
 					list.add(set.get("mail").toString());
 				}
 			}

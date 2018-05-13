@@ -68,7 +68,7 @@ public class PersonalServlet extends HttpServlet {
 			for (Object data : companyinfo) {
 				Map<String, Object> row = (Map<String, Object>) data;
 				maincompanyid = row.get("companyid").toString();
-				
+				userinfo.setMaincompanyid(maincompanyid);
 				userinfo.setMaincompanyname(row.get("companynm").toString());
 				session.setAttribute("userinfo", userinfo);
 				break;

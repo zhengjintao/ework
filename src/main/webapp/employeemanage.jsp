@@ -100,9 +100,9 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
           });
   }
   
-  list.onsale = function(id) {
+  list.onsale = function(id, userid) {
   	$scope.url =  "employeemanage.do";
-  	var postdata = {'mode':'refuse', 'id': id};
+  	var postdata = {'mode':'refuse', 'companyid': id, 'userid': userid};
       $http(
   		{
   			method:"POST",
@@ -145,7 +145,7 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
 							<div class="header">申请人：{{good.username}}</div>
 						</div>
 						<div class="right floated content">
-						    <div class="ui button" ng-click="list.onsale(good.id)">拒绝</div>
+						    <div class="ui button" ng-click="list.onsale(good.id, good.userid)">拒绝</div>
 							<div class="ui button" ng-click="list.unsale(good.id, good.userid)">同意</div>
 						</div>
 					</div>

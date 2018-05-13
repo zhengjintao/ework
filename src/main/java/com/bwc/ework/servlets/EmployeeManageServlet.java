@@ -38,7 +38,7 @@ public class EmployeeManageServlet extends HttpServlet {
 		}else if("apply".equals(mode)){
 			this.apply(request, response);
 		}else if("refuse".equals(mode)){
-			
+			this.refuse(request, response);
 		}
 		else{
 			this.init(request, response);
@@ -46,6 +46,16 @@ public class EmployeeManageServlet extends HttpServlet {
 		
 	}
 	
+	private void refuse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String userid = request.getParameter("userid");
+		String companyid = request.getParameter("companyid");
+		
+		String sql = "update cdata_userapply set status='2' where companyid=? and userid=?";
+		Object[] params = new Object[2];
+		params[0] = companyid;
+		params[1] = userid;
+		JdbcUtil.getInstance().executeUpdate(sql, params);
+	}
 	private void apply(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String userid = request.getParameter("userid");
 		String companyid = request.getParameter("companyid");
@@ -68,13 +78,9 @@ public class EmployeeManageServlet extends HttpServlet {
 		params = new Object[4];
 		params[0] = companyid;
 		params[1] = userid;
-		params[2] = "1";
+		params[2] = "2";
 		params[3] = "0";
 		JdbcUtil.getInstance().executeUpdate(sql, params);
-		
-	}
-	
-    private void refuse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
 	}
 	

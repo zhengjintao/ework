@@ -20,14 +20,12 @@ public class LoginFilter implements Filter {
      * Default constructor. 
      */
     public LoginFilter() {
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -36,7 +34,7 @@ public class LoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httprequest = (HttpServletRequest)request;
 		HttpServletResponse httpresponse = (HttpServletResponse)response;
-		//httprequest.setCharacterEncoding("UTF-8");
+		httprequest.setCharacterEncoding("UTF-8");
 		httpresponse.setHeader("Content-Type","text/html;charset=UTF-8");
 		
 		HttpServletRequest req = (HttpServletRequest)request;

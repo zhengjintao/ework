@@ -41,7 +41,25 @@ footer {
 
 </head>
 <body>
+  <script type="text/javascript">
+	$(document).ready(function() {
+		$('.ui.accordion').accordion();
+		
+		var message = "<%=(String) request.getAttribute("errmsg")%>";
+		if (message != "null" && message.length > 0) {
+			$('#cmodal').modal({
+				closable : false
 
+			}).modal('show');
+		}});
+	</script>
+	<div id="cmodal" class="ui small test modal transition hidden">
+	    <i class="close icon"></i>
+		<div class="content">
+			<p id="errmsg"><%=(String) request.getAttribute("errmsg")%>
+			</p>
+		</div>
+	</div>
 	<div class="ui one column grid container">
 		<div class="column" style="margin-top: 10px;">
 		
