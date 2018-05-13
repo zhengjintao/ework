@@ -89,8 +89,8 @@ public class CallBackServlet extends HttpServlet {
 				String username = userInfo.getString("nickname");
 				String sex = "1".equals(userInfo.get("sex").toString()) ? "M" : "F";
 				String password = "111111";
-				String sql2 = "insert into mstr_user values(?,?,?,?,?,?,?,?,?,?,?)";
-				Object[] params2 = new Object[11];
+				String sql2 = "insert into mstr_user values(?,?,?,?,?,?,?,?,?,?,?,?)";
+				Object[] params2 = new Object[12];
 				
 				params2[0] = openid;
 				params2[1] = filterEmoji(username);
@@ -103,6 +103,7 @@ public class CallBackServlet extends HttpServlet {
 				params2[8] = null;
 				params2[9] = "";
 				params2[10] = openid;
+				params2[11] = "1";
 				
 				errmsg = errmsg + "－－新规做成用户－－<br>";
 				JdbcUtil.getInstance().executeUpdate(sql2, params2);
@@ -122,7 +123,6 @@ public class CallBackServlet extends HttpServlet {
 							} catch (MessagingException e) {
 							}
 						} catch (UnsupportedEncodingException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
