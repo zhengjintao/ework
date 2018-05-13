@@ -100,6 +100,7 @@ public class LoginServlet extends HttpServlet {
 		userdata.setMaincompanyid((String)info.get("companyid"));
 		userdata.setMaincompanyname((String)info.get("companynm"));
 		userdata.setRest((String)info.get("rest"));
+		userdata.setMail((String)info.get("mail"));
 	    
 		HttpSession session = request.getSession();
 		session.setAttribute("userinfo", userdata);
