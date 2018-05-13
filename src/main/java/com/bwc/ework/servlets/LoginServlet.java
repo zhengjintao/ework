@@ -2,6 +2,7 @@ package com.bwc.ework.servlets;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,16 @@ public class LoginServlet extends HttpServlet {
 			String callbackUrl="http://www.freertokyo.com"+ request.getContextPath()+"/callback.do";
 	        response.sendRedirect(URLProducer.GetAuthUrl(callbackUrl));
 	        return;
+		}
+		
+		String multi = request.getParameter("multi");
+		if("1".equals(multi)){
+			String openid = request.getParameter("openid");
+			request.setAttribute("multi", "1");
+			request.setAttribute("userinfo", getLoginuserinfo(openid));
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			
+			return;
 		}
 		
 		String user = request.getParameter("userid");
@@ -114,7 +125,23 @@ public class LoginServlet extends HttpServlet {
 			response.addCookie(pcookies);
 		}
 		
-		String rurl = userdata.getMaincompanyid() == null ? "personal.do" : "list.do";
+		String rurl = "list.do";
+		
+		if(userdata.getMaincompanyid() == null){
+			rurl = "personal.do";
+		}else if("0".equals(userdata.getAuthflg()) || "1".equals(userdata.getAuthflg())){
+			rurl = "personal.do";
+		}
+		else{
+			sql = "select * from cdata_companyuser where companyid=? and userid=? and rolekbn in ('0', '1') and delflg='0'";
+			params = new Object[2];
+			params[0] = userdata.getMaincompanyid();
+			params[0] = userdata.getUserId();
+			List<Object> roles = JdbcUtil.getInstance().excuteQuery(sql, params);
+			if(roles.size() > 0){
+				rurl = "companydetail.do";
+			}
+		}
 		response.sendRedirect(rurl);
 	}
 
@@ -122,8 +149,26 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
+	
+	private List<String[]> getLoginuserinfo(String openid){
+		String sql = "select * from mstr_user usr left join mstr_user_comp ump on usr.userid=ump.userid  left join mstr_company cmp on ump.companyid=cmp.companyid where usr.openid=? and usr.delflg='0'";
+		Object[] params = new Object[1];
+		params[0] = openid;
+		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
+		
+		List<String[]> userinfolist = new ArrayList<String[]>();
+		for (Object data : userinfo) {
+			Map<String, Object> row = (Map<String, Object>) data;
+			String[] each = new String[3];
+			each[0] = row.get("userid").toString();
+			each[1] = row.get("password").toString();
+			each[2] = row.get("username").toString() + "(" +row.get("companynm").toString() +")";
+			
+			userinfolist.add(each);
+		}
+		
+		return userinfolist;
+	}
 }

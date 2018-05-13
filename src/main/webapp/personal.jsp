@@ -211,7 +211,7 @@ footer {
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
 				</div>
-				<div class="ui teal inverted segment">
+				<div class="ui teal inverted segment" style="<%=(String)request.getAttribute("userdiplay") %>">
 				    <a class="ui orange right ribbon label">默认时间</a>
 					<div class="ui inverted form">
 						<div class="two fields">
@@ -236,7 +236,7 @@ footer {
 						</Button>
 					</div>
 				</div>
-				<div class="ui olive inverted segment">
+				<div class="ui olive inverted segment" style="<%=(String)request.getAttribute("userdiplay") %>">
 				<a class="ui orange right ribbon label">统计信息</a>
 				   <div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
@@ -254,7 +254,7 @@ footer {
 					</div>
 				</div>
 				
-				<div class="ui red segment">
+				<div class="ui red segment" style="<%=(String)request.getAttribute("userdiplay") %>">
 				<a class="ui orange right ribbon label">功能模块</a>
 				   <div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
@@ -271,8 +271,8 @@ footer {
 						</div>
 						 <a class="ui basic left pointing label"> <%=(String)request.getAttribute("days") %> </a>
 					</div>
-					 -->
-				<div style="height:10px"></div>
+				 	 -->
+				   <div style="height:10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui violet button">
 							<i class="yen sign icon"></i><a class="header" style="color:white" href="moneysubmit.do?userid=<%=(String)request.getAttribute("userid") %>">经费报销</a>

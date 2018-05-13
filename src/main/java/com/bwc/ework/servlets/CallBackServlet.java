@@ -57,12 +57,14 @@ public class CallBackServlet extends HttpServlet {
 			}
 			String openid = jsonObject.getString("openid");
 			
-			String sql = "select * from mstr_user where openid=?";
+			String sql = "select * from mstr_user where openid=? and delflg='0'";
 			Object[] params = new Object[1];
 			params[0] = openid;
 			List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
-
-			if(userinfo != null && userinfo.size() >0){
+			
+			if(userinfo != null && userinfo.size() >1){
+				request.getRequestDispatcher("login.do?multi=1&openid="+ openid).forward(request, response);
+			}else if(userinfo != null && userinfo.size() >0){
 				Map<String, Object> info = (Map<String, Object>)userinfo.get(0);
 				if("0".equals((String)info.get("delflg"))){
 					String ueserid = (String)info.get("userid");
