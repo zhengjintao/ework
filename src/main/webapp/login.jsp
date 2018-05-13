@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿<%@ page import="java.util.List"%>
+<!DOCTYPE html>
 <html>
 <head>
 <!-- Standard Meta -->
@@ -65,18 +66,59 @@ $(document).ready(function() {
 	$(document).ready(function() {
 		var message = "<%=(String) request.getAttribute("errmsg")%>";
 		if (message != "null" && message.length > 0) {
-			$('.ui.modal').modal({
+			$('#norm').modal({
 				closable : false
 
 			}).modal('show');
-		}});
+		}
+		
+		var multi = "<%=(String) request.getAttribute("multi")%>";
+		if (multi != "null" && multi.length > 0) {
+			$('#multi').modal({
+				closable : false
+
+			}).modal('show');
+		}
+	});
 	</script>
-	<div class="ui small test modal transition hidden">
+	<div class="ui small test modal transition hidden" id="norm">
 	    <i class="close icon"></i>
 		<div class="content">
 			<p><%=(String) request.getAttribute("errmsg")%>
 			</p>
 		</div>
+	</div>
+
+
+	<div class="ui basic modal" id="multi">
+		<div class="ui icon header">
+			<i class="home icon"></i> 选择一个账号登录
+		</div>
+		<div class="content">
+			<div class="ui middle aligned divided list">
+				<%
+							List<String[]> userinfo = (List<String[]>) request.getAttribute("userinfo");
+							int inxnum =0;
+							if(userinfo!=null){
+								for (String[] each : userinfo) {
+									out.print("<div class='item'>");
+									out.print("<div class='content' style='text-align:center'>");
+									out.print("<a class='header' href='login.do?rembpwd=1&userid=" + each[0] + "&password=" + each[1] + "'>" + each[2] +"</a>");
+									out.print("</div>");
+									out.print("</div>");
+									inxnum++;
+								}
+							}
+						%>
+				<div class="item">
+
+					<div class="content" style="text-align:center">
+						<a class="header" href="login.do">使用其他账号登录</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 	<div class="ui middle aligned center aligned grid container">
