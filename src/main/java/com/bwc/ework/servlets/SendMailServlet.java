@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.common.mail.SendMailFactory;
 import com.bwc.ework.form.User;
 
@@ -70,8 +71,9 @@ public class SendMailServlet extends HttpServlet {
 		String month = date1.getMonth();
 		
 		String text = "姓名：" + username + "&emsp;月份："+ year + "年" + month+"月" + "<br>" + "<br>";
-		String leaveinfo = getMonthData(userid, yearandmonth);
-		String workinfo = getworktime(userinfo.getMaincompanyid(), userid, yearandmonth);
+		String companyid = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
+		String leaveinfo = getMonthData(companyid, userid, yearandmonth);
+		String workinfo = getworktime(companyid, userid, yearandmonth);
 		
 		List<String> list = new ArrayList<String>();
 		list.add(mail);
@@ -155,7 +157,7 @@ public class SendMailServlet extends HttpServlet {
 		return sb.toString();
 	}
 
-	private String getMonthData(String userId, String dateStr) {
+	private String getMonthData(String companyid, String userId, String dateStr) {
 		if (dateStr == null) {
 			return "";
 		}
@@ -163,11 +165,12 @@ public class SendMailServlet extends HttpServlet {
 		String year = date1.getYear();
 		String month = date1.getMonth();
 
-		String sql = "select * from cdata_leave where userid=? and year = ? and month = ?";
-		Object[] params = new Object[3];
-		params[0] = userId;
-		params[1] = year;
-		params[2] = month;
+		String sql = "select * from cdata_leave where companyid=? and userid=? and year = ? and month = ?";
+		Object[] params = new Object[4];
+		params[0] = companyid;
+		params[1] = userId;
+		params[2] = year;
+		params[3] = month;
 		List<Object> list1 = JdbcUtil.getInstance().excuteQuery(sql, params);
 		StringBuilder sb = new StringBuilder();
 		sb.append("[请假记录]");
