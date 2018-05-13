@@ -1,19 +1,21 @@
 package com.bwc.ework.servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.common.Utils;
+import com.bwc.ework.common.mail.SendMailFactory;
 import com.bwc.ework.form.User;
 
 /**
@@ -27,7 +29,6 @@ public class CompanyDetailServlet extends HttpServlet {
      */
     public CompanyDetailServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -41,8 +42,6 @@ public class CompanyDetailServlet extends HttpServlet {
 		else{
 			this.init(request, response);
 		}
-		
-		
 	}
 	
 	private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -61,6 +60,26 @@ public class CompanyDetailServlet extends HttpServlet {
 			params[1] = userinfo.getUserId();
 			params[2] = "0";
 			JdbcUtil.getInstance().executeUpdate(sql, params);
+			
+			String text = "申请人：" + userinfo.getUserName() + "<br>";
+			text = text + "＃请尽快进入系统进行审批，相关模块路径［个人］－［公司］- [申请审批]" + "<br>";
+			
+			final String utext = text;
+			final String ucompanyid = companyid;
+			
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					try {
+						try {
+							SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(ucompanyid),"新人员申请加入公司提醒", utext, null);
+						} catch (MessagingException e) {
+						}
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			t.start();
 		}
 		
 		init(request, response);
@@ -110,8 +129,26 @@ public class CompanyDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private List<String> getadmminusermailadd(String companyid) {
+		// 管理员邮箱取得
+		String sql = "select usr.mail as mail from cdata_companyuser com left join mstr_user usr on com.userid=usr.userid where com.companyid=? and com.rolekbn in ('0', '1') and com.delflg='0' and usr.mail is not null";
+		Object[] params = new Object[1];
+		params[0] = companyid;
+		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
+		List<String> list = new ArrayList<String>();
+		if (userlist.size() > 0) {
+			for (int i = 0; i < userlist.size(); i++) {
+				Map<String, Object> set = (Map<String, Object>) userlist.get(i);
+				if (set.get("mail") != null && set.get("mail").toString().length() > 0) {
+					list.add(set.get("mail").toString());
+				}
+			}
+		}
+
+		return list;
 	}
 
 }

@@ -2,30 +2,22 @@ package com.bwc.ework.servlets;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.bwc.ework.common.HashEncoder;
 import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.common.mail.SendMailFactory;
-import com.bwc.ework.common.wechat.AccessTokenGeter;
-import com.bwc.ework.common.wechat.Consts;
 import com.bwc.ework.common.wechat.HttpRequestor;
 import com.bwc.ework.common.wechat.URLProducer;
-import com.bwc.ework.common.wechat.meta.AccessToken;
-import com.bwc.ework.common.wechat.tmpmsg.TemplateMessageUtil;
 
 /**
  * Servlet implementation class CallBackServlet
@@ -38,7 +30,6 @@ public class CallBackServlet extends HttpServlet {
 	 */
 	public CallBackServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
