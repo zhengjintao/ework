@@ -1,10 +1,7 @@
 package com.bwc.ework.servlets;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +59,7 @@ public class PersonalServlet extends HttpServlet {
 		request.setAttribute("userid", userinfo.getUserId());
 		request.setAttribute("username", userinfo.getUserName());
 		String maincompanyid = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
-		if(maincompanyid != Consts.DefaultCompanyId){
+		if(maincompanyid == Consts.DefaultCompanyId){
 			String sql = "select * from mstr_user_comp usr left join mstr_company com on usr.companyid= com.companyid where usr.userid=? and usr.defaultflg ='1' and usr.delflg='0'";
 			Object[] params = new Object[1];
 			params[0] = userinfo.getUserId();
@@ -155,6 +152,9 @@ public class PersonalServlet extends HttpServlet {
 		
 		String diplay = "0".equals(userinfo.getAuthflg()) || "1".equals(userinfo.getAuthflg()) ? "" : "display: none";
 		request.setAttribute("display", diplay);
+		
+		String superdiplay = "0".equals(userinfo.getAuthflg()) ? "" : "display: none";
+		request.setAttribute("superdiplay", superdiplay);
 		
 		request.setAttribute("userid", userinfo.getUserId());
 		request.getRequestDispatcher("personal.jsp").forward(request, response);

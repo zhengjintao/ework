@@ -52,8 +52,6 @@ footer {
 					<div class="active section">公司信息</div>
 				</div>
 			</div>
-			
-			
     
        <div class="ui yellow inverted segment">
 			    <a class="ui olive top attached label center aligned">公司信息</a>

@@ -26,7 +26,6 @@ public class EmployeeManageServlet extends HttpServlet {
      */
     public EmployeeManageServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**

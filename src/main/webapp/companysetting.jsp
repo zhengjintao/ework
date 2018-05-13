@@ -67,13 +67,13 @@ footer {
 				
 					<div class="ui middle aligned divided list">
 						<div class="item">
-							<div class="ui action input">
+							<div class="ui action input" style="margin-left:-6px">
 								<input type="text" id="companynm" name="companynm" placeholder="搜索公司..." value=<%=(String) request.getAttribute("companynm")%>>
 								<button class="ui icon button">
 									<i class="search icon"></i>
 								</button>
 								<button type="button" class="ui icon button" style="margin-left:1px" onclick="addcompany();">
-									<i class="add icon"></i>申请开通
+									申请开通
 								</button>
 							</div>
 							

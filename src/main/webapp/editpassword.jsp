@@ -107,7 +107,7 @@ body>.grid {
 					<div class="field">
 						<div class="ui left icon input">
 							<i class="lock icon"></i> <input type="password" name="password"
-								placeholder="原密码">
+								placeholder="原密码(初始密码为6个数字1)">
 						</div>
 					</div>
 					<div class="field">

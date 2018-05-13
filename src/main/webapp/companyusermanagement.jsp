@@ -39,21 +39,15 @@ footer {
 
 	<div class="ui one column grid container">
 		<div class="column">
-		   <div class="ui teal segment">
-				<div class="ui  breadcrumb">
-					<a class="section" href="personal.do">个人</a> <i
-						class="right chevron icon divider"></i>
-					<div class="active section">用户管理</div>
-				</div>
-			</div>
+		   <div class="ui divider"></div>
+		<div class="ui basic buttons">
+		<a class="ui left attached button" href="companydetail.do">返回</a>
+<!-- <a class="right attached ui button" href="service.do?mode=detail">新規追加</a> -->
+</div>
+		
+		<div class="ui divider"></div>
 			<form action="./useredit.do" method="post">
-				<div class="ui teal inverted segment">
-
-					<button class="ui basic button">
-						<i class="icon user"></i> 追加
-					</button>
-				</div>
-				<div class="ui teal inverted segment">
+				<div class="ui base segment">
 
 					<div class="ui middle aligned divided list">
 						<%
@@ -62,7 +56,7 @@ footer {
 							out.print("<div class='item'>");
 							out.print("<div class='right floated content'>");
 							out.print("<div class='ui basic button'>");
-							out.print("<a href='" + "useredit.do?userid="+ each[0] + "&sex="+ each[3] +"&username="+ each[1] + "&authflg="+ each[4] + "' style='color:white'>编辑</a></div>");
+							out.print("<a href='" + "companyusermanagement.do?mode=auth&userid="+ each[0] + "&rolekbn="+ each[4] + "' >" +each[2]+"</a></div>");
 							out.print("</div>");
 							out.print("<img class='ui avatar image' src='" + each[5] + "'>");
 							out.print("<div class='content'>");

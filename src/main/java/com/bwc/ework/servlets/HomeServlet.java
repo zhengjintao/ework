@@ -25,17 +25,16 @@ public class HomeServlet extends HttpServlet {
      */
     public HomeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String notice = "最近没啥事，各自安好！";
-		String event = "近期没活动，自己high，自己浪！";
 		HttpSession session = request.getSession();
 		User userinfo = (User)session.getAttribute("userinfo");
+		String notice = Utils.isDefaultCompany(userinfo.getMaincompanyid()) ? "温馨提示：新用户请先加入或开通公司，有任何问题都可在公众号留言" :"没有新通知";
+		String event = "近期没活动";
 		String sql = "select * from cdata_notice where companyid=? and type=? and delflg=? and createdate =(select max(createdate) from cdata_notice where companyid=? and type=? and delflg=? group by type ) limit 1";
 		Object[] paramsnotice = new Object[6];
 		paramsnotice[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());

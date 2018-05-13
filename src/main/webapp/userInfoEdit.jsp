@@ -114,14 +114,12 @@ footer {
 	</div>
 	<div class="ui one column grid container">
 		<div class="column">
-			<div class="ui teal segment">
-				<div class="ui  breadcrumb">
-					<a class="section" href="personal.do">个人</a> <i
-						class="right chevron icon divider"></i>
-					<div class="active section">个人资料</div>
-				</div>
-			</div>
-			<div class="ui teal inverted segment">
+		   <div class="ui divider"></div>
+		   <div class="ui basic buttons">
+		    <a class="ui left attached button" href="personal.do">返回</a>
+           <!-- <a class="right attached ui button" href="service.do?mode=detail">新規追加</a> -->
+          </div>
+			<div class="ui segment">
 				<form  action="./userInfoEdit.do" method="post" onsubmit="return check();">
 					<div class="ui middle aligned divided list">
 						<div class="item">

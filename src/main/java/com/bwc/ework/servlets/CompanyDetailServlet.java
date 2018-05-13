@@ -86,7 +86,12 @@ public class CompanyDetailServlet extends HttpServlet {
 	}
 	
 	private void init(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		HttpSession session = request.getSession();
+		User userinfo = (User)session.getAttribute("userinfo");
 		String companyid = request.getParameter("companyid");
+		if(companyid ==null){
+			companyid = userinfo.getMaincompanyid();
+		}
 		String sql = "select * from mstr_company where companyid = ? and delflg =?";
 		Object[] params = new Object[2];
 		params[0] = companyid;
@@ -103,8 +108,6 @@ public class CompanyDetailServlet extends HttpServlet {
 			break;
 		}
 		
-		HttpSession session = request.getSession();
-		User userinfo = (User)session.getAttribute("userinfo");
 		String btnname = "申请加入";
 		/*if(companyid.equals(userinfo.getMaincompanyid())){
 			btnname = "永久退出";

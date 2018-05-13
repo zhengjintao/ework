@@ -44,7 +44,7 @@ footer {
 			</div>
 		</div>
 		<form action="./statisticsWork.do" method="post">
-			<div class="ui teal inverted segment">
+			<div class="ui teal inverted segment"  style="margin-bottom:-10px">
 				<div class="ui inverted form">
 					<div class="inline field">
 						<div class="field">
@@ -57,7 +57,7 @@ footer {
 				</div>
 			</div>
 			
-			<div class="ui teal inverted segment">
+			<div class="ui teal inverted segment" style="margin-bottom:-12px">
 				<div class="ui inverted form">
 					<div class="inline field">
 						<div class="field">
