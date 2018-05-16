@@ -32,48 +32,61 @@ public class LyzTimerTask extends TimerTask {
 					|| cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 				return;
 			}
-
-			String sql2 = "SELECT * FROM mstr_user where userid not in (select userid from cdata_worktime where date=?)"
-					+ " and delflg='0' and authflg not in('0','1') "
-					+ "and userid not in (select userid from cdata_leave where leavedate =?)";
-			Object[] params2 = new Object[2];
-			params2[0] = now;
-			params2[1] = now;
-			List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < infolist.size(); i++) {
-				Map<String, Object> set = (Map<String, Object>) infolist.get(i);
-				sb.append(String.valueOf(set.get("username"))).append("<br>");
+			
+			// 邮件向各个公司的管理员发送当日未签到人员名单
+			String sql ="SELECT * FROM mstr_company where delflg='0'";
+			List<Object> companyinfo = JdbcUtil.getInstance().excuteQuery(sql, null);
+			for (int i = 0; i < companyinfo.size(); i++) {
+				Map<String, Object> set = (Map<String, Object>) companyinfo.get(i);
+				String sql2 = "SELECT * FROM cdata_companyuser com join mstr_user usr on com.userid=usr.userid and usr.delflg='0' and usr.mail is not null and usr.mail !='' where com.companyid=? and com.rolekbn in ('0', '1')";
+				Object[] params2 = new Object[1];
+				params2[0] = set.get("companyid");
+				List<Object> admininfo = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+				List<String> adminmail = new ArrayList<String>();
+				for (int j = 0; j < admininfo.size(); j++) {
+					Map<String, Object> mail = (Map<String, Object>) admininfo.get(j);
+					adminmail.add(mail.get("mail").toString());
+				}
+				
+				if(adminmail.size() > 0){
+					sql2 = "SELECT * FROM cdata_companyuser com left join mstr_user usr on com.userid=usr.userid and usr.delflg='0' where com.companyid=? and com.rolekbn='2'" +
+							"and com.userid not in (select userid from cdata_worktime where date=?) and com.userid not in (select userid from cdata_leave where leavedate =?)";
+					params2 = new Object[3];
+					params2[0] = set.get("companyid");
+					params2[1] = now;
+					params2[2] = now;
+					List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+					
+					StringBuilder sb = new StringBuilder();
+					for (int j = 0; j < userinfo.size(); j++) {
+						Map<String, Object> set2 = (Map<String, Object>) userinfo.get(j);
+						sb.append(String.valueOf(set2.get("username"))).append("<br>");
+					}
+					
+					if (sb.length() > 0) {
+						final List<String> uadminmail = adminmail;
+						final String mailname = "员工未签到提醒(休息日请忽略)";
+						final String text = "["+set.get("companynm") + "]<br>下列人员今日未签到<br>" + "" + sb.toString();
+						Thread t = new Thread(new Runnable() {
+							public void run() {
+								try {
+									SendMailFactory.getInstance().getMailSender().sendMessage(uadminmail, mailname, text, null);
+								} catch (UnsupportedEncodingException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (MessagingException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
+						t.start();
+						
+					}
+				}
 			}
-
-			if (sb.length() > 0) {
-				String mailname = "未签到提醒(休息日请忽略)";
-				String text = "下列人员今日未签到<br>" + sb.toString();
-				SendMailFactory.getInstance().getMailSender().sendMessage(getadmminusermailadd(), mailname, text, null);
-			}
-
 		} catch (Exception e) {
 			System.out.println("-------------解析信息发生异常--------------");
 		}
 	}
-
-	private List<String> getadmminusermailadd() {
-		// 管理员邮箱取得
-		String sql = "select mail from mstr_user where authflg=? and delflg='0' and mail is not null";
-		Object[] params = new Object[1];
-		params[0] = "1";
-		List<Object> userlist = JdbcUtil.getInstance().excuteQuery(sql, params);
-		List<String> list = new ArrayList<String>();
-		if (userlist.size() > 0) {
-			for (int i = 0; i < userlist.size(); i++) {
-				Map<String, Object> set = (Map<String, Object>) userlist.get(i);
-				if (set.get("mail") != null) {
-					list.add(set.get("mail").toString());
-				}
-			}
-		}
-
-		return list;
-	}
-
 }

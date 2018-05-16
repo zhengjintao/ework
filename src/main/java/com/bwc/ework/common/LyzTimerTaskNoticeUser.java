@@ -1,6 +1,7 @@
 package com.bwc.ework.common;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,31 +30,48 @@ public class LyzTimerTaskNoticeUser extends TimerTask {
 					|| cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 				return;
 			}
-
-			String sql2 = "SELECT * FROM mstr_user where userid not in (select userid from cdata_worktime where date=?)"
-					+ " and delflg='0' and authflg not in('0','1') "
-					+ "and userid not in (select userid from cdata_leave where leavedate =?)";
-			Object[] params2 = new Object[2];
-			params2[0] = now;
-			params2[1] = now;
-			List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+			String sql ="SELECT * FROM mstr_company where delflg='0'";
+			List<Object> companyinfo = JdbcUtil.getInstance().excuteQuery(sql, null);
 			
 			SimpleDateFormat formattime2 = new SimpleDateFormat("yyyy/MM/dd");
 			final String now2 = formattime2.format(new Date()) + " 8:30";
-			for (int i = 0; i < infolist.size(); i++) {
-				Map<String, Object> set = (Map<String, Object>) infolist.get(i);
-				final String openid = String.valueOf(set.get("openid"));
-				
-				if(openid == null || openid.length() < 10){
-					continue;
+			for (int i = 0; i < companyinfo.size(); i++) {
+				Map<String, Object> set = (Map<String, Object>) companyinfo.get(i);
+				String sql2 = "SELECT * FROM cdata_companyuser com join mstr_user usr on com.userid=usr.userid and usr.delflg='0' and usr.mail is not null and usr.mail !='' where com.companyid=? and com.rolekbn in ('0', '1')";
+				Object[] params2 = new Object[1];
+				params2[0] = set.get("companyid");
+				List<Object> admininfo = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+				List<String> adminmail = new ArrayList<String>();
+				for (int j = 0; j < admininfo.size(); j++) {
+					Map<String, Object> mail = (Map<String, Object>) admininfo.get(j);
+					adminmail.add(mail.get("mail").toString());
 				}
-				final String username = String.valueOf(set.get("username"));
-				Thread t = new Thread(new Runnable() {
-					public void run() {
-						TemplateMessageUtil.sendTemplateMessage(openid, Consts.templetid, username, now2);
+				
+				sql2 = "SELECT * FROM cdata_companyuser com left join mstr_user usr on com.userid=usr.userid and usr.delflg='0' where com.companyid=? and com.rolekbn='2'" +
+						"and com.userid not in (select userid from cdata_worktime where date=?) and com.userid not in (select userid from cdata_leave where leavedate =?)";
+				params2 = new Object[3];
+				params2[0] = set.get("companyid");
+				params2[1] = now;
+				params2[2] = now;
+				List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql2, params2);
+
+				for (int j = 0; j < userinfo.size(); j++) {
+					Map<String, Object> set2 = (Map<String, Object>) userinfo.get(j);
+
+					
+					final String openid = String.valueOf(set.get("openid"));
+					
+					if(openid == null || openid.length() < 10){
+						continue;
 					}
-				});
-				t.start();
+					final String username = String.valueOf(set.get("username"));
+					Thread t = new Thread(new Runnable() {
+						public void run() {
+							TemplateMessageUtil.sendTemplateMessage(openid, Consts.templetid, username, now2);
+						}
+					});
+					t.start();
+				}
 			}
 
 		} catch (Exception e) {
