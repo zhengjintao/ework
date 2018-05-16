@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import com.bwc.ework.common.DateTimeUtil;
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.common.excel.ReadWriteExcelFile;
 import com.bwc.ework.common.mail.SendMailFactory;
 import com.bwc.ework.form.BillDetail;
@@ -54,8 +55,8 @@ public class SendBillServlet extends HttpServlet {
 		Date[] dates = this.queryDays(request.getParameter("wdate2"));
 		bd.setBegindate(dates[0]);
 		bd.setEnddate(dates[1]);
-		
-		List<String[]> info = this.getExpinfoByMonth(userid, userif.getMaincompanyid(), request.getParameter("wdate2"));
+		String companycd = Utils.getStoreCompanyid(userif.getMaincompanyid());
+		List<String[]> info = this.getExpinfoByMonth(userid, companycd, request.getParameter("wdate2"));
 		List<BillInfo> bilist = new ArrayList<BillInfo>();
 		for(String[] each : info){
 			BillInfo bi = new BillInfo();
