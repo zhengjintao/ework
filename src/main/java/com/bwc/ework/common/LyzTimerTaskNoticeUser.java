@@ -59,12 +59,12 @@ public class LyzTimerTaskNoticeUser extends TimerTask {
 					Map<String, Object> set2 = (Map<String, Object>) userinfo.get(j);
 
 					
-					final String openid = String.valueOf(set.get("openid"));
+					final String openid = String.valueOf(set2.get("openid"));
 					
 					if(openid == null || openid.length() < 10){
 						continue;
 					}
-					final String username = String.valueOf(set.get("username"));
+					final String username = String.valueOf(set2.get("username"));
 					Thread t = new Thread(new Runnable() {
 						public void run() {
 							TemplateMessageUtil.sendTemplateMessage(openid, Consts.templetid, username, now2);

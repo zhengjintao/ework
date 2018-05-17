@@ -80,6 +80,13 @@ $(document).ready(function() {
 			}).modal('show');
 		}
 	});
+	
+	function closemodal(){
+		$('#multi').modal({
+			closable : false
+
+		}).modal('hide');
+	}
 	</script>
 	<div class="ui small test modal transition hidden" id="norm">
 	    <i class="close icon"></i>
@@ -113,7 +120,7 @@ $(document).ready(function() {
 				<div class="item">
 
 					<div class="content" style="text-align:center">
-						<a class="header" href="login.do">使用其他账号登录</a>
+						<a class="header" href="javascript:void(0)" onclick="closemodal()">使用其他账号登录</a>
 					</div>
 				</div>
 			</div>
