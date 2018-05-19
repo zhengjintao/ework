@@ -125,13 +125,13 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
 <body ng-controller="ListController as list" >
 	<div class="ui container">
 		<div class="row"></div>
-		<div class="ui divider"></div>
+		<div class="ui divider" style="margin:5px"></div>
 		<div class="ui basic buttons">
 		<a class="ui left attached button" href="personal.do">返回</a>
 <!-- <a class="right attached ui button" href="service.do?mode=detail">新規追加</a> -->
 </div>
 		
-		<div class="ui divider"></div>
+		<div class="ui divider" style="margin:5px"></div>
 		<div class="row">
 			<div class="ui top attached tabular menu">
 				<a class="item active" data-tab="first">待审核</a> <a class="item"

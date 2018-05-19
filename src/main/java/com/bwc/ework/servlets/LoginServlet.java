@@ -2,7 +2,9 @@ package com.bwc.ework.servlets;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -125,6 +127,27 @@ public class LoginServlet extends HttpServlet {
 			response.addCookie(pcookies);
 		}
 		
+		sql = "select * from cdata_userlog where userid=? order by id desc";
+		params = new Object[1];
+		params[0] = userdata.getUserId();
+		List<Object> loginfo = JdbcUtil.getInstance().excuteQuery(sql, params);
+		long num=0;
+		if(loginfo.size() > 0){
+			Map<String, Object> log = (Map<String, Object>)loginfo.get(0);
+			num = Long.parseLong((String)log.get("id"));
+			num++;
+		}
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss.SSS");
+		String now = formatter.format(new Date());
+		
+		sql = "insert into cdata_userlog values(?,?,?)";
+		params = new Object[3];
+		params[0] = userdata.getUserId();
+		params[1] = String.valueOf(num);
+		params[2] = now;
+		JdbcUtil.getInstance().executeUpdate(sql, params);
+		
 		String rurl = "list.do";
 		
 		if(userdata.getMaincompanyid() == null){
@@ -136,7 +159,7 @@ public class LoginServlet extends HttpServlet {
 			sql = "select * from cdata_companyuser where companyid=? and userid=? and rolekbn in ('0', '1') and delflg='0'";
 			params = new Object[2];
 			params[0] = userdata.getMaincompanyid();
-			params[0] = userdata.getUserId();
+			params[1] = userdata.getUserId();
 			List<Object> roles = JdbcUtil.getInstance().excuteQuery(sql, params);
 			if(roles.size() > 0){
 				rurl = "companydetail.do";
