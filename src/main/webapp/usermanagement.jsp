@@ -46,6 +46,7 @@ footer {
 					<div class="active section">用户管理</div>
 				</div>
 			</div> -->
+			<form action="./useredit.do" method="post">
 			<div class="ui divider" style="margin:0 5 5 5"></div>
 		   <div class="ui basic buttons">
 		    <a class="ui left attached button" href="personal.do">返回</a>
@@ -56,7 +57,7 @@ footer {
            </div>
 			
 			
-			<form action="./useredit.do" method="post">
+			
 				<div class="ui segment" style="margin-top: 5px">
 
 					<div class="ui middle aligned divided list">
