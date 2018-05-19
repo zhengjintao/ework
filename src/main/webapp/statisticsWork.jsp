@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <!-- Site Properties -->
-<title>BWC考勤系统</title>
+<title>考勤系统</title>
 <link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
@@ -44,26 +44,26 @@ footer {
 			</div>
 		</div>
 		<form action="./statisticsWork.do" method="post">
-			<div class="ui teal inverted segment"  style="margin-bottom:-10px">
-				<div class="ui inverted form">
-					<div class="inline field">
-						<div class="field">
-							<label>月份</label> <input type="month" name="wdate" value=<%=(String) request.getAttribute("sysDate")%>>
-						</div>
-					</div>
-					<Button class="ui active teal button">
-						<i class="search icon"></i>查询
-					</Button>
-				</div>
-			</div>
-			
-			<div class="ui teal inverted segment" style="margin-bottom:-12px">
+		   <div class="ui teal inverted segment" style="margin-bottom:-12px">
 				<div class="ui inverted form">
 					<div class="inline field">
 						<div class="field">
 							<label>出勤情况一览</label>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="ui teal inverted segment"  style="margin-bottom:-10px">
+				<div class="ui inverted form">
+					<div class="inline field">
+						<div class="field">
+							<input type="month" name="wdate" value=<%=(String) request.getAttribute("sysDate")%>>
+							<Button class="ui active teal button">
+						<i class="search icon"></i>查询
+					</Button>
+						</div>
+					</div>
+					
 				</div>
 			</div>
 				<table class="ui unstackable celled table">

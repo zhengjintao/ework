@@ -15,14 +15,12 @@ public class LyzListener implements ServletContextListener {
      * Default constructor. 
      */
     public LyzListener() {
-        // TODO Auto-generated constructor stub
     }
 
 	/**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
      */
     public void contextDestroyed(ServletContextEvent arg0)  { 
-         // TODO Auto-generated method stub
     }
 
 	/**

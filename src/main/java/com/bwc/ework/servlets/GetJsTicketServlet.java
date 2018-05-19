@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import com.bwc.ework.common.wechat.AccessTokenGeter;
-import com.bwc.ework.common.wechat.Consts;
+import com.bwc.ework.common.wechat.WechatConsts;
 import com.bwc.ework.common.wechat.JsTicketGeter;
 
 /**
@@ -54,7 +54,7 @@ public class GetJsTicketServlet extends HttpServlet {
             //sha1加密
             String signature = SHA1(str);
             
-            jsonObject.put("appId", Consts.APPID);  
+            jsonObject.put("appId", WechatConsts.APPID);  
             jsonObject.put("timestamp", timestamp);  
             jsonObject.put("nonceStr", noncestr);  
             jsonObject.put("signature", signature);  

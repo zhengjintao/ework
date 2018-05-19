@@ -11,7 +11,7 @@ public class URLProducer {
 	 */
 	public static String GetAcessTokenUrl(){
 		String baseurl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
-		String url = baseurl + "&appid=" + Consts.APPID + "&secret="+ Consts.APPSECRET;
+		String url = baseurl + "&appid=" + WechatConsts.APPID + "&secret="+ WechatConsts.APPSECRET;
 		
 		return url;
 	}
@@ -29,7 +29,7 @@ public class URLProducer {
 		// 注意：由于授权操作安全等级较高，所以在发起授权请求时，微信会对授权链接做正则强匹配校验，
 		// 如果链接的参数顺序不对，授权页面将无法正常访问
 		
-		String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Consts.APPID+
+		String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + WechatConsts.APPID+
                 "&redirect_uri=" + URLEncoder.encode(callbackUrl,"UTF-8")+
                 "&response_type=code" +
                 "&scope=snsapi_userinfo" +
@@ -46,8 +46,8 @@ public class URLProducer {
 	 * @return
 	 */
 	public static String GetUserAuthUrl(String code){
-		String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + Consts.APPID+
-                "&secret=" +Consts.APPSECRET+
+		String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + WechatConsts.APPID+
+                "&secret=" +WechatConsts.APPSECRET+
                 "&code=" +code+
                 "&grant_type=authorization_code";
 		return url;

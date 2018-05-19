@@ -3,7 +3,6 @@ package com.bwc.ework.common.mail;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -184,7 +183,7 @@ public class QQMailSender {
 			this.setSubject(title);
 			 //mail.setText("谢谢合作");
 	    	this.setDate(new Date());
-	    	this.setFrom("BWC管理员");
+	    	this.setFrom("ework管理员");
 //	      mail.setMultipart("D:你你你.txt");
 	    	if(files != null && files.size() > 0){
 	    		try {

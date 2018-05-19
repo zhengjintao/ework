@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <!-- Site Properties -->
-<title>BWC考勤系统</title>
+<title>考勤系统</title>
 <link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
@@ -122,25 +122,7 @@ footer {
 				</div>
 			</div>
 			<form action="./userworkdetail.do" method="post">
-				<div class="ui teal inverted segment"  style="margin-bottom:-10px">
-					<div class="ui inverted form">
-						<div class="inline field">
-							<div class="field">
-								<label>月份</label> <input type="month" name="wdate"
-									value=<%=(String) request.getAttribute("sysDate")%>>
-							</div>
-						</div>
-						<input type="hidden" name="userid"
-							value='<%=(String) request.getAttribute("userid")%>'> <input
-							type="hidden" name="username"
-							value='<%=(String) request.getAttribute("username")%>'>
-						<Button class="ui active teal button">
-							<i class="search icon"></i>查询
-						</Button>
-					</div>
-				</div>
-
-				<div class="ui teal inverted segment" style="height: 45px;margin-bottom:-10px">
+			<div class="ui teal inverted segment" style="height: 45px;margin-bottom:-10px">
 					<div class="ui inverted form" style="float: left;">
 						<div class="inline field">
 							<div class="field">
@@ -178,6 +160,24 @@ footer {
 						</div>
 					</div>
 				</div>
+				<div class="ui teal inverted segment"  style="margin-bottom:-10px">
+					<div class="ui inverted form">
+						<div class="inline field">
+							<div class="field">
+								<input type="month" name="wdate"
+									value=<%=(String) request.getAttribute("sysDate")%>>
+								<Button class="ui active teal button">
+						     	<i class="search icon"></i>查询
+						        </Button>
+							</div>
+						</div>
+						<input type="hidden" name="userid"
+							value='<%=(String) request.getAttribute("userid")%>'> <input
+							type="hidden" name="username"
+							value='<%=(String) request.getAttribute("username")%>'>
+					</div>
+				</div>
+
 				<div class="ui top attached tabular menu">
 					<div id="tab1" class="active item" onclick="tabclick('tab1')">出勤</div>
 					<div id="tab2" class="item" onclick="tabclick('tab2')">休假</div>

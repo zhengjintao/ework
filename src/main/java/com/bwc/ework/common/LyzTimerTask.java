@@ -72,10 +72,8 @@ public class LyzTimerTask extends TimerTask {
 								try {
 									SendMailFactory.getInstance().getMailSender().sendMessage(uadminmail, mailname, text, null);
 								} catch (UnsupportedEncodingException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								} catch (MessagingException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}

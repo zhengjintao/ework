@@ -10,8 +10,7 @@ public class TemplateMessageUtil {
 	// 发送模板消息
 	public static String sendTemplateMessage(String touser, String template_id, String username, String time) {
 		String msg = "--Begin set accesstoken--<br>";
-		String token = "7_XhXIHBiJhmrZ5l8e1h1_t9p7UUPNmHd8GCjGuy2lRc9zgQoE8YC4jkgi65gK3WMX3eClTZ8kPGq8o-q3fE8dDzw0qB6mYFmdu2SFmp_DS82npK4Chn15lW5vJgehoFLy-CN-GGZxx6uNhOIXOEIjAEACSW";
-		token = AccessTokenGeter.getStrAccessToken();
+		String token = AccessTokenGeter.getStrAccessToken();
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
 		 msg = msg+ "--url" + sendUrl +"<br>";
 		// post请求数据

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
-import com.bwc.ework.common.wechat.Consts;
+import com.bwc.ework.common.wechat.WechatConsts;
 import com.bwc.ework.common.wechat.tmpmsg.TemplateMessageUtil;
 
 public class LyzTimerTaskNoticeUser extends TimerTask {
@@ -67,7 +67,7 @@ public class LyzTimerTaskNoticeUser extends TimerTask {
 					final String username = String.valueOf(set2.get("username"));
 					Thread t = new Thread(new Runnable() {
 						public void run() {
-							TemplateMessageUtil.sendTemplateMessage(openid, Consts.templetid, username, now2);
+							TemplateMessageUtil.sendTemplateMessage(openid, WechatConsts.templetid01, username, now2);
 						}
 					});
 					t.start();

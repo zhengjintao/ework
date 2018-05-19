@@ -21,6 +21,7 @@ import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.common.Utils;
 import com.bwc.ework.common.mail.SendMailFactory;
 import com.bwc.ework.common.wechat.AccessTokenGeter;
+import com.bwc.ework.common.wechat.WechatConsts;
 import com.bwc.ework.common.wechat.HttpRequestor;
 import com.bwc.ework.common.wechat.URLProducer;
 import com.bwc.ework.form.User;
@@ -127,7 +128,7 @@ public class CompanyDetailServlet extends HttpServlet {
 					final String username = userinfo.getUserName();
 					Thread t2 = new Thread(new Runnable() {
 						public void run() {
-							sendTemplateMessage(openid, "Z6YBdvR08MG4ajSishFsjuRiujps7Frji64ulKB-k1s", companynm, username);
+							sendTemplateMessage(openid, WechatConsts.templetid02, companynm, username);
 						}
 					});
 					t2.start();
@@ -140,8 +141,7 @@ public class CompanyDetailServlet extends HttpServlet {
 	
 	public static String sendTemplateMessage(String touser, String template_id, String companynm, String username) {
 		String msg = "--Begin set accesstoken--<br>";
-		String token = "7_XhXIHBiJhmrZ5l8e1h1_t9p7UUPNmHd8GCjGuy2lRc9zgQoE8YC4jkgi65gK3WMX3eClTZ8kPGq8o-q3fE8dDzw0qB6mYFmdu2SFmp_DS82npK4Chn15lW5vJgehoFLy-CN-GGZxx6uNhOIXOEIjAEACSW";
-		token = AccessTokenGeter.getStrAccessToken();
+		String token = AccessTokenGeter.getStrAccessToken();
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
 		 msg = msg+ "--url" + sendUrl +"<br>";
 		// post请求数据

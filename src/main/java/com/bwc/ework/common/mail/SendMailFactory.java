@@ -1,14 +1,9 @@
 package com.bwc.ework.common.mail;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 
 public class SendMailFactory {
 	private SendMailFactory() {

@@ -21,7 +21,7 @@ public class EmailSender {
 	private String from = "xiaonei0912@gmail.com";
 	private boolean auth = true;
 	private String username = "xiaonei0912@gmail.com";
-	private String password = "Jintao123";
+	private String password = "xxxx";
 	private Protocol protocol = Protocol.TLS;
 	private boolean debug = true;
 	

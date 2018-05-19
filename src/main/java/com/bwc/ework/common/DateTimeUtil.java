@@ -54,7 +54,6 @@ public class DateTimeUtil {
 			try {
 				return new Time(sdf.parse(str).getTime());
 			} catch (ParseException ex) {
-				// TODO Auto-generated catch block
 				return null;
 			}
 		}

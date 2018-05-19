@@ -6,6 +6,4 @@ public class AuthAccessToken {
 	public static String REFRESH_TOKEN = "refresh_token";
 	public static String OPENID = "openid";
 	public static String SCOPE = "scope";
-	
-	
 }

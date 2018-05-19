@@ -1,12 +1,8 @@
 package com.bwc.ework.common;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
-
-import com.bwc.ework.common.wechat.Consts;
-import com.bwc.ework.common.wechat.tmpmsg.TemplateMessageUtil;
 
 public class TimerManager {
 	//时间间隔  

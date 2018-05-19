@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.bwc.ework.common.JdbcUtil;
 import com.bwc.ework.common.wechat.AccessTokenGeter;
+import com.bwc.ework.common.wechat.WechatConsts;
 import com.bwc.ework.common.wechat.HttpRequestor;
 import com.bwc.ework.common.wechat.URLProducer;
 import com.bwc.ework.form.User;
@@ -84,7 +85,7 @@ public class EditNoticeServlet extends HttpServlet {
 				final String username = String.valueOf(set.get("username"));
 				Thread t = new Thread(new Runnable() {
 					public void run() {
-						sendTemplateMessage(openid, "b-FwE9zb25Dno6zxqJ3pcDMt3hLMx2xGOV3W2Cfg_eY", username, now2);
+						sendTemplateMessage(openid, WechatConsts.templetid03, username, now2);
 					}
 				});
 				t.start();
@@ -130,8 +131,7 @@ public class EditNoticeServlet extends HttpServlet {
 	
 	public static String sendTemplateMessage(String touser, String template_id, String username, String time) {
 		String msg = "--Begin set accesstoken--<br>";
-		String token = "7_XhXIHBiJhmrZ5l8e1h1_t9p7UUPNmHd8GCjGuy2lRc9zgQoE8YC4jkgi65gK3WMX3eClTZ8kPGq8o-q3fE8dDzw0qB6mYFmdu2SFmp_DS82npK4Chn15lW5vJgehoFLy-CN-GGZxx6uNhOIXOEIjAEACSW";
-		token = AccessTokenGeter.getStrAccessToken();
+		String token = AccessTokenGeter.getStrAccessToken();
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
 		 msg = msg+ "--url" + sendUrl +"<br>";
 		// post请求数据
