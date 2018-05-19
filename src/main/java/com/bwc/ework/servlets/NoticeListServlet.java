@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.form.User;
 
 /**
@@ -25,7 +26,6 @@ public class NoticeListServlet extends HttpServlet {
      */
     public NoticeListServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -37,7 +37,7 @@ public class NoticeListServlet extends HttpServlet {
 		String type = request.getParameter("type");
 		String sql = "select * from cdata_notice where companyid=? and delflg=? and type =? order by createdate desc";
 		Object[] params = new Object[3];
-		params[0] = userif.getMaincompanyid();
+		params[0] = Utils.getStoreCompanyid(userif.getMaincompanyid());
 		params[1] = "0";
 		params[2] = type;
 		List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql, params);
@@ -65,7 +65,6 @@ public class NoticeListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	

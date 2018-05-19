@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 import com.bwc.ework.common.JdbcUtil;
+import com.bwc.ework.common.Utils;
 import com.bwc.ework.common.wechat.AccessTokenGeter;
 import com.bwc.ework.common.wechat.WechatConsts;
 import com.bwc.ework.common.wechat.HttpRequestor;
@@ -57,7 +58,7 @@ public class EditNoticeServlet extends HttpServlet {
 			String sql = "insert into cdata_notice value(?,?, ?, ?, ?, ?, ?, ?)";
 			
 			Object[] params = new Object[8];
-			params[0] = userinfo.getMaincompanyid();
+			params[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			params[1] = count.toString();
 			params[2] = typekbn;
 			params[3] = "";
@@ -69,7 +70,7 @@ public class EditNoticeServlet extends HttpServlet {
 			
 			String sql2 = "SELECT * FROM cdata_companyuser com left join mstr_user com.userid=usr.userid where companyid=? and delflg=?";
 			Object[] params2 = new Object[2];
-			params2[0] = userinfo.getMaincompanyid();
+			params2[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			params2[1] = "0";
 			List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 			
@@ -103,10 +104,10 @@ public class EditNoticeServlet extends HttpServlet {
 			
 			String sql = "select * from cdata_notice where companyid=? and type=? and delflg=? and createdate =(select max(createdate) from cdata_notice where companyid=? and type=? and delflg=? group by type ) limit 1";
 			Object[] paramsnotice = new Object[6];
-			paramsnotice[0] = userinfo.getMaincompanyid();
+			paramsnotice[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			paramsnotice[1] = "1".equals(request.getParameter("type")) ? "1" : "2";  // notice kbn
 			paramsnotice[2] = "0";
-			paramsnotice[3] = userinfo.getMaincompanyid();
+			paramsnotice[3] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			paramsnotice[4] = "1".equals(request.getParameter("type")) ? "1" : "2";  // notice kbn
 			paramsnotice[5] = "0";
 			List<Object> notices = JdbcUtil.getInstance().excuteQuery(sql, paramsnotice);
@@ -125,7 +126,6 @@ public class EditNoticeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	

@@ -105,7 +105,7 @@ footer {
 	</div>
 	<div class="ui one column grid container">
 		<div class="column">
-			<div class="ui teal segment">
+			<!-- <div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i
 						class="right chevron icon divider"></i> <a class="section"
@@ -113,8 +113,14 @@ footer {
 						class="right chevron icon divider"></i>
 					<div class="active section">创建公司</div>
 				</div>
-			</div>
-			<div class="ui teal inverted segment">
+			</div> -->
+			<div class="ui divider" style="margin:5px"></div>
+		   <div class="ui basic buttons">
+		    <a class="ui left attached button" href="companysetting.do">返回</a>
+           <!-- <a class="right attached ui button" href="service.do?mode=detail">新規追加</a> -->
+           </div>
+			
+			<div class="ui segment" style="margin-top:5px">
 				<form action="companyedit.do" method="post" onsubmit="return check();">
 				   <div class="ui middle aligned divided list">
 						<div class="item" style="display:none">

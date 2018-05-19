@@ -199,14 +199,14 @@ footer {
 				    <div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui basic button">
-							<i class="user icon"></i> <a class="header" style="color:gray" href="usermanagement.do">系统通知</a>
+							<i class="user icon"></i> <a class="header" style="color:gray" href="editnotice.do?type=1">系统通知</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
 					<div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui basic button">
-							<i class="user icon"></i> <a class="header" style="color:gray" href="usermanagement.do">系统活动</a>
+							<i class="user icon"></i> <a class="header" style="color:gray" href="editnotice.do?type=2">系统活动</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>

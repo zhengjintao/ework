@@ -50,16 +50,16 @@ footer {
 				</div>
 			</div>
 			<form action="./useredit.do" method="post">
-				<div class="ui teal inverted segment">
+				<div class="ui segment">
 
-					<div class="ui middle aligned divided list">
+					<div class="ui middle aligned divided list" style="margin-bottom:0px">
 						<%
 							List<String[]> userinfo = (List<String[]>) request.getAttribute("userinfo");
 							int inxnum =0;
 							for (String[] each : userinfo) {
 								out.print("<div class='item'>");
 								out.print("<div class='right floated content'>");
-								out.print("<div class='ui basic button' onclick='deleteuser(" + inxnum +")'><div style='color:white'>详情</div></div>");
+								out.print("<div class='ui basic button' onclick='deleteuser(" + inxnum +")'><div>详情</div></div>");
 								out.print("</div>");
 								out.print("<small style='color:gray'>");
 								out.print(each[5]);
