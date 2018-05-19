@@ -111,8 +111,6 @@ footer {
 								inxnum++;
 							}%>
 							
-							arr[1] = "#id0";
-							arr[2] = "#id0";
 							var content = $(arr[contentid]).html();
 							
 
