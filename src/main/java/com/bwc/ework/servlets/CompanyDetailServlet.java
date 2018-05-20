@@ -128,7 +128,8 @@ public class CompanyDetailServlet extends HttpServlet {
 					final String username = userinfo.getUserName();
 					Thread t2 = new Thread(new Runnable() {
 						public void run() {
-							sendTemplateMessage(openid, WechatConsts.templetid02, companynm, username);
+							String url = Utils.createRedirectUrl(ucompanyid, openid, "personal.do");
+							sendTemplateMessage(openid, WechatConsts.templetid02, companynm, username,url);
 						}
 					});
 					t2.start();
@@ -139,13 +140,11 @@ public class CompanyDetailServlet extends HttpServlet {
 		init(request, response);
 	}
 	
-	public static String sendTemplateMessage(String touser, String template_id, String companynm, String username) {
+	public static String sendTemplateMessage(String touser, String template_id, String companynm, String username, String url) {
 		String msg = "--Begin set accesstoken--<br>";
 		String token = AccessTokenGeter.getStrAccessToken();
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
 		 msg = msg+ "--url" + sendUrl +"<br>";
-		// post请求数据
-		String url = "http://www.freertokyo.com/ework/personal.do";
 		// data
 		JSONObject dataJson = new JSONObject();
 		// first

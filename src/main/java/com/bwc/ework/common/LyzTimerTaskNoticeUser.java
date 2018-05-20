@@ -54,7 +54,7 @@ public class LyzTimerTaskNoticeUser extends TimerTask {
 				params2[1] = now;
 				params2[2] = now;
 				List<Object> userinfo = JdbcUtil.getInstance().excuteQuery(sql2, params2);
-
+				final String companyid= (String)set.get("companyid");
 				for (int j = 0; j < userinfo.size(); j++) {
 					Map<String, Object> set2 = (Map<String, Object>) userinfo.get(j);
 
@@ -67,7 +67,8 @@ public class LyzTimerTaskNoticeUser extends TimerTask {
 					final String username = String.valueOf(set2.get("username"));
 					Thread t = new Thread(new Runnable() {
 						public void run() {
-							TemplateMessageUtil.sendTemplateMessage(openid, WechatConsts.templetid01, username, now2);
+							String url = Utils.createRedirectUrl(companyid, openid, "list.do");
+							TemplateMessageUtil.sendTemplateMessage(openid, WechatConsts.templetid01, username, now2, url);
 						}
 					});
 					t.start();

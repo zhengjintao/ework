@@ -8,13 +8,11 @@ import com.bwc.ework.common.wechat.URLProducer;
 
 public class TemplateMessageUtil {
 	// 发送模板消息
-	public static String sendTemplateMessage(String touser, String template_id, String username, String time) {
+	public static String sendTemplateMessage(String touser, String template_id, String username, String time, String url) {
 		String msg = "--Begin set accesstoken--<br>";
 		String token = AccessTokenGeter.getStrAccessToken();
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
 		 msg = msg+ "--url" + sendUrl +"<br>";
-		// post请求数据
-		String url = "http://www.freertokyo.com/ework/list.do";
 		// data
 		JSONObject dataJson = new JSONObject();
 		// first

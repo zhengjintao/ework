@@ -12,5 +12,10 @@ public class Utils {
 			return companyid;
 		}
 	}
+	
+	public static String createRedirectUrl(String companyid, String openid, String toUrl){
+		return "http://www.freertokyo.com/ework/redirectautologin.do?companyid=" + companyid 
+				+"&openid=" + openid + "&tourl=" + toUrl;
+	}
 
 }

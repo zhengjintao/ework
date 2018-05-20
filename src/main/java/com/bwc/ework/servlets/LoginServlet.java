@@ -127,14 +127,14 @@ public class LoginServlet extends HttpServlet {
 			response.addCookie(pcookies);
 		}
 		
-		sql = "select * from cdata_userlog where userid=? order by id desc";
+		sql = "select count(*) as num from cdata_userlog where userid=? order by id desc";
 		params = new Object[1];
 		params[0] = userdata.getUserId();
 		List<Object> loginfo = JdbcUtil.getInstance().excuteQuery(sql, params);
 		long num=0;
 		if(loginfo.size() > 0){
 			Map<String, Object> log = (Map<String, Object>)loginfo.get(0);
-			num = Long.parseLong((String)log.get("id"));
+			num = Long.parseLong(String.valueOf(log.get("num")));
 			num++;
 		}
 		
@@ -150,22 +150,28 @@ public class LoginServlet extends HttpServlet {
 		
 		String rurl = "list.do";
 		
-		if(userdata.getMaincompanyid() == null){
-			rurl = "personal.do";
-		}else if("0".equals(userdata.getAuthflg()) || "1".equals(userdata.getAuthflg())){
-			rurl = "personal.do";
-		}
-		else{
-			sql = "select * from cdata_companyuser where companyid=? and userid=? and rolekbn in ('0', '1') and delflg='0'";
-			params = new Object[2];
-			params[0] = userdata.getMaincompanyid();
-			params[1] = userdata.getUserId();
-			List<Object> roles = JdbcUtil.getInstance().excuteQuery(sql, params);
-			if(roles.size() > 0){
-				rurl = "companydetail.do";
+		String tourl = request.getParameter("tourl");
+		if(tourl!=null && tourl.length() > 0 && tourl.contains(".do")){
+			rurl = tourl;
+		}else{
+			if(userdata.getMaincompanyid() == null){
+				rurl = "personal.do";
+			}else if("0".equals(userdata.getAuthflg()) || "1".equals(userdata.getAuthflg())){
+				rurl = "personal.do";
+			}
+			else{
+				sql = "select * from cdata_companyuser where companyid=? and userid=? and rolekbn in ('0', '1') and delflg='0'";
+				params = new Object[2];
+				params[0] = userdata.getMaincompanyid();
+				params[1] = userdata.getUserId();
+				List<Object> roles = JdbcUtil.getInstance().excuteQuery(sql, params);
+				if(roles.size() > 0){
+					rurl = "companydetail.do";
+				}
 			}
 		}
-		response.sendRedirect(rurl);
+		request.getRequestDispatcher(rurl).forward(request, response);
+		//response.sendRedirect(rurl);
 	}
 
 	/**

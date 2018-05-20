@@ -68,9 +68,10 @@ public class EditNoticeServlet extends HttpServlet {
 			params[7] = "0";
 			JdbcUtil.getInstance().executeUpdate(sql, params);
 			
+			String companyid = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 			String sql2 = "SELECT * FROM cdata_companyuser com left join mstr_user com.userid=usr.userid where companyid=? and delflg=?";
 			Object[] params2 = new Object[2];
-			params2[0] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
+			params2[0] = companyid;
 			params2[1] = "0";
 			List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 			
@@ -83,10 +84,11 @@ public class EditNoticeServlet extends HttpServlet {
 				if(openid == null || openid.length() < 10){
 					continue;
 				}
-				final String username = String.valueOf(set.get("username"));
+				final String ucompanyid = companyid;
 				Thread t = new Thread(new Runnable() {
 					public void run() {
-						sendTemplateMessage(openid, WechatConsts.templetid03, username, now2);
+						String url = Utils.createRedirectUrl(ucompanyid, openid, "home.do");
+						sendTemplateMessage(openid, WechatConsts.templetid03, url, now2);
 					}
 				});
 				t.start();
@@ -129,13 +131,11 @@ public class EditNoticeServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	public static String sendTemplateMessage(String touser, String template_id, String username, String time) {
+	public static String sendTemplateMessage(String touser, String template_id, String url, String time) {
 		String msg = "--Begin set accesstoken--<br>";
 		String token = AccessTokenGeter.getStrAccessToken();
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
 		 msg = msg+ "--url" + sendUrl +"<br>";
-		// post请求数据
-		String url = "http://www.freertokyo.com/ework/home.do";
 		// data
 		JSONObject dataJson = new JSONObject();
 		// first
@@ -146,11 +146,8 @@ public class EditNoticeServlet extends HttpServlet {
 		k1Json.put("value", "新活动");
 		// keyword2
 		JSONObject k2Json = new JSONObject();
-		k2Json.put("value", time);
-		// keyword3
-		JSONObject k3Json = new JSONObject();
-		k3Json.put("value", "待查看");
-		k3Json.put("color", "#DC143C");
+		k2Json.put("value", "待查看");
+		k2Json.put("color", "#DC143C");
 		// remark
 		JSONObject rmkJson = new JSONObject();
 		rmkJson.put("value", "点击可快速进行查看, GO>>");
@@ -159,7 +156,6 @@ public class EditNoticeServlet extends HttpServlet {
 		dataJson.put("first", fstJson);
 		dataJson.put("keyword1", k1Json);
 		dataJson.put("keyword2", k2Json);
-		dataJson.put("keyword3", k3Json);
 		dataJson.put("remark", rmkJson);
 
 //		{{first.DATA}}
