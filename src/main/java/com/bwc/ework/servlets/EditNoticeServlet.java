@@ -76,6 +76,8 @@ public class EditNoticeServlet extends HttpServlet {
 			List<Object> infolist = JdbcUtil.getInstance().excuteQuery(sql2, params2);
 			
 			SimpleDateFormat formattime2 = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+			final String ucontent = "1".equals(typekbn) ? "公司发布新通知，请注意查看" :  "公司发布新活动，请注意查看";
+			final String uname= "1".equals(typekbn) ? "新通知" :  "新活动";
 			final String now2 = formattime2.format(new Date());
 			for (int i = 0; i < infolist.size(); i++) {
 				Map<String, Object> set = (Map<String, Object>) infolist.get(i);
@@ -84,11 +86,12 @@ public class EditNoticeServlet extends HttpServlet {
 				if(openid == null || openid.length() < 10){
 					continue;
 				}
+				
 				final String ucompanyid = companyid;
 				Thread t = new Thread(new Runnable() {
 					public void run() {
 						String url = Utils.createRedirectUrl(ucompanyid, openid, "home.do");
-						sendTemplateMessage(openid, WechatConsts.templetid03, url, now2);
+						sendTemplateMessage(openid, ucontent, uname, WechatConsts.templetid03, url, now2);
 					}
 				});
 				t.start();
@@ -131,7 +134,7 @@ public class EditNoticeServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	public static String sendTemplateMessage(String touser, String template_id, String url, String time) {
+	public static String sendTemplateMessage(String touser, String content, String contname, String template_id, String url, String time) {
 		String msg = "--Begin set accesstoken--<br>";
 		String token = AccessTokenGeter.getStrAccessToken();
 		String sendUrl = URLProducer.GetTemplateSendUrl(token);
@@ -140,10 +143,10 @@ public class EditNoticeServlet extends HttpServlet {
 		JSONObject dataJson = new JSONObject();
 		// first
 		JSONObject fstJson = new JSONObject();
-		fstJson.put("value", "注意！有新的通知／活动");
+		fstJson.put("value", content);
 		// keyword1
 		JSONObject k1Json = new JSONObject();
-		k1Json.put("value", "新活动");
+		k1Json.put("value", contname);
 		// keyword2
 		JSONObject k2Json = new JSONObject();
 		k2Json.put("value", "待查看");
