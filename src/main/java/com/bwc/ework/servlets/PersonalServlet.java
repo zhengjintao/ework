@@ -160,6 +160,7 @@ public class PersonalServlet extends HttpServlet {
 		request.setAttribute("userdiplay", userdiplay);
 		
 		request.setAttribute("userid", userinfo.getUserId());
+		request.setAttribute("wdate", date1.getYear()+ "-"+date1.getMonth());
 		request.getRequestDispatcher("personal.jsp").forward(request, response);
 	}
 

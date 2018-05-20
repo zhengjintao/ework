@@ -115,9 +115,7 @@ footer {
 			<div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i
-						class="right chevron icon divider"></i> <a class="section"
-						href="statisticsWork.do">出勤统计</a> <i
-						class="right chevron icon divider"></i>
+						class="right chevron icon divider"></i> 
 					<div class="active section">出勤详细</div>
 				</div>
 			</div>
@@ -136,8 +134,6 @@ footer {
 					<div class="ui custom popup top left transition hidden">
 						<div class="ui yellow inverted segment">
 							<div class="ui inverted form">
-								
-
 								<div class="inline fields">
 									<div class="field">
 										<input type="text" id="mailname" name="mailname"
@@ -179,9 +175,10 @@ footer {
 				</div>
 
 				<div class="ui top attached tabular menu">
-					<div id="tab1" class="active item" onclick="tabclick('tab1')">出勤</div>
-					<div id="tab2" class="item" onclick="tabclick('tab2')">休假</div>
+					<div id="tab1" class="active item" onclick="tabclick('tab1')">出勤(160H/20天)</div>
+					<div id="tab2" class="item" onclick="tabclick('tab2')">休假(16H/2天)</div>
 				</div>
+
 				<div class="ui bottom attached active tab segment">
 					<table id="table1" class="ui unstackable celled table" border="1">
 						<tr bgcolor="#00B5AB">

@@ -93,9 +93,9 @@ public class ListServlet extends HttpServlet {
 			}else{
 				// 数据存在更新操作
 				if(list.size()>0){
-					String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?,comment=?"
+					String updateSql = "update cdata_worktime set year=?,month=?,day=?,date=?,begintime=?,endtime=?,worktime=?,comment=?,diyresttime=?"
 							+ " where userid=? and companyid=? and date=?";
-					Object[] updateparams = new Object[11];
+					Object[] updateparams = new Object[12];
 					updateparams[0] = year;
 					updateparams[1] = month;
 					updateparams[2] = day;
@@ -103,18 +103,19 @@ public class ListServlet extends HttpServlet {
 					updateparams[4] = begin;
 					updateparams[5] = end;
 					updateparams[7] = comment;
+					updateparams[8] = rest;
 					try {
 						updateparams[6] = DateTimeUtil.getHours(begin,end,rest);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
-					updateparams[8] = userid;
-					updateparams[9] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
-					updateparams[10] = date;
+					updateparams[9] = userid;
+					updateparams[10] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
+					updateparams[11] = date;
 					JdbcUtil.getInstance().executeUpdate(updateSql, updateparams);
 				}else{
-					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-					Object[] insertparams = new Object[16];
+					String insertSql = "insert into cdata_worktime value(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					Object[] insertparams = new Object[17];
 					insertparams[0] = userid;
 					insertparams[1] = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
 					insertparams[2] = year;
@@ -135,6 +136,7 @@ public class ListServlet extends HttpServlet {
 					insertparams[13] = latitude;
 					insertparams[14] = longitude;
 					insertparams[15] = dtladdress;
+					insertparams[16] = rest;
 					
 					JdbcUtil.getInstance().executeUpdate(insertSql, insertparams);
 				}
@@ -149,7 +151,7 @@ public class ListServlet extends HttpServlet {
 			// 默认结束时间
 			request.setAttribute("defaultEndTime", end);
 			// 默认休息时间
-			request.setAttribute("defaultRestTime", userinfo.getRest().toString());
+			request.setAttribute("defaultRestTime", rest);
 			request.setAttribute("comment", comment);
 			
 			try {
@@ -186,11 +188,13 @@ public class ListServlet extends HttpServlet {
 					Map<String, Object> set = (Map<String, Object>)list1.get(0);
 					jsonObject.put("defaultBeginTime", set.get("begintime").toString()); 
 					jsonObject.put("defaultEndTime", set.get("endtime").toString());
+					jsonObject.put("defaultRestTime", set.get("diyresttime").toString());
 					jsonObject.put("comment", set.get("comment").toString());
 					jsonObject.put("settedFlg", "1");
 				}else{
 					jsonObject.put("defaultBeginTime",userinfo.getBeginTime().toString());
 					jsonObject.put("defaultEndTime", userinfo.getEndTime().toString());
+					jsonObject.put("defaultRestTime", userinfo.getRest().toString());
 					jsonObject.put("comment", "");
 					jsonObject.put("settedFlg", "0");
 				}
@@ -214,7 +218,7 @@ public class ListServlet extends HttpServlet {
 					// 默认结束时间
 					request.setAttribute("defaultEndTime", set.get("endtime").toString());
 					// 默认休息时间
-					request.setAttribute("defaultRestTime", userinfo.getRest().toString());
+					request.setAttribute("defaultRestTime", set.get("diyresttime").toString());
 					request.setAttribute("comment", set.get("comment").toString());
 					
 					request.setAttribute("qiandao", "已签");

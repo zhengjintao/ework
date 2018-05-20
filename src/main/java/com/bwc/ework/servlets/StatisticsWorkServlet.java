@@ -123,7 +123,7 @@ public class StatisticsWorkServlet extends HttpServlet {
 		
 		// 日期设定
 		request.setAttribute("sysDate", DateTimeUtil.GetMonth(dateStr));
-		
+		request.setAttribute("email", userinfo.getMail());
 		request.setAttribute("dataList", dataList);
 		request.getRequestDispatcher("statisticsWork.jsp").forward(request, response);
 	}

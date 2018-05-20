@@ -15,7 +15,60 @@
 <script src="jquery/jquery-3.1.1.min.js"></script>
 <script src="dist/components/form.min.js"></script>
 <script src="dist/components/transition.min.js"></script>
+<script src="dist/semantic.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#envelope').popup({
+		popup : $('.custom.popup'),
+		on : 'click'
+	});
+});
 
+function sendmail() {
+	$('#envelope').popup('hide all');
+	var mail = $("#mail").val();
+	var errmsg="";
+	if (mail.length == 0) {
+		errmsg ="收件地址必须输入";
+	}
+	
+	if (mail.length > 0){
+		var Regex = /^(?:\w+\.?)*\w+@(?:\w+\.).*\w+$/;
+		if (!Regex.test(mail)){
+			if (errmsg.length > 0) {
+				errmsg = errmsg + "<br>";
+			}
+			errmsg = errmsg + "邮箱格式不正确";
+		}
+	}
+	
+	if (errmsg.length > 0) {
+		$("#errmsg").html(errmsg);
+		$('#cmodal').modal({
+			closable : false
+
+		}).modal('show');
+		return false;
+	}
+
+	$.ajax({
+		type : "post",
+		url : "./sendmilealluser.do?" + $("form").serialize(),
+		dataType : "json",
+		success : function(data) {
+			$("#errmsg").html(data.message);
+			$('#cmodal').modal({
+				closable : false
+
+			}).modal('show');
+		},
+		error : function() {
+			alert("网络异常，请稍后重试");
+		}
+	});
+
+}
+</script>
 <style type="text/css">
 body {
     margin-top: 10px;
@@ -44,15 +97,44 @@ footer {
 			</div>
 		</div>
 		<form action="./statisticsWork.do" method="post">
-		   <div class="ui teal inverted segment" style="margin-bottom:-12px">
-				<div class="ui inverted form">
-					<div class="inline field">
-						<div class="field">
-							<label>出勤情况一览</label>
+        <div class="ui teal inverted segment" style="height: 45px;margin-bottom:-10px">
+					<div class="ui inverted form" style="float: left;">
+						<div class="inline field">
+							<div class="field">
+								<label>全员出勤一览</label>
+							</div>
+						</div>
+					</div>
+					<div class="some-wrapping-div" style="float: right;">
+						<i id='envelope' class="envelope outline  icon"></i>
+					</div>
+					<div class="ui custom popup top left transition hidden">
+						<div class="ui yellow inverted segment">
+							<div class="ui inverted form">
+								
+
+								<div class="inline fields">
+									<div class="field">
+										<input type="text" id="mailname" name="mailname"
+											placeholder="邮件名" value="当月全员出勤统计">
+									</div>
+								</div>
+								<div class="inline fields">
+									<div class="field">
+								<input type="text" id="mail" name="mail" placeholder="收件邮箱地址(必须)"
+										value="<%=request.getAttribute("email") %>">
+								</div>
+								</div>
+								
+								<div class="inline field" >
+									<div class="ui custom button" onclick="sendmail()">
+										<i class="envelope icon"></i>送信
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			<div class="ui teal inverted segment"  style="margin-bottom:-10px">
 				<div class="ui inverted form">
 					<div class="inline field">

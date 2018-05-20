@@ -259,7 +259,9 @@ footer {
 				   <div style="height: 10px"></div>
 					<div class="ui labeled button" tabindex="0">
 						<div class="ui violet button">
-							<i class="edit icon"></i> <a class="header" style="color:white" href="statisticsWork.do">出勤统计</a>
+							<i class="edit icon"></i> 
+							<a class="header" style="color:white" href='userworkdetail.do?userid=<%=(String)request.getAttribute("userid") %>&username=<%=java.net.URLEncoder.encode((String)request.getAttribute("username"), "UTF-8") %>
+							&wdate=<%=(String)request.getAttribute("wdate") %>'>出勤详细</a>
 						</div>
 						<!-- <a class="ui basic left pointing label"> <%=(String)request.getAttribute("hours") %> </a>-->
 					</div>
