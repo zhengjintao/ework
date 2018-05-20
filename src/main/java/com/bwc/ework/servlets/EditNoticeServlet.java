@@ -69,7 +69,7 @@ public class EditNoticeServlet extends HttpServlet {
 			JdbcUtil.getInstance().executeUpdate(sql, params);
 			
 			String companyid = Utils.getStoreCompanyid(userinfo.getMaincompanyid());
-			String sql2 = "SELECT * FROM cdata_companyuser com left join mstr_user com.userid=usr.userid where companyid=? and delflg=?";
+			String sql2 = "SELECT * FROM cdata_companyuser com left join mstr_user usr on com.userid=usr.userid where com.companyid=? and com.delflg=? and usr.delflg='0'";
 			Object[] params2 = new Object[2];
 			params2[0] = companyid;
 			params2[1] = "0";
