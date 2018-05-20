@@ -18,6 +18,13 @@
 <script src="dist/semantic.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	var message = "<%=(String) request.getAttribute("errmsg")%>";
+	if (message != "null" && message.length > 0) {
+		$('#cmodal').modal({
+			closable : false
+		}).modal('show');
+	}
+	
 	$('#envelope').popup({
 		popup : $('.custom.popup'),
 		on : 'click'
@@ -88,6 +95,12 @@ footer {
 </style>
 </head>
 <body>
+	<div id="cmodal" class="ui small test modal transition hidden">
+		<i class="close icon"></i>
+		<div class="content">
+			<p id="errmsg"><%=(String) request.getAttribute("errmsg")%></p>
+		</div>
+	</div>
 	<div class="ui one column grid container">
 	<div class="column">
 	<div class="ui teal segment">

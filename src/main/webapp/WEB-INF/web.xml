@@ -333,8 +333,7 @@
     	<servlet-name>RedirectAutoLoginServlet</servlet-name>
     	<url-pattern>/redirectautologin.do</url-pattern>
     </servlet-mapping>
-    </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
     	<servlet-name>SendMileAllServlet</servlet-name>
     	<url-pattern>/sendmilealluser.do</url-pattern>
     </servlet-mapping>

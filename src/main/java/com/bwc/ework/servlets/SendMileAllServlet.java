@@ -61,7 +61,7 @@ public class SendMileAllServlet extends HttpServlet {
 		List<String> files = new ArrayList<String>();
 		files.add(outfilePath);  // 文件路径，可多个
 		final List<String> ulist = list;
-		final String umailname = mailname + "(" + userif.getUserName() + request.getParameter("wdate2") + ")";
+		final String umailname = mailname + "(" +request.getParameter("wdate")+ ")";
 		final List<String> ufiles = files;
 		Thread t = new Thread(new Runnable() {
 			public void run() {
@@ -78,7 +78,7 @@ public class SendMileAllServlet extends HttpServlet {
 		});
 		t.start();
 		
-		String message = "已做发送处理，请注意查收<br>（文件发送需耗时1分钟左右<br>有可能发送失败，3分钟还未收到时请重发）";
+		String message = "已做发送处理，请注意查收<br>（文件发送需耗时2分钟左右<br>有可能发送失败，5分钟还未收到时请重发）";
 		JSONObject jsonObject = new JSONObject();
 
 		jsonObject.put("message", message);
