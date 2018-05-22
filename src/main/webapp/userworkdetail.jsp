@@ -112,13 +112,13 @@ footer {
 
 	<div class="ui one column grid container">
 		<div class="column" style="padding-top: 14px">
-			<div class="ui teal segment">
+			<!-- <div class="ui teal segment">
 				<div class="ui  breadcrumb">
 					<a class="section" href="personal.do">个人</a> <i
 						class="right chevron icon divider"></i> 
 					<div class="active section">出勤详细</div>
 				</div>
-			</div>
+			</div> -->
 			<form action="./userworkdetail.do" method="post">
 			<div class="ui teal inverted segment" style="height: 45px;margin-bottom:-10px">
 					<div class="ui inverted form" style="float: left;">
@@ -175,8 +175,8 @@ footer {
 				</div>
 
 				<div class="ui top attached tabular menu">
-					<div id="tab1" class="active item" onclick="tabclick('tab1')">出勤(160H/20天)</div>
-					<div id="tab2" class="item" onclick="tabclick('tab2')">休假(16H/2天)</div>
+					<div id="tab1" class="active item" onclick="tabclick('tab1')"><%=(String) request.getAttribute("worklbl")%></div>
+					<div id="tab2" class="item" onclick="tabclick('tab2')"><%=(String) request.getAttribute("leavelbl")%></div>
 				</div>
 
 				<div class="ui bottom attached active tab segment">

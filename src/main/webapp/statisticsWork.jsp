@@ -103,12 +103,12 @@ footer {
 	</div>
 	<div class="ui one column grid container">
 	<div class="column">
-	<div class="ui teal segment">
+	<!-- <div class="ui teal segment">
 			<div class="ui  breadcrumb">
 				<a class="section"  href="personal.do">个人</a> <i class="right chevron icon divider"></i>
 				<div class="active section">出勤统计</div>
 			</div>
-		</div>
+		</div> -->
 		<form action="./statisticsWork.do" method="post">
         <div class="ui teal inverted segment" style="height: 45px;margin-bottom:-10px">
 					<div class="ui inverted form" style="float: left;">

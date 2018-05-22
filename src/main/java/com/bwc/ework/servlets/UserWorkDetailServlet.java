@@ -1,6 +1,7 @@
 package com.bwc.ework.servlets;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import com.bwc.ework.form.User;
  * Servlet implementation class UserWorkDetailServlet
  */
 public class UserWorkDetailServlet extends HttpServlet {
+	double sumworktime = 0;
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -54,8 +56,19 @@ public class UserWorkDetailServlet extends HttpServlet {
 		request.setAttribute("userid", userid);
 		request.setAttribute("username", username);
 		
-		request.setAttribute("monthdata", getMonthData(userid, companyCd, DateTimeUtil.GetMonth(dateStr)));
-		request.setAttribute("workdata", getworktime(userid, companyCd, DateTimeUtil.GetMonth(dateStr)));
+		List<String[]> workList= getworktime(userid, companyCd, DateTimeUtil.GetMonth(dateStr));
+		List<String[]> leaveList= getMonthData(userid, companyCd, DateTimeUtil.GetMonth(dateStr));
+
+		request.setAttribute("workdata", workList);
+		request.setAttribute("monthdata", leaveList);
+		
+		DecimalFormat df = new DecimalFormat("######0.0");   
+		
+		String worklbl = "出勤("+ df.format(sumworktime).toString()+"H/"+workList.size()+"天)";
+		String leavelbl = "请假("+ 8*leaveList.size()+"H/"+leaveList.size()+"天)";
+		request.setAttribute("worklbl", workList.size()> 0 ? worklbl : "出勤");
+		request.setAttribute("leavelbl", leaveList.size()> 0? leavelbl:"请假");
+		
 		request.getRequestDispatcher("userworkdetail.jsp").forward(request, response);
 	}
 
@@ -69,6 +82,7 @@ public class UserWorkDetailServlet extends HttpServlet {
 	
 	private List<String[]> getworktime(String userid, String companyid, String dateStr){
 		List<String[]> monthData = new ArrayList<String[]>();
+		sumworktime= 0;
 		com.bwc.ework.form.Date date1 = DateTimeUtil.stringToDate(dateStr);
 		String year = date1.getYear();
 		String month = date1.getMonth();
@@ -87,8 +101,9 @@ public class UserWorkDetailServlet extends HttpServlet {
 			each[2] = row.get("endtime").toString();
 			each[3] = row.get("comment") == null ? "" : row.get("comment").toString().replace("\r\n", "<br>");
 			monthData.add(each);
+			sumworktime = sumworktime+ Double.parseDouble(row.get("worktime").toString()) ;
 		}
-
+		
 		return monthData;
 	}
 	
