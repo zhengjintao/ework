@@ -39,13 +39,15 @@ footer {
 
 	<div class="ui one column grid container">
 		<div class="column">
-		   <div class="ui divider" style="margin:5px"></div>
+		   <!-- <div class="ui divider" style="margin:5px"></div>
 		<div class="ui basic buttons">
 		<a class="ui left attached button" href="companydetail.do">返回</a>
-<!-- <a class="right attached ui button" href="service.do?mode=detail">新規追加</a> -->
+<a class="right attached ui button" href="service.do?mode=detail">新規追加</a>
 </div>
+
 		
-		<div class="ui divider" style="margin:5px"></div>
+		<div class="ui divider" style="margin:5px"></div> -->
+		<div style="margin:5px"></div>
 			<form action="./useredit.do" method="post">
 				<div class="ui base segment">
 

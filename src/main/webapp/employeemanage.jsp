@@ -54,10 +54,8 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
   list.currentPage = 1;
   list.totalPages=3;
   list.unsalegoods =  [
-      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'}
       ];
   list.onsalegoods =  [
-      {id:'00001', text:'learn AngularJS', img:'assets/images/companypic.jpg', reason:'199'}
       ];
   
   (function(){
@@ -124,14 +122,14 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
 </head>
 <body ng-controller="ListController as list" >
 	<div class="ui container">
-		<div class="row"></div>
-		<div class="ui divider" style="margin:5px"></div>
+		<div style="margin:5px"></div>
+		<!-- <div class="ui divider" style="margin:5px"></div>
 		<div class="ui basic buttons">
 		<a class="ui left attached button" href="companydetail.do">返回</a>
-<!-- <a class="right attached ui button" href="service.do?mode=detail">新規追加</a> -->
+<a class="right attached ui button" href="service.do?mode=detail">新規追加</a>
 </div>
 		
-		<div class="ui divider" style="margin:5px"></div>
+		<div class="ui divider" style="margin:5px"></div> -->
 		<div class="row">
 			<div class="ui top attached tabular menu">
 				<a class="item active" data-tab="first">待审核</a> <a class="item"
